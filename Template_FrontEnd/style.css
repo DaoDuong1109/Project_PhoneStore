@@ -617,7 +617,7 @@ body {
 .footer-top-area {
   background: none repeat scroll 0 0 #333;
   color: #999;
-  padding: 35px 0 180px;
+  padding: 35px 0 35px;
 }
 
 .footer-bottom-area {
@@ -630,7 +630,7 @@ body {
 .footer-wid-title {
   font-family: raleway;
   font-size: 30px;
-  font-weight: 100;
+  font-weight: 400;
   color: #fff;
 }
 
