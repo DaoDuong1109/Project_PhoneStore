@@ -8,10 +8,12 @@ import java.util.Objects;
 @Table(name = "product_color", schema = "phone_store", catalog = "")
 @IdClass(ProductColorEntityPK.class)
 public class ProductColorEntity {
+    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "color_ID")
     private Integer colorId;
+    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "product_ID")

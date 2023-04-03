@@ -1,9 +1,6 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
@@ -11,9 +8,13 @@ import java.util.Objects;
 @Table(name = "order_detail", schema = "phone_store", catalog = "")
 public class OrderDetailEntity {
     @Basic
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "product_ID")
     private Integer productId;
     @Basic
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "order_ID")
     private Integer orderId;
     @Basic

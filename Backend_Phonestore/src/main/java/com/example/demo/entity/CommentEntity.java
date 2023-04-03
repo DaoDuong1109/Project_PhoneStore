@@ -8,6 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "comment", schema = "phone_store", catalog = "")
 public class CommentEntity {
+    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")

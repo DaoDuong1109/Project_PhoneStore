@@ -28,19 +28,13 @@ public class CategoryController {
         return service.getCategoryById(id);
     }
     @PostMapping("/createCategory")
-    public String createCategory(@RequestBody CategoryEntity category){
-        return "";
+    public CategoryEntity createCategory(@RequestBody CategoryEntity category){
+        return service.createCategory(category);
     }
 
-    @PutMapping("/updateById/{id}")
-    public CategoryEntity updateCategory(@PathVariable int id, @RequestBody CategoryEntity category){
-        CategoryEntity oldCategory=service.getCategoryById(id);
-        if(oldCategory!=null){
-            oldCategory.setBrand(category.getBrand());
-            oldCategory.setImage(category.getImage());
-            service.updateCategory(oldCategory);
-        }
-        return oldCategory;
+        @PutMapping("/update")
+    public CategoryEntity updateCategory(@RequestBody CategoryEntity category){
+        return service.updateCategory(category);
     }
     @DeleteMapping ("/deleteById/{id}")
     public String deleteCateById(@PathVariable int id){

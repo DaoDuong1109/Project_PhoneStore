@@ -7,6 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "slide", schema = "phone_store", catalog = "")
 public class SlideEntity {
+    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")

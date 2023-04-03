@@ -8,6 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "order", schema = "phone_store", catalog = "")
 public class OrderEntity {
+    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")

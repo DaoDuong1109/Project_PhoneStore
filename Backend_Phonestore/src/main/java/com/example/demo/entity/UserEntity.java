@@ -7,6 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "user", schema = "phone_store", catalog = "")
 public class UserEntity {
+    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")

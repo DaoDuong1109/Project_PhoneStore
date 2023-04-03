@@ -8,6 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "product", schema = "phone_store", catalog = "")
 public class ProductEntity {
+    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
@@ -54,8 +55,7 @@ public class ProductEntity {
     private CategoryEntity categoryEntity;
     @Basic
     @Column(name = "status")
-    private Boolean status;;
-
+    private Boolean status;
 
 public ProductEntity(){}
 

@@ -23,7 +23,8 @@ public class CategoryService{
     public CategoryEntity getCategoryById(int id){
         return repository.findById(id).orElse(null);
     }
-
+    public CategoryEntity createCategory(CategoryEntity category){
+        return repository.save(category);}
     public  CategoryEntity updateCategory(CategoryEntity category){
         CategoryEntity old=repository.findById(category.getId()).orElse(null);
         if(old!=null){

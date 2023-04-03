@@ -14,4 +14,28 @@ public class SlideService {
     public List<SlideEntity> getSlides(){
         return repository.findAll();
     }
+    public SlideEntity getSlideById(int id){
+        return repository.findById(id).orElse(null);
+    }
+    public SlideEntity createSlide(SlideEntity slide){
+        return repository.save(slide);
+    }
+    public SlideEntity updateSlide(SlideEntity slide){
+        SlideEntity oldSlide=repository.findById(slide.getId()).orElse(null);
+        if(oldSlide!=null){
+            oldSlide.setName(slide.getName());
+            oldSlide.setImage(slide.getImage());
+            oldSlide.setStatus(slide.getStatus());
+            return repository.save(oldSlide);
+        }
+        return null;
+    }
+    public String deleteSlide(int id){
+        try{
+            repository.deleteById(id);
+        }catch (Exception e){
+            return e.getMessage();
+        }
+        return "Successful";
+    }
 }
