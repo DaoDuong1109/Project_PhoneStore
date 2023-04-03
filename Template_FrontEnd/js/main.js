@@ -93,3 +93,8 @@ jQuery(document).ready(function($){
 
   ga('create', 'UA-10146041-21', 'auto');
   ga('send', 'pageview');
+
+  function getvalue(){
+    var x= document.getElementById('category-title-price').value;
+    document.getElementById('value').value=x;
+}
