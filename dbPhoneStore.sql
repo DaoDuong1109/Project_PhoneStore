@@ -1,191 +1,64 @@
--- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
---
--- Host: localhost    Database: phone_store
--- ------------------------------------------------------
--- Server version	8.0.17
+-- create database phone_store;
+-- use phone_store;
+ 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `category`
---
-
-DROP TABLE IF EXISTS `category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `category` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `brand` varchar(100) DEFAULT NULL,
   `image` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `category`
---
 
-LOCK TABLES `category` WRITE;
-/*!40000 ALTER TABLE `category` DISABLE KEYS */;
+
 INSERT INTO `category` VALUES (1,'iPhone','Apple.jpg'),(2,'SAMSUNG','Samsung.jpg'),(3,'OPPO','Oppo.jpg'),(4,'NOKIA','Nokia.jpg'),(6,'XIAOMI','Xiaomi.jpg'),(7,'REALME','Realme.jpg'),(8,'huawei','Realme.jpg'),(18,'REAL','Realme.jpg');
-/*!40000 ALTER TABLE `category` ENABLE KEYS */;
-UNLOCK TABLES;
 
---
--- Table structure for table `color`
---
-
-DROP TABLE IF EXISTS `color`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `color` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `color`
---
-
-LOCK TABLES `color` WRITE;
-/*!40000 ALTER TABLE `color` DISABLE KEYS */;
 INSERT INTO `color` VALUES (1,'Đen'),(2,'Đỏ'),(3,'Trắng'),(4,'Vàng'),(5,'Xanh');
-/*!40000 ALTER TABLE `color` ENABLE KEYS */;
-UNLOCK TABLES;
 
---
--- Table structure for table `comment`
---
 
-DROP TABLE IF EXISTS `comment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comment` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `name` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `email` varchar(150) DEFAULT NULL,
   `detail` varchar(266) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
-  `product_ID` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_comment_product1_idx` (`product_ID`),
-  CONSTRAINT `fk_comment_product1` FOREIGN KEY (`product_ID`) REFERENCES `product` (`ID`)
+  `product_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `comment`
---
 
-LOCK TABLES `comment` WRITE;
-/*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-/*!40000 ALTER TABLE `comment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `galery`
---
-
-DROP TABLE IF EXISTS `galery`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `galery` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `image` varchar(266) NOT NULL,
-  `product_ID` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_galery_product1_idx` (`product_ID`),
-  CONSTRAINT `fk_galery_product1` FOREIGN KEY (`product_ID`) REFERENCES `product` (`ID`)
+  `product_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `galery`
---
 
-LOCK TABLES `galery` WRITE;
-/*!40000 ALTER TABLE `galery` DISABLE KEYS */;
-/*!40000 ALTER TABLE `galery` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `order`
---
-
-DROP TABLE IF EXISTS `order`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `address` varchar(266) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(266) DEFAULT NULL,
   `created_date` datetime DEFAULT NULL,
   `status` bit(5) DEFAULT NULL,
-  `user_ID` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_order_user1_idx` (`user_ID`),
-  CONSTRAINT `fk_order_user1` FOREIGN KEY (`user_ID`) REFERENCES `user` (`ID`)
+  `user_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `order`
---
 
-LOCK TABLES `order` WRITE;
-/*!40000 ALTER TABLE `order` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `order_detail`
---
-
-DROP TABLE IF EXISTS `order_detail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `order_detail` (
   `product_ID` int(11) NOT NULL,
   `order_ID` int(11) NOT NULL,
   `price` float DEFAULT NULL,
-  `amount` int(10) DEFAULT NULL,
-  KEY `fk_product_has_order_order1_idx` (`order_ID`),
-  KEY `fk_product_has_order_product1_idx` (`product_ID`),
-  CONSTRAINT `fk_product_has_order_order1` FOREIGN KEY (`order_ID`) REFERENCES `order` (`ID`),
-  CONSTRAINT `fk_product_has_order_product1` FOREIGN KEY (`product_ID`) REFERENCES `product` (`ID`)
+  `amount` int(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `order_detail`
---
-
-LOCK TABLES `order_detail` WRITE;
-/*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `order_detail` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `product`
---
-
-DROP TABLE IF EXISTS `product`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `image` varchar(100) DEFAULT NULL,
   `screen` varchar(150) NOT NULL,
@@ -199,139 +72,44 @@ CREATE TABLE `product` (
   `battery` varchar(150) NOT NULL,
   `trending` bit(5) DEFAULT NULL,
   `status` bit(5) NOT NULL DEFAULT b'1',
-  `category_id` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `category_id_idx` (`category_id`),
-  CONSTRAINT `category_id` FOREIGN KEY (`category_id`) REFERENCES `category` (`ID`)
+  `category_id` int(11) NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `product`
---
-
-LOCK TABLES `product` WRITE;
-/*!40000 ALTER TABLE `product` DISABLE KEYS */;
 INSERT INTO `product` VALUES (1,'SamSung Galaxy J4+','samsung-galaxy-j4-plus-pink-400x400.jpg','IPS LCD, 6.0\', HD+','Android 8.1 (Oreo)','5 MP','13 MP','Qualcomm Snapdragon 425 4 nhân 64-bit','2 GB','16 GB','MicroSD, hỗ trợ tối đa 256 GB','3300 mAh',_binary '\0',_binary '\0',2),(2,'Samsung Galaxy S23 5G 128GB','samsung-galaxy-s23-den-1-1.jpg','6.1\" Dynamic AMOLED 2X','Android','12 MP','Chính 50 MP & Phụ 12 MP, 10 MP','Snapdragon 8 Gen 2 8 nhân','8 GB','128 GB','Không','3900 mAh25 W',_binary '\0',_binary '\0',2),(3,'Samsung Galaxy Z Fold 3 5G','600_Galaxy_Z_Fold_3.png','Chính 7.6 inch, Phụ 6.2 inch','Android','4MP, 10MP','12MP, 12MP, 12MP','Snapdragon 888 5G (5 nm)','12GB','256GB','Không','4.400 mAh',_binary '',_binary '\0',2),(4,'Samsung Galaxy S23 Ultra 5G 256GB','600_samsung_galaxy_s23_ultra_tim_6.jpg','6.8\" Dynamic AMOLED 2','Android','12 MP','Chính 200 MP & Phụ 12 MP, 10 MP, 10 MP','Snapdragon 8 Gen 2 8 nhân','8 GB','256 GB','Không','5000 mAh45 W',_binary '',_binary '\0',2),(5,'Samsung Galaxy Note 10 Plus 5G (12GB|256GB)','600_galaxy_note_10_plus_den_6.png','Dynamic AMOLED 6,8 inch 1440 x 3040 pixels','Android','10 MP','Chính 12 MP & Phụ 12 MP, 16 MP, TOF 3D','Exynos 9825 (7 nm)','12 GB','256GB','Không','4300 mAh',_binary '\0',_binary '\0',2),(6,'Samsung Galaxy S20 Plus','600_Samsung_S20_Plus_den.jpg','Dynamic AMOLED 2X6.7\"Quad HD+ (2K+)','Android 10','10 MP','Chính 12 MP & Phụ 64 MP, 12 MP, TOF 3D','Exynos 990','8 GB','128 GB','Không','4500 mAh',_binary '\0',_binary '\0',2),(7,'iPhone 14 Pro Max 256GB','600_iPhone_14_pro_trang_18.png','OLED6.7\"Super Retina XDR','iOS 16','12 MP','Chính 48 MP & Phụ 12 MP, 12 MP','Apple A16 Bionic','6 GB','256 GB','Không','4323 mAh',_binary '',_binary '\0',1),(8,'iPhone 12 Pro 512GB','600_iphone_12_pro_max_trang_4.png','OLED6.7\"Super Retina XDR','iOS 15','12 MP','3 camera 12 MP','Apple A14 Bionic','6 GB','512 GB','Không','3687 mAh',_binary '',_binary '\0',1),(9,'iPhone Xs Max 256GB','iphone-x-256gb-silver-400x400.jpg','OLED, 6.5\", Super Retina','iOS 14','7 MP','2 camera 12 MP','Apple A12 Bionic','4 GB','256 GB','Không','3174 mAh',_binary '\0',_binary '\0',1),(10,'iPhone 11 128GB','600_iphone_11_trang_xtsmart.jpg','IPS LCD, 6.1\", Liquid Retina','iOS 15','12 MP','2 camera 12 MP','Apple A13 Bionic','4 GB','128 GB','Không','3110 mAh',_binary '\0',_binary '\0',1),(11,' iPhone XR 128GB','600_iphone_xr_den.png','IPS LCD, 6.1\", Liquid Retina','iOS 15','7 MP','12 MP','Apple A12 Bionic','3 GB','128 GB','Không','2942 mAh',_binary '\0',_binary '\0',1),(12,'iPhone 8 Plus 64GB','600_iphone_8_plus_silver_xtsmart.jpg','LED-backlit IPS LCD, 5.5\", Retina HD','iOS 13','7 MP','2 camera 12 MP','Apple A11 Bionic','3 GB','64 GB','Không','2691 mAh',_binary '\0',_binary '\0',1),(15,'XIAOMI 11T PRO 5G (12GBl256GB)','600_Xiaomi_Redmi_11T_Pro_XTsmart.png','AMOLED, 6.67\", Full HD+','Android','16 MP','Chính 108 MP & Phụ 8 MP, 5 MP','Snapdragon 888','12 GB','256 GB','Không','5000 mAh',_binary '\0',_binary '\0',6),(16,'Xiaomi poco F3 (8GB|256GB)','600_Xiaomi_Poco_F3.png','AMOLED6.67\"Full HD+','Android','20 MP','Chính 48 MP & Phụ 8 MP, 5 MP','Snapdragon 870','6 GB','128 GB','Không','4520 mAh',_binary '\0',_binary '\0',6),(17,'Xiaomi poco X4 pro 5G (8GBl256GB)','600_Artboard_2_3.png','AMOLED, 6.67\", Full HD+','Android','16 MP','Chính 108 MP & Phụ 8 MP, 2 MP','Snapdragon 695 5G 8 nhân','8GB','256GB','Không','5000 mAh',_binary '',_binary '\0',6),(18,'XIAOMI REDMI NOTE 11S','XIAOMI_REDMI_NOTE_11S.png','AMOLED Full HD+ (1080 x 2400 Pixels)','Android','16 MP','Chính 108 MP & Phụ 8 MP, 2 MP, 2 MP','MediaTek Helio G96 8 nhân','8 GB','128GB','Không','5000 mAh',_binary '',_binary '\0',6),(19,'XIAOMI REDMI 10C 4GB/128GB','600_redmi-10c.png','IPS LCD 6.71\" HD+','Android','5 MP','Chính 50 MP & Phụ 2 MP','Snapdragon 680 8 nhân','4 GB','128 GB','Không','5000 mAh',_binary '\0',_binary '\0',6),(20,'Xiaomi Redmi 9C (3GB|64GB)','600_Xiaomi_redmi_9c.png','IPS LCD, 6.53\", HD+','Android','5 MP','Chính 13 MP & Phụ 2 MP, 2 MP','MediaTek Helio G35','2 GB','32 GB','MicroSD, hỗ trợ tối đa 512 GB','5000 mAh',_binary '\0',_binary '\0',6),(21,'Realme Q5 Pro','realme-q5-pro-600x600.jpg','AMOLED6.62\"Full HD+','Android','16 MP','Chính 64 MP & Phụ 8 MP, 2 MP','Snapdragon 870 5G','8 GB','256 GB','Không','5000 mAh',_binary '',_binary '\0',7),(22,'Realme C11 2021 (2G/32G)','600_Realme_C11_2021.png','IPS LCD, 6.5\", HD+','Android','5 MP','8 MP','Spreadtrum SC9863A','2 GB','32 GB','MicroSD, hỗ trợ tối đa 256 GB','5000 mAh',_binary '\0',_binary '\0',7),(23,'OPPO Find X5 Pro 5G ','oppo-find-x5-pro-den-thumb-600x600.jpg','AMOLED6.7\"Quad HD+ (2K+)','Android','32 MP','Chính 50 MP & Phụ 50 MP, 13 MP','Snapdragon 8 Gen 1','12 GB','256 GB','Không','5000 mAh',_binary '',_binary '\0',3),(24,'OPPO Reno8 T 5G 256GB','oppo-reno8t-den1-thumb-600x600.jpg','AMOLED, 6.7\", Full HD+','Android','32 MP','Chính 108 MP & Phụ 2 MP, 2 MP','Snapdragon 695 5G','8 GB','256 GB','MicroSD, hỗ trợ tối đa 1 TB','4800 mAh',_binary '',_binary '\0',3),(25,'OPPO A57 64GB ','oppo-a57-den-thumb-600x600.jpg','IPS LCD, 6.56\", HD+','Android','8 MP','Chính 13 MP & Phụ 2 MP','MediaTek Helio G35','4 GB','64 GB','MicroSD, hỗ trợ tối đa 1 TB','5000 mAh',_binary '\0',_binary '\0',3),(26,'OPPO A16 ','oppo-a16-silver-8-600x600.jpg','IPS LCD, 6.52\", HD+','Android','8 MP','Chính 13 MP & Phụ 2 MP, 2 MP','MediaTek Helio G35','3 GB','32 GB','MicroSD, hỗ trợ tối đa 256 GB','5000 mAh',_binary '\0',_binary '\0',3),(27,'OPPO Reno6 5G','oppo-reno-6.jpg','AMOLED, 6.43\", Full HD+','Android','32 MP','Chính 64 MP & Phụ 8 MP, 2 MP','MediaTek Dimensity 900 5G','8 GB','128 GB','Không','4300 mAh',_binary '\0',_binary '\0',3),(28,'Nokia C21 Plus 64GB ','Nokia-C21-Plus-Gray-600x600.jpg','TFT LCD, 6.5\", HD+','Android','5 MP','Chính 13 MP & Phụ 2 MP','Spreadtrum SC9863A','3 GB','64 GB','MicroSD, hỗ trợ tối đa 256 GB','5050 mAh',_binary '',_binary '\0',4),(29,'Nokia C31 (3GB/32GB)','Nokia-C31-600x600.jpg','TFT LCD, 6.7\", HD+','Android','5 MP','Chính 13 MP & Phụ 2 MP, 2 MP','Unisoc SC9863A1','3 GB','32 GB','MicroSD, hỗ trợ tối đa 256 GB','5050 mAh',_binary '\0',_binary '\0',4),(30,'Nokia 8210 4G','Nokia 8210-600x600.jpg','2.8\"','Series 30+','Không','0.3 MP','Unisoc T107','48 MB','128 MB','MicroSD, hỗ trợ tối đa 32 GB','1450 mAh',_binary '\0',_binary '\0',4),(31,'Nokia 110 4G','Nokia_110_4G.jpg','TFT LCD, 1.8\", 65.536 màu','Nokia S30+','Không','0.08 MP','Unisoc T107','48 MB','128 MB','MicroSD, hỗ trợ tối đa 32 GB','1020 mAh',_binary '\0',_binary '\0',4),(32,'sp1',NULL,'1','1','1','1','1','1','1','1','1',_binary '',_binary '',8),(33,'sp2',NULL,'1','1','1','2','2','2','2','2','2',_binary '',_binary '',8);
-/*!40000 ALTER TABLE `product` ENABLE KEYS */;
-UNLOCK TABLES;
 
---
--- Table structure for table `product_color`
---
-
-DROP TABLE IF EXISTS `product_color`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product_color` (
   `color_ID` int(11) NOT NULL,
   `product_ID` int(11) NOT NULL,
   `price` float DEFAULT NULL,
-  `amount` int(11) DEFAULT NULL,
-  PRIMARY KEY (`color_ID`,`product_ID`),
-  KEY `fk_color_has_product_product1_idx` (`product_ID`),
-  KEY `fk_color_has_product_color1_idx` (`color_ID`),
-  CONSTRAINT `fk_color_has_product_color1` FOREIGN KEY (`color_ID`) REFERENCES `color` (`ID`),
-  CONSTRAINT `fk_color_has_product_product1` FOREIGN KEY (`product_ID`) REFERENCES `product` (`ID`)
+  `amount` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `product_color`
---
-
-LOCK TABLES `product_color` WRITE;
-/*!40000 ALTER TABLE `product_color` DISABLE KEYS */;
 INSERT INTO `product_color` VALUES (1,2,22990000,10),(3,2,22990000,15);
-/*!40000 ALTER TABLE `product_color` ENABLE KEYS */;
-UNLOCK TABLES;
 
---
--- Table structure for table `role`
---
 
-DROP TABLE IF EXISTS `role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  PRIMARY KEY (`ID`)
+  `ID` int(11) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `role`
---
 
-LOCK TABLES `role` WRITE;
-/*!40000 ALTER TABLE `role` DISABLE KEYS */;
-/*!40000 ALTER TABLE `role` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `slide`
---
-
-DROP TABLE IF EXISTS `slide`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `slide` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `name` varchar(150) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `image` varchar(150) DEFAULT NULL,
-  `status` bit(1) DEFAULT b'1',
-  PRIMARY KEY (`ID`)
+  `status` bit(1) DEFAULT b'1'
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `slide`
---
-
-LOCK TABLES `slide` WRITE;
-/*!40000 ALTER TABLE `slide` DISABLE KEYS */;
 INSERT INTO `slide` VALUES (1,'slide1','banner1.png',_binary ''),(2,'slide2','banner2.png',_binary ''),(3,'slide3','banner3.png',_binary ''),(4,'slide4','banner4.png',_binary ''),(5,'slide5','banner5.png',_binary ''),(6,'slide6','banner6.png',_binary ''),(7,'slide7','banner7.png',_binary ''),(8,'slide8','banner8.png',_binary ''),(9,'slide9','banner9.png',_binary '');
-/*!40000 ALTER TABLE `slide` ENABLE KEYS */;
-UNLOCK TABLES;
 
---
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ID` int(11) NOT NULL,
   `fullname` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `email` varchar(266) NOT NULL,
   `phone` varchar(20) NOT NULL,
   `address` varchar(266) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `password` varchar(50) NOT NULL,
-  `role_ID` int(11) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `fk_user_role1_idx` (`role_ID`),
-  CONSTRAINT `fk_user_role1` FOREIGN KEY (`role_ID`) REFERENCES `role` (`ID`)
+  `role_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `user`
---
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2023-04-01 10:38:28
