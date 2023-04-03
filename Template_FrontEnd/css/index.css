@@ -10,3 +10,20 @@
 .clw{
     color: #ffffff;
 }
+
+.navbar{
+    display: flex;
+    background: url(../img/crossword.png) repeat scroll 0 0 #5a88ca;
+}
+
+.list-itemP{
+    display: flex;
+}
+
+.item-P{
+    margin: auto 0;
+}
+
+.shopping-item{
+    margin: auto;
+}

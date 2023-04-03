@@ -160,7 +160,7 @@ body {
 
 .mainmenu-area ul.navbar-nav li:hover a,
 .mainmenu-area ul.navbar-nav li.active a {
-  background: #5a88ca;
+  background: url(../img/crossword.png) repeat scroll 0 0 #5a88ca;
   color: #fff;
 }
 .mainmenu-area .nav > li > a:focus {

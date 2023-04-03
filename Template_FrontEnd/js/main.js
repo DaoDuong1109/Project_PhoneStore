@@ -34,6 +34,10 @@ jQuery(document).ready(function ($) {
     nav: true,
     margin: 20,
     responsiveClass: true,
+    autoplay: true,
+    autoplayTimeout: 1000,
+    autoplaySpeed: 1000,
+    autoplayHoverPause: true,
     responsive: {
       0: {
         items: 1,
