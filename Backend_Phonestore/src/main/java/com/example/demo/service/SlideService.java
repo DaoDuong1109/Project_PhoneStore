@@ -20,8 +20,8 @@ public class SlideService {
     public SlideEntity createSlide(SlideEntity slide){
         return repository.save(slide);
     }
-    public SlideEntity updateSlide(SlideEntity slide){
-        SlideEntity oldSlide=repository.findById(slide.getId()).orElse(null);
+    public SlideEntity updateSlide(int id,SlideEntity slide){
+        SlideEntity oldSlide=repository.findById(id).orElse(null);
         if(oldSlide!=null){
             oldSlide.setName(slide.getName());
             oldSlide.setImage(slide.getImage());

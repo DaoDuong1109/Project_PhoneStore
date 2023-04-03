@@ -25,8 +25,8 @@ public class CategoryService{
     }
     public CategoryEntity createCategory(CategoryEntity category){
         return repository.save(category);}
-    public  CategoryEntity updateCategory(CategoryEntity category){
-        CategoryEntity old=repository.findById(category.getId()).orElse(null);
+    public  CategoryEntity updateCategory(int id ,CategoryEntity category){
+        CategoryEntity old=repository.findById(id).orElse(null);
         if(old!=null){
             old.setBrand(category.getBrand());
             old.setImage(category.getImage());
