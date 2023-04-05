@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.SlideEntity;
-
 import com.example.demo.service.SlideService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,9 +26,13 @@ public class SlideController {
     public SlideEntity createSlide(@RequestBody SlideEntity slide){
         return service.createSlide(slide);
     }
-    @PutMapping("/updateById/{id}")
+    @PutMapping("/updateSlideById/{id}")
     public SlideEntity updateSlide(@PathVariable int id, @RequestBody SlideEntity slide){
-        return null;
+        return service.updateSlide(id, slide);
+    }
+    @DeleteMapping("/deleteSlideById/{id}")
+    public String deleteSlideById(@PathVariable int id){
+        return service.deleteSlide(id);
     }
 
 }

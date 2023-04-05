@@ -7,7 +7,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "galery", schema = "phone_store", catalog = "")
 public class GaleryEntity {
-    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
@@ -16,8 +15,9 @@ public class GaleryEntity {
     @Column(name = "image")
     private String image;
     @Basic
-    @Column(name = "product_ID")
-    private Integer productId;
+    @ManyToOne
+    @JoinColumn(name = "product_ID")
+    private ProductEntity productEntity;
 
     public Integer getId() {
         return id;
@@ -35,12 +35,12 @@ public class GaleryEntity {
         this.image = image;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public ProductEntity getProductEntity() {
+        return productEntity;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProductEntity(ProductEntity productEntity) {
+        this.productEntity = productEntity;
     }
 
     @Override
@@ -48,11 +48,11 @@ public class GaleryEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GaleryEntity that = (GaleryEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(image, that.image) && Objects.equals(productId, that.productId);
+        return Objects.equals(id, that.id) && Objects.equals(image, that.image) && Objects.equals(productEntity, that.productEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, image, productId);
+        return Objects.hash(id, image, productEntity);
     }
 }

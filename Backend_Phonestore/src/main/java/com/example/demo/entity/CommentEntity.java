@@ -8,17 +8,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "comment", schema = "phone_store", catalog = "")
 public class CommentEntity {
-    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
     private Integer id;
-    @Basic
-    @Column(name = "name")
-    private String name;
-    @Basic
-    @Column(name = "email")
-    private String email;
     @Basic
     @Column(name = "detail")
     private String detail;
@@ -28,6 +21,10 @@ public class CommentEntity {
     @Basic
     @Column(name = "product_ID")
     private Integer productId;
+    @Basic
+    @ManyToOne
+    @JoinColumn(name = "user_ID",nullable = false)
+    private UserEntity userEntity;
 
     public Integer getId() {
         return id;
@@ -35,22 +32,6 @@ public class CommentEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getDetail() {
@@ -77,16 +58,24 @@ public class CommentEntity {
         this.productId = productId;
     }
 
+    public UserEntity getUserEntity() {
+        return userEntity;
+    }
+
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommentEntity that = (CommentEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(detail, that.detail) && Objects.equals(createdDate, that.createdDate) && Objects.equals(productId, that.productId);
+        return Objects.equals(id, that.id) && Objects.equals(detail, that.detail) && Objects.equals(createdDate, that.createdDate) && Objects.equals(productId, that.productId) && Objects.equals(userEntity, that.userEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, detail, createdDate, productId);
+        return Objects.hash(id, detail, createdDate, productId, userEntity);
     }
 }

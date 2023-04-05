@@ -7,7 +7,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "user", schema = "phone_store", catalog = "")
 public class UserEntity {
-    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
@@ -28,8 +27,9 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
     @Basic
-    @Column(name = "role_ID")
-    private Integer roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_ID")
+    private RoleEntity roleEntity;
 
     public Integer getId() {
         return id;
@@ -79,12 +79,12 @@ public class UserEntity {
         this.password = password;
     }
 
-    public Integer getRoleId() {
-        return roleId;
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
     }
 
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
     }
 
     @Override
@@ -92,11 +92,11 @@ public class UserEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity that = (UserEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(fullname, that.fullname) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(address, that.address) && Objects.equals(password, that.password) && Objects.equals(roleId, that.roleId);
+        return Objects.equals(id, that.id) && Objects.equals(fullname, that.fullname) && Objects.equals(email, that.email) && Objects.equals(phone, that.phone) && Objects.equals(address, that.address) && Objects.equals(password, that.password) && Objects.equals(roleEntity, that.roleEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fullname, email, phone, address, password, roleId);
+        return Objects.hash(id, fullname, email, phone, address, password, roleEntity);
     }
 }

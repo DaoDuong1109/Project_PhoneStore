@@ -2,21 +2,22 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "slide", schema = "phone_store", catalog = "")
-public class SlideEntity {
+@Table(name = "sale", schema = "phone_store", catalog = "")
+public class SaleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
     private Integer id;
     @Basic
-    @Column(name = "name")
-    private String name;
+    @Column(name = "from_date")
+    private Timestamp fromDate;
     @Basic
-    @Column(name = "image")
-    private String image;
+    @Column(name = "to_date")
+    private Timestamp toDate;
     @Basic
     @Column(name = "status")
     private Boolean status;
@@ -29,20 +30,20 @@ public class SlideEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Timestamp getFromDate() {
+        return fromDate;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFromDate(Timestamp fromDate) {
+        this.fromDate = fromDate;
     }
 
-    public String getImage() {
-        return image;
+    public Timestamp getToDate() {
+        return toDate;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setToDate(Timestamp toDate) {
+        this.toDate = toDate;
     }
 
     public Boolean getStatus() {
@@ -57,12 +58,12 @@ public class SlideEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SlideEntity that = (SlideEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(image, that.image) && Objects.equals(status, that.status);
+        SaleEntity that = (SaleEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(fromDate, that.fromDate) && Objects.equals(toDate, that.toDate) && Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, image, status);
+        return Objects.hash(id, fromDate, toDate, status);
     }
 }

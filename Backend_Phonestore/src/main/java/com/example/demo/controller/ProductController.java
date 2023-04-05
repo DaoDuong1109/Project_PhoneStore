@@ -32,15 +32,16 @@ public class ProductController {
     }
     @GetMapping("/productByName")
     public List<ProductEntity> findProductByName(@RequestParam("keyword") String keyword){
-        return service.getProductByName(keyword);
+//        return service.getProductByName(keyword);
+        return null;
     }
-    @DeleteMapping("/deleteProduct")
-    public String deleteProductById(int id){
+    @DeleteMapping("/deleteProduct/{id}")
+    public String deleteProductById(@PathVariable int id){
         return service.deleteProduct(id);
     }
-    @PutMapping("/updateProduct")
-    public ProductEntity updateProduct(ProductEntity product){
-        return service.updateProduct(product);
+    @PutMapping("/updateProduct/{id}")
+    public ProductEntity updateProduct(@PathVariable int id,@RequestBody ProductEntity product){
+        return service.updateProduct(id,product);
     }
 
 

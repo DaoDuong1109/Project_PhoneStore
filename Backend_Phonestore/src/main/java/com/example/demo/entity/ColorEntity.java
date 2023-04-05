@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -9,11 +10,22 @@ import java.util.Objects;
 public class ColorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     private Integer id;
+
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 45)
     private String name;
+//    @OneToMany(mappedBy = "color")
+//    private List<ProductColorEntity> productColorEntities;
+
+//    public List<ProductColorEntity> getProductColorEntities() {
+//        return productColorEntities;
+//    }
+//
+//    public void setProductColorEntities(List<ProductColorEntity> productColorEntities) {
+//        this.productColorEntities = productColorEntities;
+//    }
 
     public Integer getId() {
         return id;

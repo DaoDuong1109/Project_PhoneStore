@@ -8,7 +8,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "order", schema = "phone_store", catalog = "")
 public class OrderEntity {
-    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "ID")
@@ -29,8 +28,9 @@ public class OrderEntity {
     @Column(name = "status")
     private Boolean status;
     @Basic
-    @Column(name = "user_ID")
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "user_ID")
+    private UserEntity userEntity;
 
     public Integer getId() {
         return id;
@@ -80,12 +80,12 @@ public class OrderEntity {
         this.status = status;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public UserEntity getUserEntity() {
+        return userEntity;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUserEntity(UserEntity userEntity) {
+        this.userEntity = userEntity;
     }
 
     @Override
@@ -93,11 +93,11 @@ public class OrderEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         OrderEntity that = (OrderEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(createdDate, that.createdDate) && Objects.equals(status, that.status) && Objects.equals(userId, that.userId);
+        return Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(createdDate, that.createdDate) && Objects.equals(status, that.status) && Objects.equals(userEntity, that.userEntity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, phone, email, createdDate, status, userId);
+        return Objects.hash(id, address, phone, email, createdDate, status, userEntity);
     }
 }

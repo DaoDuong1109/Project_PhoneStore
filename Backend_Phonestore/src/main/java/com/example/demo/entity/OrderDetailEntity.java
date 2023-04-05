@@ -6,16 +6,15 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "order_detail", schema = "phone_store", catalog = "")
+@IdClass(OrderDetailEntityPK.class)
 public class OrderDetailEntity {
-    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "product_ID")
+    @Column(name = "productId")
     private Integer productId;
-    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "order_ID")
+    @Column(name = "orderId")
     private Integer orderId;
     @Basic
     @Column(name = "price")

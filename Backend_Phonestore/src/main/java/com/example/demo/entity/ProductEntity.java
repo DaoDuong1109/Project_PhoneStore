@@ -2,62 +2,80 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
-
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "product", schema = "phone_store", catalog = "")
 public class ProductEntity {
-    @Basic
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "name")
+    @Column(name = "name", nullable = true, length = 50)
     private String name;
     @Basic
-    @Column(name = "image")
+    @Column(name = "image", nullable = true, length = 100)
     private String image;
     @Basic
-    @Column(name = "screen")
+    @Column(name = "screen", nullable = false, length = 150)
     private String screen;
     @Basic
-    @Column(name = "operating_system")
+    @Column(name = "operating_system", nullable = false, length = 150)
     private String operatingSystem;
     @Basic
-    @Column(name = "front_camera")
+    @Column(name = "front_camera", nullable = false, length = 150)
     private String frontCamera;
     @Basic
-    @Column(name = "rear_camera")
+    @Column(name = "rear_camera", nullable = false, length = 150)
     private String rearCamera;
     @Basic
-    @Column(name = "CPU")
+    @Column(name = "CPU", nullable = false, length = 150)
     private String cpu;
     @Basic
-    @Column(name = "RAM")
+    @Column(name = "RAM", nullable = false, length = 150)
     private String ram;
     @Basic
-    @Column(name = "inside_memory")
+    @Column(name = "inside_memory", nullable = false, length = 150)
     private String insideMemory;
     @Basic
-    @Column(name = "memory_card")
+    @Column(name = "memory_card", nullable = false, length = 150)
     private String memoryCard;
     @Basic
-    @Column(name = "battery")
+    @Column(name = "battery", nullable = false, length = 150)
     private String battery;
     @Basic
-    @Column(name = "trending")
+    @Column(name = "trending", nullable = true)
     private Boolean trending;
     @Basic
+    @Column(name = "status", nullable = false)
+    private Boolean status;
+    @Basic
     @ManyToOne
-    @JoinColumn(name="category_id", nullable=false)
+    @JoinColumn(name = "category_id")
     private CategoryEntity categoryEntity;
     @Basic
-    @Column(name = "status")
-    private Boolean status;
+    @ManyToOne
+    @JoinColumn(name = "sale_ID")
+    private SaleEntity saleEntity;
 
-public ProductEntity(){}
+//    @OneToMany(mappedBy = "product")
+//    private List<ProductColorEntity> productColorEntities;
+
+//    public List<ProductColorEntity> getProductColorEntities() {
+//        return productColorEntities;
+//    }
+//
+//    public void setProductColorEntities(List<ProductColorEntity> productColorEntities) {
+//        this.productColorEntities = productColorEntities;
+//    }
+//    @Basic
+//    @Column(name = "category_id", nullable = false)
+//    private Integer categoryId;
+//    @Basic
+//    @Column(name = "sale_ID", nullable = false)
+//    private Integer saleId;
 
     public Integer getId() {
         return id;
@@ -163,23 +181,6 @@ public ProductEntity(){}
         this.trending = trending;
     }
 
-    public CategoryEntity getCategoryEntity() {
-        return categoryEntity;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ProductEntity that = (ProductEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(image, that.image) && Objects.equals(screen, that.screen) && Objects.equals(operatingSystem, that.operatingSystem) && Objects.equals(frontCamera, that.frontCamera) && Objects.equals(rearCamera, that.rearCamera) && Objects.equals(cpu, that.cpu) && Objects.equals(ram, that.ram) && Objects.equals(insideMemory, that.insideMemory) && Objects.equals(memoryCard, that.memoryCard) && Objects.equals(battery, that.battery) && Objects.equals(trending, that.trending) && Objects.equals(categoryEntity, that.categoryEntity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, image, screen, operatingSystem, frontCamera, rearCamera, cpu, ram, insideMemory, memoryCard, battery, trending, categoryEntity);
-    }
-
     public Boolean getStatus() {
         return status;
     }
@@ -188,11 +189,48 @@ public ProductEntity(){}
         this.status = status;
     }
 
-    public Integer getCategoryId() {
-        return categoryEntity.getId();
+    public CategoryEntity getCategoryEntity() {
+        return categoryEntity;
     }
 
-    public void setCategoryId(Integer categoryId) {
+    public void setCategoryEntity(CategoryEntity categoryEntity) {
         this.categoryEntity = categoryEntity;
     }
+
+    public SaleEntity getSaleEntity() {
+        return saleEntity;
+    }
+
+    public void setSaleEntity(SaleEntity saleEntity) {
+        this.saleEntity = saleEntity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductEntity product = (ProductEntity) o;
+        return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(image, product.image) && Objects.equals(screen, product.screen) && Objects.equals(operatingSystem, product.operatingSystem) && Objects.equals(frontCamera, product.frontCamera) && Objects.equals(rearCamera, product.rearCamera) && Objects.equals(cpu, product.cpu) && Objects.equals(ram, product.ram) && Objects.equals(insideMemory, product.insideMemory) && Objects.equals(memoryCard, product.memoryCard) && Objects.equals(battery, product.battery) && Objects.equals(trending, product.trending) && Objects.equals(status, product.status) && Objects.equals(categoryEntity, product.categoryEntity) && Objects.equals(saleEntity, product.saleEntity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, image, screen, operatingSystem, frontCamera, rearCamera, cpu, ram, insideMemory, memoryCard, battery, trending, status, categoryEntity, saleEntity);
+    }
+
+//    public Integer getCategoryId() {
+//        return categoryId;
+//    }
+//
+//    public void setCategoryId(Integer categoryId) {
+//        this.categoryId = categoryId;
+//    }
+//
+//    public Integer getSaleId() {
+//        return saleId;
+//    }
+//
+//    public void setSaleId(Integer saleId) {
+//        this.saleId = saleId;
+//    }
 }
