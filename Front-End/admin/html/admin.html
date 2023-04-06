@@ -210,7 +210,7 @@
             $(".btnColor").click(function (e) {
                     $.ajax({
                         type: "GET",
-                        url: "http://localhost:9090/slide/slides",
+                        url: "http://localhost:9090/color/colors",
                         dataType: "json",
                         success: function (result, status, xhr) {
                             
@@ -227,6 +227,21 @@
                     $.ajax({
                         type: "GET",
                         url: "http://localhost:9090/gallery/findAll",
+                        dataType: "json",
+                        success: function (result, status, xhr) {
+                            
+                        },
+                        error: function (xhr, status, error) {
+                            
+                        }
+                })
+
+            })
+            //account
+            $(".btnAccount").click(function (e) {
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:9090/account/findAll",
                         dataType: "json",
                         success: function (result, status, xhr) {
                             
