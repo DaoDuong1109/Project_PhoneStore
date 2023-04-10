@@ -5,6 +5,11 @@ import com.example.demo.entity.ProductEntity;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,9 +21,14 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public List<ProductEntity> getProducts(){
-        return repository.findAll();
-    }
+//    public ResponseEntity<Page<ProductEntity>> getProducts(int page)
+//    {
+//        Pageable pageable= PageRequest.of(page,10, Sort.by("name"));
+//        Page<ProductEntity> productPage=repository.findAllByOrderByLastNameAscFirstNameAsc(pageable);
+//        return ResponseEntity.ok(productPage);
+//
+//    }
+    public List<ProductEntity> getProducts(){return repository.findAll();}
     public ProductEntity saveProduct(ProductEntity product){
         return repository.save(product);
     }

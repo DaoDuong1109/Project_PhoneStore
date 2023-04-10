@@ -3,6 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +17,14 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService service;
+//    @GetMapping("/products")
+//    public List<ProductEntity> findAllProducts(){
+//        return service.getProducts();
+//    }
     @GetMapping("/products")
-    public List<ProductEntity> findAllProducts(){
+    public List<ProductEntity> getproduct(){
         return service.getProducts();
     }
-
     @PostMapping("/addProduct")
     public ProductEntity addProduct(@RequestBody ProductEntity product){
         return service.saveProduct(product);

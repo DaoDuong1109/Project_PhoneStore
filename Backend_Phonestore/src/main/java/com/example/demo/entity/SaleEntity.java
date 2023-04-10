@@ -10,17 +10,20 @@ import java.util.Objects;
 public class SaleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "from_date")
+    @Column(name = "from_date", nullable = true)
     private Timestamp fromDate;
     @Basic
-    @Column(name = "to_date")
+    @Column(name = "to_date", nullable = true)
     private Timestamp toDate;
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = true)
     private Boolean status;
+    @Basic
+    @Column(name = "discount", nullable = true, precision = 0)
+    private Double discount;
 
     public Integer getId() {
         return id;
@@ -65,5 +68,13 @@ public class SaleEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id, fromDate, toDate, status);
+    }
+
+    public Double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Double discount) {
+        this.discount = discount;
     }
 }
