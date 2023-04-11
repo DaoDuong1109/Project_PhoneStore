@@ -2,8 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.entity.CategoryEntity;
 import com.example.demo.entity.ProductEntity;
+import com.example.demo.entity.SaleEntity;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +22,8 @@ public class ProductService {
     private ProductRepository repository;
     @Autowired
     private CategoryRepository categoryRepository;
+    @Autowired
+    private SaleRepository saleRepository;
 
 //    public ResponseEntity<Page<ProductEntity>> getProducts(int page)
 //    {
@@ -44,6 +48,7 @@ public class ProductService {
     }
     public ProductEntity updateProduct(int id, ProductEntity product){
         CategoryEntity category=categoryRepository.findById(product.getCategoryEntity().getId()).orElse(null);
+        SaleEntity sale=saleRepository.findById(product.getSaleEntity().getId()).orElse(null);
         if(category!=null){
             ProductEntity oldProduct=repository.findById(id).orElse(null);
             oldProduct.setName(product.getName());
@@ -58,7 +63,9 @@ public class ProductService {
             oldProduct.setMemoryCard(product.getMemoryCard());
             oldProduct.setBattery(product.getBattery());
             oldProduct.setTrending(product.getTrending());
+            oldProduct.setStatus(product.getStatus());
             oldProduct.setCategoryEntity(category);
+            oldProduct.setSaleEntity(sale);
             return repository.save(oldProduct);
         }
         return null;

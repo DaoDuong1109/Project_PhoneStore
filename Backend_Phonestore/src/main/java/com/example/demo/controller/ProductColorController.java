@@ -24,7 +24,10 @@ public class ProductColorController {
         return service.productColorFindByProId(id);
 
     }
-
+    @PostMapping("/create")
+    public List<ProductColorEntity> create(@RequestBody List<ProductColorEntity> list){
+        return service.create(list);
+    }
     @PutMapping("/updateByProId/{id}")
     public List<ProductColorEntity> update(@PathVariable int id, @RequestBody List<ProductColorEntity> list){
         return service.updateById(id,list);

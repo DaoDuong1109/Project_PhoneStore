@@ -9,17 +9,17 @@
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Dashboard - SB Admin</title>
+    <title>AT Store</title>
     <link
       href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css"
       rel="stylesheet"
     />
     <link href="../css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/admin/css/addSale.css" />
     <script
       src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
       crossorigin="anonymous"
     ></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   </head>
   <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -212,6 +212,37 @@
                   class="nav-link collapsed"
                   href="#"
                   data-bs-toggle="collapse"
+                  data-bs-target="#collapseLayouts9"
+                  aria-expanded="false"
+                  aria-controls="collapseLayouts"
+                >
+                  <div class="sb-nav-link-icon">
+                    <i class="fas fa-columns"></i>
+                  </div>
+                  Quản Lý Giảm Giá
+                  <div class="sb-sidenav-collapse-arrow">
+                    <i class="fas fa-angle-down"></i>
+                  </div>
+                </a>
+                <div
+                  class="collapse"
+                  id="collapseLayouts9"
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#sidenavAccordion"
+                >
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="./addSale.html">Thêm Giảm Giá</a>
+                    <a class="nav-link btnSale" href="./sale.html"
+                      >Danh Sách Giảm Giá</a
+                    >
+                  </nav>
+                </div>
+              </div>
+              <div class="item">
+                <a
+                  class="nav-link collapsed"
+                  href="#"
+                  data-bs-toggle="collapse"
                   data-bs-target="#collapseLayouts4"
                   aria-expanded="false"
                   aria-controls="collapseLayouts"
@@ -342,32 +373,37 @@
             <div class="card-body">
               <form enctype="multipart/form-data" id="myForm">
                 <div class="form-group">
-                  <label for="galleryId" class="code">Mã Ảnh: </label>
+                  <label for="galleryId" class="code">Mã Giảm Giá: </label>
                   <input
                     type="text"
                     class="form-control col-3 code"
                     readonly
-                    name="galleryId"
-                    id="galleryId"
+                    name="saleId"
+                    id="saleId"
                     value=""
                   />
 
-                  <label for="photo">Nhập ảnh: </label>
+                  <label for="from-date">Nhập Ngày Bắt Đầu: </label>
                   <input
-                    type="file"
-                    name="photo"
-                    id="photo"
+                    type="date"
+                    name="from-date"
+                    id="from-date"
                     class="form-control col-3"
                     value=""
-                    onchange="getImage()"
                   />
-                  <label for="status">Sản phẩm: </label>
-                  <select
-                    id="productId"
-                    name="productId"
+                  <label for="to-date">Nhập Ngày Kết Thúc: </label>
+                  <input
+                    type="date"
+                    name="to-date"
+                    id="to-date"
                     class="form-control col-3"
-                    style="width: 30%"
-                  ></select>
+                    value=""
+                  />
+                  <label>Trạng thái:</label>
+                  <label class="switch">
+                    <input type="checkbox" id="check" checked />
+                    <span class="slider round"></span>
+                  </label>
                 </div>
                 <button
                   type="submit"
@@ -385,66 +421,66 @@
                   Xóa
                 </button>
               </form>
-              <img
-                src=""
-                id="image_display"
-                style="
-                  width: 300px;
-                  height: 300px;
-                  margin-top: 30px;
-                  margin-left: 60%;
-                "
-                alt="ảnh slide"
-              />
             </div>
           </div>
         </main>
       </div>
     </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../js/scripts.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- <script src="assets/demo/chart-area-demo.js"></script>
+        <script src="assets/demo/chart-bar-demo.js"></script> -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../js/datatables-simple-demo.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>
       var urlParams = new URLSearchParams(window.location.search);
       var id = urlParams.get("id");
-      //render product id
-      $.ajax({
-        type: "GET",
-        url: "http://localhost:9090/product/products",
-        dataType: "json",
-        success: function (result, status, xhr) {
-          let html = `<option value="0" default>--Select--</option>`;
-          result.forEach((item) => {
-            html +=
-              `<option value="` + item.id + `">` + item.name + `</option>`;
-          });
-          document.getElementById("productId").innerHTML = html;
-        },
-        error: function (xhr, status, error) {
-          alert(
-            "Result: " +
-              status +
-              " " +
-              error +
-              " " +
-              xhr.status +
-              " " +
-              xhr.statusText
-          );
-        },
-      });
 
-      //galery
+      //sale
       if (id != null) {
         document.getElementById(
           "title_add_edit"
-        ).innerHTML = `<h2>Sửa Ảnh Sản Phẩm</h2>`;
+        ).innerHTML = `<h2>Sửa Giảm Giá</h2>`;
         //fill data into input
         $.ajax({
           type: "GET",
-          url: "http://localhost:9090/gallery/findById/" + id,
+          url: "http://localhost:9090/sale/saleById/" + id,
           dataType: "json",
           success: function (result, status, xhr) {
-            document.getElementById("galleryId").value=result.id,
-            document.getElementById("image_display").src =
-              "/img/products/" + result.image;
+            document.getElementById("saleId").value = result.id;
+            //format date from-date
+            var timestamp, date, day, month, year, dateString;
+            timestamp = result.fromDate; // timestamp cần điền
+            date = new Date(timestamp);
+            day = date.getDate();
+            month = date.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+            year = date.getFullYear();
+            dateString = year + "-" + month.toString().padStart(2, '0') + "-" + day.toString().padStart(2, '0');
+            document.getElementById("from-date").value = dateString;
+            
+            //format date to-date
+            timestamp = result.toDate; // timestamp cần điền
+            date = new Date(timestamp);
+            day = date.getDate();
+            month = date.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+            year = date.getFullYear();
+            dateString = year + "-" + month.toString().padStart(2, '0') + "-" + day.toString().padStart(2, '0');
+            document.getElementById("to-date").value = dateString;
+            
+            document.getElementById("check").checked =
+              result.status == true ? true : false;
           },
           error: function (xhr, status, error) {
             alert(
@@ -462,27 +498,17 @@
         //update
         $("#myForm").submit(function (event) {
           event.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
-          var selectedFileName = $("#photo").val();
-          var arr = selectedFileName.split("\\");
-
-          const image = document.getElementById("image_display").src;
-          const arrImage = image.split("/");
 
           var formData = {
-            image:
-              selectedFileName != ""
-                ? arr[arr.length - 1]
-                : arrImage[arrImage.length - 1],
-
-            productEntity: {
-              id: $("#productId").val(),
-            },
+            fromDate: $("#from-date").val(),
+            toDate: $("#to-date").val(),
+            status: document.getElementById("check").checked ? true : false,
           };
 
           console.log(formData);
           $.ajax({
             type: "PUT",
-            url: "http://localhost:9090/gallery/updateGallery/" + id,
+            url: "http://localhost:9090/sale/updateById/" + id,
             data: JSON.stringify(formData),
             dataType: "json",
             contentType: "application/json",
@@ -491,39 +517,30 @@
               alert("Data saved successfully!");
             },
             error: function () {
-              alert("Nhập đầy đủ thông tin!!!");
+              alert("Error occurred while saving data.");
             },
           });
         });
       } else {
         document.getElementById(
           "title_add_edit"
-        ).innerHTML = `<h2>Thêm Ảnh Sản Phẩm</h2>`;
-
+        ).innerHTML = `<h2>Thêm Giảm Giá</h2>`;
         var inputs = document.getElementsByClassName("code");
         for (var i = 0; i < inputs.length; i++) {
           inputs[i].setAttribute("hidden", true);
         }
-        
         $("#myForm").submit(function (event) {
           event.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
-          const selectedFileName = $("#photo").val();
-          const arr = selectedFileName.split("\\");
 
           var formData = {
-            image:
-              selectedFileName != ""
-                ? arr[arr.length - 1]
-                : arrImage[arrImage.length - 1],
-
-            productEntity: {
-              id: $("#productId").val(),
-            },
+            fromDate: $("#from-date").val(),
+            toDate: $("#to-date").val(),
+            status: $("#check").checked ? true : false,
           };
 
           $.ajax({
             type: "POST",
-            url: "http://localhost:9090/gallery/create",
+            url: "http://localhost:9090/sale/create",
             data: JSON.stringify(formData),
             dataType: "json",
             contentType: "application/json",
@@ -532,35 +549,11 @@
               alert("Data saved successfully!");
             },
             error: function () {
-              alert("Nhập đầy đủ thông tin!!!");
+              alert("Error occurred while saving data.");
             },
           });
         });
       }
     </script>
-    <script>
-      function getImage() {
-        const selectedFileName = $("#photo").val();
-        const arr = selectedFileName.split("\\");
-        document.getElementById("image_display").src =
-          "/img/products/" + arr[arr.length - 1];
-      }
-    </script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="../js/scripts.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <!-- <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script> -->
-    <script
-      src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="../js/datatables-simple-demo.js"></script>
   </body>
 </html>

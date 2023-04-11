@@ -10,11 +10,11 @@ import java.util.Objects;
 public class ProductColorEntity {
 //    @EmbeddedId
 //    private ProductColorEntityPK id;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "product_ID", nullable = false)
     private Integer productId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "color_ID", nullable = false)
     private Integer colorId;
@@ -42,6 +42,7 @@ public class ProductColorEntity {
     public void setColorId(Integer colorId) {
         this.colorId = colorId;
     }
+
 //    public ProductColorEntityPK getId() {
 //        return id;
 //    }
@@ -49,9 +50,6 @@ public class ProductColorEntity {
 //    public void setId(ProductColorEntityPK id) {
 //        this.id = id;
 //    }
-
-
-
 
     public Double getPrice() {
         return price;

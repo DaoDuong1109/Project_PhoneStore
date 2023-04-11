@@ -22,7 +22,11 @@ public class UserService {
 
     }
     public String delete(int id){
-        repository.deleteById(id);
-        return "Successful";
+        UserEntity admin=repository.findById(id).orElse(null);
+        if(admin!=null && !"admin".equals(admin.getFullname())){
+            repository.deleteById(id);
+            return "Successful";
+        }
+        return "Không được xóa admin";
     }
 }

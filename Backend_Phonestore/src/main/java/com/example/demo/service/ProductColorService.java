@@ -33,9 +33,29 @@ public class ProductColorService {
         }
         return productColorDTOS;
     }
+    public List<ProductColorEntity> create(List<ProductColorEntity> newLists){
+        //tim danh sach da ton tai trong database theo productid
+        List<ProductColorEntity> listByProId=repository.findByProductId(newLists.get(0).getProductId());
+        //gan cac sp khong có trong ds mới sang
+        List<ProductColorEntity> listNewProductColor=null;
+
+        if(!listByProId.isEmpty()) {
+            for (ProductColorEntity item : listByProId) {
+                listNewProductColor = newLists.stream().filter(p -> p.getColorId() != item.getColorId()).toList();
+            }
+            return repository.saveAll(listNewProductColor);
+        }
+        else{
+            return repository.saveAll(newLists);
+        }
+
+
+    }
 
     public List<ProductColorEntity> updateById(int productId ,List<ProductColorEntity> newLists){
-        List<ProductColorEntity> oldLists=repository.findByProductId(productId);//tim danh sach cu theo productid
+        //tim danh sach da ton tai trong database theo productid
+        List<ProductColorEntity> oldLists=repository.findByProductId(productId);
+
         for (ProductColorEntity old: oldLists){
 
             ProductColorEntity newProductColor = newLists.stream()
@@ -44,18 +64,24 @@ public class ProductColorService {
                     .orElse(null);
 
             if (newProductColor != null) {
+
                 old.setAmount(newProductColor.getAmount());
                 old.setPrice(newProductColor.getPrice());
                 repository.save(old); // Cập nhật dữ liệu vào database
             }
-        }
-            return oldLists;
 
+        }
+        //gan cac sp khong có trong ds mới sang
+        //gan cac sp khong có trong ds mới sang
+        List<ProductColorEntity> listNewProductColor=null;
+        if(!oldLists.isEmpty()) {
+            for (ProductColorEntity item : oldLists) {
+                listNewProductColor = newLists.stream().filter(p -> p.getColorId() != item.getColorId()).toList();
+            }
+            return repository.saveAll(listNewProductColor);
+        }
+         return oldLists;
     }
 
-//    public List<ProductColorDTO> productByName(String name){
-//        List<ProductColorDTO> list = repository.findByName(name);
-//        return list;
-//    }
 
 }

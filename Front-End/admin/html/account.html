@@ -236,7 +236,8 @@
                   error: function (xhr, status, error) {},
                 });
               });
-      
+              
+
               //render data
               $.ajax({
                 type: "GET",
@@ -283,13 +284,13 @@
                     type: "DELETE",
                     success: function (result) {
                       if (result != "Successful") {
-                        alert("Lỗi rằng buộc khóa ngoài");
+                        alert(result);
                       } else {
                         window.location.reload(true);
                       }
                     },
                     error: function (err) {
-                      console.log(err);
+                        alert("Lỗi rằng buộc khóa ngoài");
                     },
                   });
                 }

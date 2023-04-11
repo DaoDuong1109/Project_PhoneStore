@@ -9,11 +9,11 @@ public class ProductColorEntityPK implements Serializable {
 
     @Column(name = "product_ID", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer productId;
     @Column(name = "color_ID", nullable = false)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Integer colorId;
 
 

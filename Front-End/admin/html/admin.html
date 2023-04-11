@@ -103,6 +103,19 @@
                                 </div>
                             </div>
                             <div class="item">
+                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts9" aria-expanded="false" aria-controls="collapseLayouts">
+                                    <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                    Quản Lý Giảm Giá
+                                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                                </a>
+                                <div class="collapse" id="collapseLayouts9" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="./addSale.html">Thêm Giảm Giá</a>
+                                        <a class="nav-link btnSale" href="./sale.html">Danh Sách Giảm Giá</a>
+                                    </nav>
+                                </div>
+                            </div>
+                            <div class="item">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts4" aria-expanded="false" aria-controls="collapseLayouts">
                                     <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                     Quản Lý Tài Khoản
@@ -242,6 +255,51 @@
                     $.ajax({
                         type: "GET",
                         url: "http://localhost:9090/account/findAll",
+                        dataType: "json",
+                        success: function (result, status, xhr) {
+                            
+                        },
+                        error: function (xhr, status, error) {
+                            
+                        }
+                })
+
+            })
+            //sale
+            $(".btnSale").click(function (e) {
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:9090/sale/findAll",
+                        dataType: "json",
+                        success: function (result, status, xhr) {
+                            
+                        },
+                        error: function (xhr, status, error) {
+                            
+                        }
+                })
+
+            })
+            //product
+            $(".btnProduct").click(function (e) {
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:9090/product/products",
+                        dataType: "json",
+                        success: function (result, status, xhr) {
+                            
+                        },
+                        error: function (xhr, status, error) {
+                            
+                        }
+                })
+
+            })
+           // Order
+           $(".btnOrder").click(function (e) {
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost:9090/product/products",
                         dataType: "json",
                         success: function (result, status, xhr) {
                             
