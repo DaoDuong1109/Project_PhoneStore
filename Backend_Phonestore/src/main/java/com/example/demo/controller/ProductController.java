@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.ProductEntity;
+import com.example.demo.model.dto.product.DetailProductDTO;
+import com.example.demo.model.dto.product.productTrendingDTO;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -52,5 +54,14 @@ public class ProductController {
         return service.updateProduct(id,product);
     }
 
+    @GetMapping("/findTreding")
+    List<productTrendingDTO> findTrending(){
+        return service.getProductTreding();
+    }
+
+    @GetMapping("/findDetailProduct")
+    public DetailProductDTO findDetail(@RequestParam int id, @RequestParam int color){
+        return service.getProductDetail(id, color);
+    }
 
 }

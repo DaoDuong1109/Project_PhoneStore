@@ -1,8 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.CategoryEntity;
-import com.example.demo.entity.ProductEntity;
-import com.example.demo.entity.SaleEntity;
+import com.example.demo.entity.*;
+import com.example.demo.model.dto.product.DetailProductDTO;
+import com.example.demo.model.dto.product.productTrendingDTO;
+import com.example.demo.model.dto.productColor.ProductColorDTO;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.SaleRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -74,6 +76,25 @@ public class ProductService {
 //    public List<ProductEntity> getProductByName(String name){
 //        return repository.findByName(name);
 //    }
+    public DetailProductDTO getProductDetail(int productId, int colorId){
+        return repository.findByProColId(productId, colorId);
+    }
+    public List<productTrendingDTO> getProductTreding(){
+        return repository.findByTrending();
+//        List<ProductColorEntity> productColorEntityList=repo;
+//        List<ProductColorDTO> productColorDTOS=new ArrayList<>();
+//        for (ProductColorEntity item:productColorEntityList) {
+//            ColorEntity color=colorRepository.findById(item.getColorId()).orElse(null);
+//            ProductColorDTO productColorDTO= new ProductColorDTO().builder()
+//                    .product_ID(item.getProductId())
+//                    .color_ID(item.getColorId())
+//                    .price(item.getPrice())
+//                    .amount(item.getAmount())
+//                    .colorName(color.getName())
+//                    .build();
+//            productColorDTOS.add(productColorDTO);
+//        }
+    }
 
 
 }
