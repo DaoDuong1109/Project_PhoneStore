@@ -2,20 +2,16 @@ package com.example.demo.service;
 
 import com.example.demo.entity.*;
 import com.example.demo.model.dto.product.DetailProductDTO;
-import com.example.demo.model.dto.product.productTrendingDTO;
-import com.example.demo.model.dto.productColor.ProductColorDTO;
+import com.example.demo.model.dto.product.ProductDTO;
+import com.example.demo.model.dto.product.ProductTrendingDTO;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -79,7 +75,10 @@ public class ProductService {
     public DetailProductDTO getProductDetail(int productId, int colorId){
         return repository.findByProColId(productId, colorId);
     }
-    public List<productTrendingDTO> getProductTreding(){
+    public List<ProductDTO> getProductByCate(int categoryId){
+        return repository.findByCategory(categoryId);
+    }
+    public List<ProductTrendingDTO> getProductTreding(){
         return repository.findByTrending();
 //        List<ProductColorEntity> productColorEntityList=repo;
 //        List<ProductColorDTO> productColorDTOS=new ArrayList<>();
@@ -94,6 +93,11 @@ public class ProductService {
 //                    .build();
 //            productColorDTOS.add(productColorDTO);
 //        }
+    }
+    public List<ProductDTO> FindProducts(){return repository.findProducts();}
+    public Page<ProductDTO> getProductsWithPagination(int offset, int pageSize){
+        Page<ProductDTO> productsPage = repository.findWithPagination(PageRequest.of(offset, pageSize));
+        return productsPage;
     }
 
 

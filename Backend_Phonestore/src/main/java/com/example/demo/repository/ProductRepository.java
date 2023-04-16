@@ -1,12 +1,14 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.ProductColorEntity;
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.model.dto.product.DetailProductDTO;
+import com.example.demo.model.dto.product.ProductDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import com.example.demo.model.dto.product.productTrendingDTO;
+import com.example.demo.model.dto.product.ProductTrendingDTO;
 import java.util.List;
 
 @Repository
@@ -14,13 +16,35 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
 //    @Query("SELECT m FROM Product m WHERE m.name LIKE ?1%")
 //    public List<ProductEntity> findByName(String name);
 
-    //find treding
-    @Query("SELECT NEW com.example.demo.model.dto.product.productTrendingDTO(p.ID, p.name, p.image,c.id, c.name, pc.price)  " +
+    //findAllPagination
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, p.categoryEntity)  " +
             "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
             "join SaleEntity s on p.saleEntity.id=s.id " +
             "join ColorEntity c on pc.colorId=c.id " +
-            " where p.trending=1")
-    List<productTrendingDTO> findByTrending();
+            " where pc.amount>0 ")
+    Page<ProductDTO> findWithPagination(PageRequest of);
+    //findAll
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, p.categoryEntity)  " +
+            "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
+            "join SaleEntity s on p.saleEntity.id=s.id " +
+            "join ColorEntity c on pc.colorId=c.id " +
+            " where pc.amount>0 ")
+    List<ProductDTO> findProducts();
+
+    //find treding
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductTrendingDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, p.categoryEntity)  " +
+            "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
+            "join SaleEntity s on p.saleEntity.id=s.id " +
+            "join ColorEntity c on pc.colorId=c.id " +
+            " where pc.amount>0 and p.trending=1")
+    List<ProductTrendingDTO> findByTrending();
+
+    //find by category
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO( p.id , p.name, p.image, c.id ,c.name,pc.price, p.categoryEntity) " +
+            " FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId" +
+            " join ColorEntity c on pc.colorId=c.id" +
+            " where pc.amount>0 and p.categoryEntity.id=?1")
+    List<ProductDTO> findByCategory(int categoryId);
 
     //find by product id and color id
     @Query("SELECT NEW com.example.demo.model.dto.product.DetailProductDTO(p.ID, p.name, p.screen, p.operatingSystem," +

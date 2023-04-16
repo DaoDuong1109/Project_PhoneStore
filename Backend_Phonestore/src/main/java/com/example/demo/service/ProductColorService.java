@@ -80,6 +80,9 @@ public class ProductColorService {
             }
             return repository.saveAll(listNewProductColor);
         }
+        else{
+            repository.saveAll(newLists);
+        }
          return oldLists;
     }
 

@@ -5817,7 +5817,6 @@ textarea.form-control-lg {
 .carousel-inner::after {
   display: block;
   clear: both;
-  content: "";
 }
 
 .carousel-item {

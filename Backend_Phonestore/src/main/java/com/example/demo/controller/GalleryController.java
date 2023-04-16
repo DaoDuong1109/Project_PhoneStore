@@ -12,6 +12,11 @@ import java.util.List;
 public class GalleryController {
     @Autowired
     private GalleryService service;
+    @GetMapping("/findByProduct/{proId}")
+    public List<GaleryEntity> findByProductId(@PathVariable int proId){
+        return service.getByProductId(proId);
+    }
+
     @GetMapping("/findAll")
     public List<GaleryEntity> findAll(){return service.getAllGallery();}
     @GetMapping("/findById/{id}")

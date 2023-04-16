@@ -2,27 +2,29 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ProductEntity;
 import com.example.demo.model.dto.product.DetailProductDTO;
-import com.example.demo.model.dto.product.productTrendingDTO;
+import com.example.demo.model.dto.product.ProductDTO;
+import com.example.demo.model.dto.product.ProductTrendingDTO;
+import com.example.demo.model.dto.response.APIResponse;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @RequestMapping("/product")
 @RestController
 
 public class ProductController {
     @Autowired
     private ProductService service;
+
 //    @GetMapping("/products")
 //    public List<ProductEntity> findAllProducts(){
 //        return service.getProducts();
 //    }
+
     @GetMapping("/products")
     public List<ProductEntity> getproduct(){
         return service.getProducts();
@@ -53,9 +55,12 @@ public class ProductController {
     public ProductEntity updateProduct(@PathVariable int id,@RequestBody ProductEntity product){
         return service.updateProduct(id,product);
     }
-
+    @GetMapping("/findByCate/{proId}")
+    List<ProductDTO> findByCate(@PathVariable int proId){
+        return service.getProductByCate(proId);
+    }
     @GetMapping("/findTreding")
-    List<productTrendingDTO> findTrending(){
+    List<ProductTrendingDTO> findTrending(){
         return service.getProductTreding();
     }
 
@@ -63,5 +68,10 @@ public class ProductController {
     public DetailProductDTO findDetail(@RequestParam int id, @RequestParam int color){
         return service.getProductDetail(id, color);
     }
-
+    @GetMapping("/pagination")
+    public APIResponse<Page<ProductDTO>> findAllPagination(@RequestParam Optional<Integer> offset){
+        Page<ProductDTO> productDTOPage=service.getProductsWithPagination(offset.orElse(0), 8);
+        int total=service.FindProducts().size();
+        return new APIResponse<>(productDTOPage.getSize(), total ,productDTOPage);
+    }
 }

@@ -15,6 +15,10 @@ public class GalleryService {
     private GalleryRepository repository;
     @Autowired
     private ProductRepository productRepository;
+
+    public List<GaleryEntity> getByProductId(int productId){
+        return repository.findByProductId(productId);
+    }
     public List<GaleryEntity> getAllGallery(){return repository.findAll();}
     public GaleryEntity getGalleryById(int id){return repository.findById(id).orElse(null);}
     public GaleryEntity addGallery(GaleryEntity galeryEntity){return repository.save(galeryEntity);}
