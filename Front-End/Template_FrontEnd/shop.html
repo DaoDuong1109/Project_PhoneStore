@@ -27,7 +27,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
     />
+    <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/Template_FrontEnd/js/shoppingCart.js"></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/Template_FrontEnd/css/bootstrap.min.css" />
 
@@ -76,7 +78,7 @@
               >Giỏ hàng
 
               <i class="fa fa-shopping-cart"></i>
-              <span class="product-count">5</span></a
+              <span class="product-count" id="product-count"></span></a
             >
           </div>
         </div>
@@ -131,9 +133,9 @@
       <div class="col-md-2" style="padding-right: 0">
         <div class="category-title">Nhãn Hàng</div>
         <select id="search-brand">
-          <option value="1">iPhone</option>
+          <!-- <option value="1">iPhone</option>
           <option value="2">Samsung</option>
-          <option value="3">Oppo</option>
+          <option value="3">Oppo</option> -->
         </select>
       </div>
     </div>
@@ -373,6 +375,7 @@
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }            
        $(document).ready(function () {
+        //all product
         var urlParams = new URLSearchParams(window.location.search);
         var offset = "";
         offset=urlParams.get("page");
@@ -437,7 +440,21 @@
             }
           });
 
-       })
+          //render brand
+          $.ajax({
+                type: "GET",
+                url: "http://localhost:9090/category/categories",
+                dataType: "json",
+                success: function (result) {
+                  result.forEach(e => {
+                    $("#search-brand").append(`<option value="`+e.id+`">`+e.brand+`</option>`)
+                  });
+                },
+                error:function(xhr, status, error){
+                    console.log("Error render brand");
+                }
+            });
+        })
     </script>
     <div class="footer-top-area" id="footer">
       <div class="zigzag-bottom"></div>

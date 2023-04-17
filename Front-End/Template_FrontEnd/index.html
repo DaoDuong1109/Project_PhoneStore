@@ -27,11 +27,12 @@
       rel="stylesheet"
     />
 
+    <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-
+    <script src="/Template_FrontEnd/js/shoppingCart.js"></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="css/font-awesome.min.css" />
 
@@ -40,10 +41,9 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/responsive.css" />
-    
   </head>
 
-  <body>
+  <body >
     <div class="mainmenu-area">
       <div class="navbar">
         <div class="logo col-md-2">
@@ -69,7 +69,7 @@
               >Giỏ hàng
 
               <i class="fa fa-shopping-cart"></i>
-              <span class="product-count">5</span></a
+              <span class="product-count" id="product-count"></span></a
             >
           </div>
         </div>
@@ -96,22 +96,27 @@
           <li>
             <img src="/img/banners/banner1.png" alt="Slide" />
           </li> -->
-          <!-- <li>
+      <!-- <li>
             <img src="/img/banners/banner1.png" alt="Slide" />
           </li>
           <li>
             <img src="/img/banners/banner1.png" alt="Slide" />
           </li> -->
-        <!-- </ul>
+      <!-- </ul>
       </div> -->
       <div class="w3-content w3-display-container sliders">
         <!-- <img class="mySlides" src="/img/banners/banner2.png" style="width: 100%" style="display: none;"/> -->
-        
-  
-        <button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">
+
+        <button
+          class="w3-button w3-black w3-display-left"
+          onclick="plusDivs(-1)"
+        >
           &#10094;
         </button>
-        <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">
+        <button
+          class="w3-button w3-black w3-display-right"
+          onclick="plusDivs(1)"
+        >
           &#10095;
         </button>
       </div>
@@ -170,9 +175,7 @@
               data-ride="carousel"
               data-interval="0"
             >
-              <div class="carousel-inner productHot">
-
-              </div>
+              <div class="carousel-inner productHot"></div>
               <script>
                 // format price
                 function numberWithCommas(x) {
@@ -185,26 +188,23 @@
                     dataType: "json",
                     success: function (result, status, xhr) {
                       // console.log("Phan tu dau tien");
-                      console.log(result);
+                      // console.log(result);
                       var row = parseInt(result.length / 4);
                       var du = parseInt(result.length % 4);
                       if (du > 0) {
                         row += 1;
                       }
-                      console.log("row: " + row + "/ du: " + du);
+                      // console.log("row: " + row + "/ du: " + du);
                       var numberRow = parseInt(row);
                       var productHot = $(".productHot");
 
                       var index = 0;
                       var i;
                       for (i = 0; i < numberRow; i++) {
-                        
                         var item = $('<div class="item carousel-item"></div>');
                         var row = $('<div class="row"></div>');
-                       
-                        for (var j = 0; j < 4; j++){
-                          
-                          
+
+                        for (var j = 0; j < 4; j++) {
                           row.append(
                             `<div class="col-sm-3">
                               <div class="thumb-wrapper">
@@ -212,8 +212,11 @@
                                 <div class="img-box">
                                   <a href="single-product.html?id=` +
                               result[index].id +
-                              `&color=`+result[index].colorId+
-                              `&category=`+result[index].category.id+`">
+                              `&color=` +
+                              result[index].colorId +
+                              `&category=` +
+                              result[index].category.id +
+                              `">
                                     <img
                                       src="/img/products/` +
                               result[index].productImage +
@@ -232,23 +235,23 @@
                                   <p class="item-price">
                                     
                                     <b>` +
-                                      numberWithCommas(result[index].price) +
+                              numberWithCommas(result[index].price) +
                               `<u>đ</u></b>
                                   </p>
-                                  <a href="#" class="btn btn-primary">Add to Cart</a>
+                                  <a class="btn btn-primary" onclick="addToCart(`+result[index].id+`,`+ result[index].colorId+`,`+result[index].price+` )" >Thêm vào giỏ</a>
                                 </div>
                               </div>
                             </div>`
                           );
-                          
+
                           item.append(row);
-                          
+
                           index++;
                           if (index >= result.length) {
                             break;
                           }
                         }
-                       
+
                         productHot.append(item);
                       }
                       productHot.children().first().addClass("active");
@@ -267,7 +270,12 @@
               >
                 <i
                   class="fa fa-angle-left"
-                  style="background: #fa8072; width: 2%; padding-left: 5px;border-radius: 5px;"
+                  style="
+                    background: #fa8072;
+                    width: 2%;
+                    padding-left: 5px;
+                    border-radius: 5px;
+                  "
                 ></i>
               </a>
               <a
@@ -277,7 +285,13 @@
               >
                 <i
                   class="fa fa-angle-right"
-                  style="background: #fa8072; width: 2%; padding-left: 5px; margin-left: 100%; border-radius: 5px;"
+                  style="
+                    background: #fa8072;
+                    width: 2%;
+                    padding-left: 5px;
+                    margin-left: 100%;
+                    border-radius: 5px;
+                  "
                 ></i>
               </a>
             </div>
@@ -308,6 +322,7 @@
         </div>
       </div>
     </div>
+    
     <!-- End brands area -->
 
     <div class="product-widget-area">
@@ -385,7 +400,7 @@
       </div>
     </div>
     <!-- End product widget area -->
-
+    <!-- <button type="button" onclick="add()"></button> -->
     <div class="footer-top-area" id="footer">
       <div class="zigzag-bottom"></div>
       <div class="container">
@@ -502,6 +517,7 @@
     <!-- Latest jQuery form server -->
 
     <script src="https://code.jquery.com/jquery.min.js"></script>
+    
 
     <!-- Bootstrap JS form CDN -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -519,7 +535,10 @@
     <!-- Slider -->
     <script type="text/javascript" src="js/bxslider.min.js"></script>
     <script type="text/javascript" src="js/script.slider.js"></script>
+   
+
     <script>
+      
       var slideIndex = 1;
       showDivs(slideIndex);
 
@@ -541,10 +560,42 @@
         }
         x[slideIndex - 1].style.display = "block";
       }
+    </script>
+    <script>
       
+  //    function findProduct(productId, colorId){
+  //     var object={};
+  //     $.ajax({
+  //         type: "GET",
+  //         url:"http://localhost:9090/product/findDetailProduct?id="+productId+"&color="+colorId,
+  //         dataType: "json",
+  //         success: function (result) {
+  //          object=result;
+           
+  //         //  console.log(result);
+  //         },
+  //         error: function (xhr, status, error) {
+  //           console.log("Error find Product");
+  //         },
+  //       });
+  // } 
+  //     function addToCart(productId, colorId) {
+  //       // let storage=localStorage.getItem('cart');
+  //       // if(storage){
+  //       //     cart=JSON.parse(storage);
+  //       // }
+  //       var product="";
+  //       //http://localhost:9090/product/findDetailProduct?id=3&color=3
+        
+  //       console.log("add to cart")
+  //       findProduct(productId, colorId)
+  //       // console.log(findProduct(productId, colorId));
+  //     }
     </script>
     <script>
       $(document).ready(function () {
+        
+        loadTotalProduct();
         $.ajax({
           type: "GET",
           url: "http://localhost:9090/slide/slides",
@@ -553,8 +604,12 @@
             // console.log(result);
             var html = ``;
             result.forEach((item) => {
-              if(item.status){
-                $(".sliders").append(`<img class="mySlides" src="/img/banners/`+item.image+`" style="width: 100%" />`);
+              if (item.status) {
+                $(".sliders").append(
+                  `<img class="mySlides" src="/img/banners/` +
+                    item.image +
+                    `" style="width: 100%" />`
+                );
               }
             });
             showDivs(1);
@@ -563,9 +618,7 @@
             alert("Lỗi render slide");
           },
         });
-   
       });
     </script>
-   
   </body>
 </html>

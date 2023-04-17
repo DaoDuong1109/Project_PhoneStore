@@ -9,8 +9,8 @@ function subtract() {
   var numInput = document.getElementById("numberInputProduct");
   var currentVal = numInput.value;
   var newVal = parseInt(currentVal) - 1;
-  if (newVal < 0) {
-    newVal = 0;
+  if (newVal < 1) {
+    newVal = 1;
   }
   numInput.value = newVal;
 }

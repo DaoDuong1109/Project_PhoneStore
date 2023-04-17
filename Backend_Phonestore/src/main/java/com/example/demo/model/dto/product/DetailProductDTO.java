@@ -24,5 +24,6 @@ public class DetailProductDTO {
     private String image;
     private Double price;
     private Integer amount;
+    private int colorId;
     private String colorName;
 }
