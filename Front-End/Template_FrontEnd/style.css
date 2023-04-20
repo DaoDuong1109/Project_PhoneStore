@@ -770,7 +770,7 @@ ol.slide-indicators li.active {
 }
 
 .product-big-title-area {
-  background: url(img/crossword.png) repeat scroll 0 0 #5a88ca;
+  background: url(/img/crossword.png) repeat scroll 0 0 #5a88ca;
 }
 .product-big-title-area .autocomplete {
   margin: 20px 10px;
@@ -796,7 +796,7 @@ ol.slide-indicators li.active {
 }
 
 .single-product-area {
-  padding: 80px 0 130px;
+  padding: 25px 0 130px;
 }
 
 .sidebar-title {
@@ -900,6 +900,9 @@ button[type="submit"]:hover {
   margin-bottom: 20px;
   font-weight: 600;
 }
+.product-price, .product-subtotal{
+  width: 150px;
+}
 .product-inner-price {
   margin-bottom: 25px;
 }
@@ -925,6 +928,7 @@ button[type="submit"]:hover {
   color: #fff;
   padding: 6px 25px;
   display: inline-block;
+  cursor: pointer;
 }
 .add_to_cart_button:hover {
   background-color: #222;
@@ -1045,6 +1049,7 @@ div.quantity input.minus {
   width: 25px;
 }
 td.product-quantity div.quantity {
+  display: flex;
   float: none;
   margin: 0;
 }
@@ -1190,14 +1195,18 @@ table.shop_table td.product-remove a {
   display: inline-block;
   padding: 0 5px 2px;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 table.shop_table td.product-remove a:hover {
   color: #fff;
   background: red;
   text-decoration: none;
+  border-radius: 10px;
 }
-table.shop_table td.product-name a {
+table.shop_table td.product-name a, span {
+  font-weight: 300;
+  font-size: 14px;
   color: #222;
 }
 table.shop_table td.product-name a:hover {

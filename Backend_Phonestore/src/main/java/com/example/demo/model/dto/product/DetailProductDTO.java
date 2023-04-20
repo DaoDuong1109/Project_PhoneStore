@@ -1,5 +1,6 @@
 package com.example.demo.model.dto.product;
 
+import com.example.demo.entity.CategoryEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +27,5 @@ public class DetailProductDTO {
     private Integer amount;
     private int colorId;
     private String colorName;
+    private CategoryEntity category;
 }

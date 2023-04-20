@@ -87,11 +87,29 @@
             <button class="nut_dropdown">
               <i class="fa-solid fa-user"></i>
             </button>
-            <div class="noidung_dropdown">
-              <a href="#">Tài khoản của tôi</a>
-              <a href="./cart.html">Giỏ hàng</a>
-              <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
+            <div class="noidung_dropdown" id="noidung_dropdown">
+              
             </div>
+            <script>
+              let user={};
+              let storage = localStorage.getItem("user");
+              if (storage) {
+                 user= JSON.parse(storage);
+                 $("#noidung_dropdown").html(`
+                <a style="font-size:12px; font-weight:bold; cursor:pointer;">`+user.email+`</a>
+                <a href="" onclick="logout()">Đăng xuất</a>
+                `);
+              }
+              else{
+                $("#noidung_dropdown").html(`
+                <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
+                `)
+              }
+              
+              function logout(){
+                localStorage.removeItem("user");
+              }
+            </script>
           </div>
         </div>
       </div>
@@ -423,7 +441,7 @@
 
                           <div class="product-option-shop">
                             <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow"
-                              href="#">Thêm vào giỏ</a>
+                            onclick="addToCart(`+e.id+`,`+ e.colorId+`,`+0+ `)">Thêm vào giỏ</a>
                           </div>
                         </div>
 

@@ -99,4 +99,6 @@ public class UserEntity {
     public int hashCode() {
         return Objects.hash(id, fullname, email, phone, address, password, roleEntity);
     }
+
+
 }

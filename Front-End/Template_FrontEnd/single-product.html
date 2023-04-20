@@ -68,10 +68,9 @@
           <div class="shopping-item">
             <a href="cart.html"
               >Giỏ hàng
-
               <i class="fa fa-shopping-cart"></i>
-              <span class="product-count" id="product-count"></span></a
-            >
+              <span class="product-count" id="product-count"></span
+            ></a>
           </div>
         </div>
         <div class="col-md-2 icon-user">
@@ -79,11 +78,29 @@
             <button class="nut_dropdown">
               <i class="fa-solid fa-user"></i>
             </button>
-            <div class="noidung_dropdown">
-              <a href="#">Tài khoản của tôi</a>
-              <a href="#">Giỏ hàng</a>
-              <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
+            <div class="noidung_dropdown" id="noidung_dropdown">
+              
             </div>
+            <script>
+              let user={};
+              let storage = localStorage.getItem("user");
+              if (storage) {
+                 user= JSON.parse(storage);
+                 $("#noidung_dropdown").html(`
+                <a style="font-size:12px; font-weight:bold; cursor:pointer;">`+user.email+`</a>
+                <a href="" onclick="logout()">Đăng xuất</a>
+                `);
+              }
+              else{
+                $("#noidung_dropdown").html(`
+                <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
+                `)
+              }
+              
+              function logout(){
+                localStorage.removeItem("user");
+              }
+            </script>
           </div>
         </div>
       </div>
@@ -164,7 +181,13 @@
                           onchange="checkAmount(this.value)"
                         />
                       </div>
-                      <button class="add_to_cart_button" type="submit">
+
+                      <button
+                        class="add_to_cart_button"
+                        id="add_to_cart_button"
+                        type="button"
+                        onclick=""
+                      >
                         Thêm vào giỏ
                       </button>
                     </form>
@@ -247,6 +270,12 @@
                 var urlParams = new URLSearchParams(window.location.search);
                 var id = urlParams.get("id");
                 var colorId = urlParams.get("color");
+                document
+                  .getElementById("add_to_cart_button")
+                  .setAttribute(
+                    "onclick",
+                    "addToCart(" + id + "," + colorId + ","+1+")"
+                  );
                 //render detail
                 $.ajax({
                   type: "GET",
@@ -457,8 +486,6 @@
               <div class="related-products-wrapper">
                 <h2 class="related-products-title">Sản phẩm liên quan</h2>
                 <div class="related-products-carousel relate-product">
-                  
-
                   <!-- <div class="single-product">
                     <div class="product-f-image">
                       <img src="/img/products/600_redmi-10c.png" alt="" />
@@ -478,7 +505,7 @@
                       <ins>7000000</ins><ins>VNĐ</ins> <del>10000000</del>VNĐ
                     </div>
                   </div> -->
-<!-- 
+                  <!-- 
                   <div class="single-product">
                     <div class="product-f-image">
                       <img
@@ -585,12 +612,11 @@
                       <ins>7000000</ins><ins>VNĐ</ins> <del>10000000</del>VNĐ
                     </div>
                   </div> -->
-
                 </div>
                 <script>
                   function numberWithCommas(x) {
-                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-              }
+                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                  }
                   var cateId = urlParams.get("category");
                   console.log(cateId);
                   $.ajax({
@@ -604,21 +630,41 @@
                         $(".relate-product").append(
                           `<div class="single-product">
                               <div class="product-f-image">
-                                <img src="/img/products/`+item.productImage+`" alt="" style="width:80%;"/>
+                                <img src="/img/products/` +
+                            item.productImage +
+                            `" alt="" style="width:80%;"/>
                                 <div class="product-hover">
-                                  <a href="" class="add-to-cart-link"
+                                  <a onclick="addToCart(` +
+                            item.id +
+                            `,` +
+                            item.colorId +
+                            `,` +
+                            0 +
+                            `)" class="add-to-cart-link"
                                     ><i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ</a
                                   >
-                                  <a href="single-product.html?id=`+item.id+`&color=`+item.colorId+`&category=`+item.category.id+`" class="view-details-link"
+                                  <a href="single-product.html?id=` +
+                            item.id +
+                            `&color=` +
+                            item.colorId +
+                            `&category=` +
+                            item.category.id +
+                            `" class="view-details-link"
                                     ><i class="fa fa-link"></i> Xem Chi Tiết</a
                                   >
                                 </div>
                               </div>
 
-                              <h2><a href="">`+item.productName+` `+item.colorName+`</a></h2>
+                              <h2><a href="">` +
+                            item.productName +
+                            ` ` +
+                            item.colorName +
+                            `</a></h2>
 
                               <div class="product-carousel-price">
-                                <ins>`+numberWithCommas(item.price)+`</ins><ins>VNĐ
+                                <ins>` +
+                            numberWithCommas(item.price) +
+                            `</ins><ins>VNĐ
                               </div>
                       </div>`
                         );
@@ -638,13 +684,29 @@
                 <form action="">
                   <div class="row">
                     <div class="col-md-4">
-                      <input type="text" id="nameContent" name="nameContent" placeholder="Họ tên *" required>
+                      <input
+                        type="text"
+                        id="nameContent"
+                        name="nameContent"
+                        placeholder="Họ tên *"
+                        required
+                      />
                     </div>
                     <div class="col-md-4">
-                      <input type="email" id="emailContent" name="emailContent" placeholder="Email">
+                      <input
+                        type="email"
+                        id="emailContent"
+                        name="emailContent"
+                        placeholder="Email"
+                      />
                     </div>
                     <div class="col-md-4">
-                      <input type="text" id="phoneContent" name="phoneContent" placeholder="Số điện thoại">
+                      <input
+                        type="text"
+                        id="phoneContent"
+                        name="phoneContent"
+                        placeholder="Số điện thoại"
+                      />
                     </div>
                   </div>
                   <div class="row">
@@ -695,65 +757,66 @@
                     </div>
                   </div> -->
                   <script>
-           
                     //render comment by product id
                     $.ajax({
                       type: "GET",
                       url: "http://localhost:9090/comment/findByProId/" + id,
                       dataType: "json",
                       success: function (result, status, xhr) {
-                    
-                        result.forEach(e => {
-                          $(".reviewContent").append(`
+                        result.forEach((e) => {
+                          $(".reviewContent").append(
+                            `
                           <div class="item">
                             <div class="avt">
                               <img src="/img/user.png" />
                               </div>
                             <div class="infor">
                               <p>
-                                <strong class="name">`+e.fullname+`</strong>
+                                <strong class="name">` +
+                              e.fullname +
+                              `</strong>
                               </p>
                               <div class="content">
-                                `+e.content+`
+                                ` +
+                              e.content +
+                              `
                               </div>
                             </div>
                             </div>
-                            `);
-                          });
+                            `
+                          );
+                        });
                       },
                       error: function (xhr, status, error) {
-                      alert("Lỗi render comment");
-                    }
+                        alert("Lỗi render comment");
+                      },
                     });
 
                     $("#btnSubReview").click(function (event) {
-                       event.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
+                      event.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
                       // console.log($("#nameContent").val());
                       // console.log($("#phoneContent").val());
                       // console.log($("#emailContent").val());
                       // console.log($("#reviewContent").val());
-                      var user={
+                      var user = {
                         fullname: $("#nameContent").val(),
                         email: $("#emailContent").val(),
                         phone: $("#phoneContent").val(),
                         address: "",
                         password: "",
                         roleEntity: {
-                            id: 4
-                            }
-                      }
-                      var userJson=JSON.stringify(user);
+                          id: 4,
+                        },
+                      };
+                      var userJson = JSON.stringify(user);
                       // console.log(user);
                       console.log("---------user");
-                      
-                      
+
                       sessionStorage.setItem("user", userJson);
 
-
                       console.log(JSON.parse(sessionStorage.getItem("user")));
-                    })
+                    });
                   </script>
-                  
                 </div>
               </div>
             </div>
@@ -897,8 +960,14 @@
           alert("Số lượng đặt vượt quá số lượng mặt hàng có!!!");
           document.getElementById("quantity").value = total;
         }
+        var quantity = document.getElementById("quantity").value;
+        document
+          .getElementById("add_to_cart_button")
+          .setAttribute(
+            "onclick",
+            "addToCart(" + id + "," + colorId + "," + quantity + ")"
+          );
       }
-
     </script>
   </body>
 </html>

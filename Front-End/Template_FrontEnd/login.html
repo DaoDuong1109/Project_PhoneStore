@@ -89,7 +89,7 @@
           </a>
         </div>
         <!-- Login Form -->
-        <form action="" id="form_login" method="post">
+        <form action="" id="form_login" method="">
           <div class="container py-3">
             <div class="row justify-content-center align-items-center">
               <div class="col-sm-9 mb-2">
@@ -168,6 +168,7 @@
               </div> -->
             </div>
           </div>
+          
           <label hidden="true" id="mess"></label>
           <label hidden="true" id="check"></label>
           <label hidden="true" id="hidden"></label>
@@ -177,6 +178,7 @@
             type="submit"
             value="Đăng nhập"
           />
+         
         </form>
         <div id="formFooter">
           <a class="underlineHover" href="./register.html"
@@ -191,6 +193,44 @@
         </div>
       </div>
     </div>
+    <script>
+       $("#form_login").submit(function (event) {
+          event.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
+          var username=$("#email").val();
+          var password=$("#password").val();
+          
+          $.ajax({
+            type: "POST",
+            url: "http://localhost:9090/user/checkin?username="+username+"&password="+password,
+            
+            dataType: "json",
+            contentType: "application/json",
+            encode: true,
+            success: function (data) {
+              //console.log("http://localhost:9090/user/checkin?username="+username+"&password="+password);
+              if(data){
+                // localStorage.removeItem("user");
+                if(data.roleEntity.id==3){
+                  localStorage.setItem("userAdmin",JSON.stringify(data));
+                  window.location.href = "/admin/html/admin.html";
+                }
+                else{
+                 
+                  localStorage.setItem("user",JSON.stringify(data));
+                  window.location.href = "/Template_FrontEnd/index.html";
+                }
+              }
+              else{
+                alert("Đăng nhập thất bại !");
+                
+              }
+            },
+            error: function () {
+              alert("Mật khẩu hoặc tài khoản không đúng!!");
+            },
+          });
+       })
+    </script>
     <script type="text/javascript">
       if (document.getElementById("hidden").textContent == "true") {
         console.log(document.getElementById("hidden").textContent);

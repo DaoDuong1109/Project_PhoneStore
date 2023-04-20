@@ -86,11 +86,29 @@
             <button class="nut_dropdown">
               <i class="fa-solid fa-user"></i>
             </button>
-            <div class="noidung_dropdown">
-              <a href="#">Tài khoản của tôi</a>
-              <a href="#">Giỏ hàng</a>
-              <a href="login.html">Đăng nhập</a>
+            <div class="noidung_dropdown" id="noidung_dropdown">
+              
             </div>
+            <script>
+              let user={};
+              let storage = localStorage.getItem("user");
+              if (storage) {
+                 user= JSON.parse(storage);
+                 $("#noidung_dropdown").html(`
+                <a style="font-size:12px; font-weight:bold; cursor:pointer;">`+user.email+`</a>
+                <a href="" onclick="logout()">Đăng xuất</a>
+                `);
+              }
+              else{
+                $("#noidung_dropdown").html(`
+                <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
+                `)
+              }
+              
+              function logout(){
+                localStorage.removeItem("user");
+              }
+            </script>
           </div>
         </div>
       </div>

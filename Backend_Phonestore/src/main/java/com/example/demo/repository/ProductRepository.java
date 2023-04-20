@@ -49,7 +49,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
     //find by product id and color id
     @Query("SELECT NEW com.example.demo.model.dto.product.DetailProductDTO(p.ID, p.name, p.screen, p.operatingSystem," +
             " p.rearCamera, p.frontCamera, p.cpu,\n" +
-            " p.ram, p.insideMemory, p.memoryCard, p.battery, p.image, pc.price, pc.amount, pc.colorId, c.name)\n" +
+            " p.ram, p.insideMemory, p.memoryCard, p.battery, p.image, pc.price, pc.amount, pc.colorId, c.name, p.categoryEntity)\n" +
             " FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId\n" +
             "                            join ColorEntity c on pc.colorId=c.id \n" +
             "where pc.productId=?1 and pc.colorId=?2")

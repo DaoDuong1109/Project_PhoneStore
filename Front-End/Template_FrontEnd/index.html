@@ -43,7 +43,7 @@
     <link rel="stylesheet" href="css/responsive.css" />
   </head>
 
-  <body >
+  <body>
     <div class="mainmenu-area">
       <div class="navbar">
         <div class="logo col-md-2">
@@ -69,8 +69,8 @@
               >Giỏ hàng
 
               <i class="fa fa-shopping-cart"></i>
-              <span class="product-count" id="product-count"></span></a
-            >
+              <span class="product-count" id="product-count"></span
+            ></a>
           </div>
         </div>
         <div class="col-md-2 icon-user">
@@ -78,11 +78,29 @@
             <button class="nut_dropdown">
               <i class="fa-solid fa-user"></i>
             </button>
-            <div class="noidung_dropdown">
-              <a href="#">Tài khoản của tôi</a>
-              <a href="#">Giỏ hàng</a>
-              <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
+            <div class="noidung_dropdown" id="noidung_dropdown">
+              
             </div>
+            <script>
+              let user={};
+              let storage = localStorage.getItem("user");
+              if (storage) {
+                 user= JSON.parse(storage);
+                 $("#noidung_dropdown").html(`
+                <a href="" style="font-size:12px; font-weight:bold; cursor:pointer;">`+user.email+`</a>
+                <a href="" onclick="logout()">Đăng xuất</a>
+                `);
+              }
+              else{
+                $("#noidung_dropdown").html(`
+                <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
+                `)
+              }
+              
+              function logout(){
+                localStorage.removeItem("user");
+              }
+            </script>
           </div>
         </div>
       </div>
@@ -182,6 +200,7 @@
                   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                 }
                 $(document).ready(function () {
+                  //  localStorage.removeItem('cart');
                   $.ajax({
                     type: "GET",
                     url: "http://localhost:9090/product/findTreding",
@@ -238,7 +257,13 @@
                               numberWithCommas(result[index].price) +
                               `<u>đ</u></b>
                                   </p>
-                                  <a class="btn btn-primary" onclick="addToCart(`+result[index].id+`,`+ result[index].colorId+`,`+result[index].price+` )" >Thêm vào giỏ</a>
+                                  <a class="btn btn-primary" onclick="addToCart(` +
+                              result[index].id +
+                              `,` +
+                              result[index].colorId +
+                              `,` +
+                              0 +
+                              `)">Thêm vào giỏ</a>
                                 </div>
                               </div>
                             </div>`
@@ -322,7 +347,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- End brands area -->
 
     <div class="product-widget-area">
@@ -517,7 +542,6 @@
     <!-- Latest jQuery form server -->
 
     <script src="https://code.jquery.com/jquery.min.js"></script>
-    
 
     <!-- Bootstrap JS form CDN -->
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -535,10 +559,8 @@
     <!-- Slider -->
     <script type="text/javascript" src="js/bxslider.min.js"></script>
     <script type="text/javascript" src="js/script.slider.js"></script>
-   
 
     <script>
-      
       var slideIndex = 1;
       showDivs(slideIndex);
 
@@ -562,39 +584,37 @@
       }
     </script>
     <script>
-      
-  //    function findProduct(productId, colorId){
-  //     var object={};
-  //     $.ajax({
-  //         type: "GET",
-  //         url:"http://localhost:9090/product/findDetailProduct?id="+productId+"&color="+colorId,
-  //         dataType: "json",
-  //         success: function (result) {
-  //          object=result;
-           
-  //         //  console.log(result);
-  //         },
-  //         error: function (xhr, status, error) {
-  //           console.log("Error find Product");
-  //         },
-  //       });
-  // } 
-  //     function addToCart(productId, colorId) {
-  //       // let storage=localStorage.getItem('cart');
-  //       // if(storage){
-  //       //     cart=JSON.parse(storage);
-  //       // }
-  //       var product="";
-  //       //http://localhost:9090/product/findDetailProduct?id=3&color=3
-        
-  //       console.log("add to cart")
-  //       findProduct(productId, colorId)
-  //       // console.log(findProduct(productId, colorId));
-  //     }
+      //    function findProduct(productId, colorId){
+      //     var object={};
+      //     $.ajax({
+      //         type: "GET",
+      //         url:"http://localhost:9090/product/findDetailProduct?id="+productId+"&color="+colorId,
+      //         dataType: "json",
+      //         success: function (result) {
+      //          object=result;
+
+      //         //  console.log(result);
+      //         },
+      //         error: function (xhr, status, error) {
+      //           console.log("Error find Product");
+      //         },
+      //       });
+      // }
+      //     function addToCart(productId, colorId) {
+      //       // let storage=localStorage.getItem('cart');
+      //       // if(storage){
+      //       //     cart=JSON.parse(storage);
+      //       // }
+      //       var product="";
+      //       //http://localhost:9090/product/findDetailProduct?id=3&color=3
+
+      //       console.log("add to cart")
+      //       findProduct(productId, colorId)
+      //       // console.log(findProduct(productId, colorId));
+      //     }
     </script>
     <script>
       $(document).ready(function () {
-        
         loadTotalProduct();
         $.ajax({
           type: "GET",

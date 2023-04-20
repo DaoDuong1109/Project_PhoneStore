@@ -8,20 +8,27 @@ import java.util.Objects;
 @Table(name = "order_detail", schema = "phone_store", catalog = "")
 @IdClass(OrderDetailEntityPK.class)
 public class OrderDetailEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
     @Id
-    @Column(name = "productId")
+    @Column(name = "product_ID", nullable = false)
     private Integer productId;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+
     @Id
-    @Column(name = "orderId")
+    @Column(name = "order_ID", nullable = false)
     private Integer orderId;
     @Basic
-    @Column(name = "price")
+    @Column(name = "price", nullable = true, precision = 0)
     private Double price;
     @Basic
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = true)
     private Integer amount;
+
+    @Id
+    @Basic
+    @Column(name = "color_ID", nullable = false)
+    private Integer colorId;
 
     public Integer getProductId() {
         return productId;
@@ -66,5 +73,13 @@ public class OrderDetailEntity {
     @Override
     public int hashCode() {
         return Objects.hash(productId, orderId, price, amount);
+    }
+
+    public Integer getColorId() {
+        return colorId;
+    }
+
+    public void setColorId(Integer colorId) {
+        this.colorId = colorId;
     }
 }

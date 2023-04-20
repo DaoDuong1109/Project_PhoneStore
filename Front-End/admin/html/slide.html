@@ -54,11 +54,12 @@
           <ul
             class="dropdown-menu dropdown-menu-end"
             aria-labelledby="navbarDropdown"
+            id="userAccount"
           >
-            <li><a class="dropdown-item" href="#!">Cài đặt</a></li>
-
-            <li><hr class="dropdown-divider" /></li>
-            <li><a class="dropdown-item" href="#!">Đăng xuất</a></li>
+            <!-- <li><a class="dropdown-item" href="">Cài đặt</a></li>
+                        
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="">Đăng xuất</a></li> -->
           </ul>
         </li>
       </ul>
@@ -229,6 +230,35 @@
     ></script>
     <script src="../js/datatables-simple-demo.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+      let user = {};
+      let storage = localStorage.getItem("userAdmin");
+      if (storage) {
+        user = JSON.parse(storage);
+
+        $("#userAccount").html(
+          `
+                    <li><a class="dropdown-item" style="font-size:12px; font-weight:bold; cursor:pointer;" href="">` +
+            user.fullname +
+            `</a></li>
+                    
+                    <li><hr class="dropdown-divider" /></li>
+                    
+                    <li><a class="dropdown-item" onclick="logout()" style="cursor:pointer;">Đăng xuất</a></li>
+              `
+        );
+        $("#loginName").html(user.fullname);
+      } else {
+        $("#userAccount").html(`
+              <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
+              `);
+      }
+      function logout() {
+      
+        localStorage.removeItem("userAdmin");
+        window.location.href = "/Template_FrontEnd/login.html";
+      }
+    </script>
     <script>
       $(document).ready(function () {
         $(".btnSlide").click(function (e) {

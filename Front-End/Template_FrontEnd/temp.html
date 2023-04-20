@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    
+    <div>
+      <select
+        class="form-select form-select-sm mb-3"
+        id="city"
+        aria-label=".form-select-sm"
+      >
+        <option value="" selected>Chọn tỉnh thành</option>
+      </select>
+
+      <select
+        class="form-select form-select-sm mb-3"
+        id="district"
+        aria-label=".form-select-sm"
+      >
+        <option value="" selected>Chọn quận huyện</option>
+      </select>
+
+      <select
+        class="form-select form-select-sm"
+        id="ward"
+        aria-label=".form-select-sm"
+      >
+        <option value="" selected>Chọn phường xã</option>
+      </select>
+    </div>
+
+    <div style="margin: 20% 0 0 40%" class="container">
+      <table border="1" style="margin-top: 30px">
+        <tr>
+          <th class="product-remove">&nbsp;</th>
+          <!-- <th class="product-thumbnail" id="thumbnail-product">&nbsp;</th> -->
+          <th class="product-name">Sản phẩm</th>
+          <th class="product-name">Màu sắc</th>
+          <th class="product-price">Giá tiền</th>
+          <th class="product-quantity">Số lượng</th>
+          <th class="product-subtotal">Tổng tiền</th>
+        </tr>
+        <tr class="cart_item">
+          <td class="product-remove">
+            <a title="Remove this item" class="remove" href="#">×</a>
+          </td>
+          <td class="product-name">
+            <a href="single-product.html">Ship Your Idea</a>
+          </td>
+          <td class="product-name">
+            <span>Đỏ</span>
+          </td>
+
+          <td class="product-price">
+            <span class="amount" id="price">20.000.000</span> VNĐ
+          </td>
+
+          <td class="product-quantity">
+            <div class="quantity buttons_added">
+              <input type="button" class="minus button-c" value="-" />
+
+              <input
+                type="number"
+                size="4"
+                class="input-text qty text"
+                style="text-align: center"
+                title="Qty"
+                value="1"
+                min="1"
+                step="1"
+                id="numberInputProduct"
+              />
+
+              <input type="button" class="plus button-c" value="+" />
+            </div>
+          </td>
+
+          <td class="product-subtotal">
+            <span class="amount" id="subtotal">20.000.000</span> VNĐ
+          </td>
+        </tr>
+        <tr class="cart_item">
+          <td class="product-remove">
+            <a title="Remove this item" class="remove" href="#">×</a>
+          </td>
+          <td class="product-name">
+            <a href="single-product.html">Ship Your Idea</a>
+          </td>
+          <td class="product-name">
+            <span>Đỏ</span>
+          </td>
+
+          <td class="product-price">
+            <span class="amount" id="price">20.000.000</span> VNĐ
+          </td>
+
+          <td class="product-quantity">
+            <div class="quantity buttons_added">
+              <input type="button" class="minus button-c" value="-" />
+
+              <input
+                type="number"
+                size="4"
+                class="input-text qty text"
+                style="text-align: center"
+                title="Qty"
+                value="1"
+                min="1"
+                step="1"
+                id="numberInputProduct"
+              />
+
+              <input type="button" class="plus button-c" value="+" />
+            </div>
+          </td>
+
+          <td class="product-subtotal">
+            <span class="amount" id="subtotal">20.000.000</span> VNĐ
+          </td>
+        </tr>
+        <tr>
+          <td class="actions" colspan="6">
+            <input
+              type="submit"
+              value="Thanh Toán"
+              name="proceed"
+              class="checkout-button button alt wc-forward button-c"
+            />
+          </td>
+        </tr>
+      </table>
+      <div
+        id="totalPayment"
+        style="width: 200px; height: 200px; border: 2px solid grey"
+      ></div>
+      <button type="button" onclick="insert()">insert</button>
+
+      <select name="calc_shipping_provinces" required="">
+        <option value="">Tỉnh / Thành phố</option>
+      </select>
+      <select name="calc_shipping_district" required="">
+        <option value="">Quận / Huyện</option>
+      </select>
+      <input class="billing_address_1" name="" type="hidden" value="" />
+      <input class="billing_address_2" name="" type="hidden" value="" />
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script>
+      var citis = document.getElementById("city");
+      var districts = document.getElementById("district");
+      var wards = document.getElementById("ward");
+      var Parameter = {
+        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
+        method: "GET",
+        responseType: "application/json",
+      };
+      var promise = axios(Parameter);
+      promise.then(function (result) {
+        renderCity(result.data);
+      });
+
+      function renderCity(data) {
+        for (const x of data) {
+          citis.options[citis.options.length] = new Option(x.Name, x.Id);
+        }
+        citis.onchange = function () {
+          district.length = 1;
+          ward.length = 1;
+          if (this.value != "") {
+            const result = data.filter((n) => n.Id === this.value);
+
+            for (const k of result[0].Districts) {
+              district.options[district.options.length] = new Option(
+                k.Name,
+                k.Id
+              );
+            }
+          }
+        };
+        district.onchange = function () {
+          ward.length = 1;
+          const dataCity = data.filter((n) => n.Id === citis.value);
+          if (this.value != "") {
+            const dataWards = dataCity[0].Districts.filter(
+              (n) => n.Id === this.value
+            )[0].Wards;
+
+            for (const w of dataWards) {
+              wards.options[wards.options.length] = new Option(w.Name, w.Id);
+            }
+          }
+        };
+      }
+    </script>
+    <script>
+      function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+      // Lấy tất cả các nút "plus"
+      var changePriceButtonPlus = document.querySelectorAll(".plus");
+      // Lấy tất cả các nút "minus"
+      var changePriceButtonMinus = document.querySelectorAll(".minus");
+      // Lấy tất cả subtotal
+      var subtotal = document.querySelectorAll("#subtotal");
+      function insert() {
+        var payment = 0;
+        subtotal.forEach(function (e) {
+          payment += parseInt(e.textContent.replace(/\./g, ""));
+        });
+        document.getElementById("totalPayment").innerHTML =
+          numberWithCommas(payment);
+      }
+      // Lặp qua từng nút plus và thêm sự kiện nhấp chuột vào mỗi nút
+      changePriceButtonPlus.forEach(function (button) {
+        button.addEventListener("click", function () {
+          // Lấy các phần tử liên quan đến nút được nhấp
+          var listItem = this.closest("tr");
+
+          var numInput = listItem.querySelector("#numberInputProduct");
+          var currentVal = numInput.value;
+          var newVal = parseInt(currentVal) + 1;
+          numInput.value = newVal;
+          var itemPrice = parseInt(
+            listItem.querySelector("#price").textContent.replace(/\./g, "")
+          );
+          listItem.querySelector("#subtotal").textContent = numberWithCommas(
+            parseInt(itemPrice) * newVal
+          );
+          insert();
+        });
+      });
+      // Lặp qua từng nút minus và thêm sự kiện nhấp chuột vào mỗi nút
+      changePriceButtonMinus.forEach(function (button) {
+        button.addEventListener("click", function () {
+          // Lấy các phần tử liên quan đến nút được nhấp
+          var listItem = this.closest("tr");
+
+          var numInput = listItem.querySelector("#numberInputProduct");
+          var currentVal = numInput.value;
+
+          var newVal = parseInt(currentVal) - 1;
+          if (newVal < 1) {
+            newVal = 1;
+          }
+          numInput.value = newVal;
+          var itemPrice = parseInt(
+            listItem.querySelector("#price").textContent.replace(/\./g, "")
+          );
+          listItem.querySelector("#subtotal").textContent = numberWithCommas(
+            parseInt(itemPrice) * newVal
+          );
+          insert();
+        });
+      });
+
+      // var price = parseInt(
+      //   document.getElementById("price").textContent.replace(/\./g, "")
+      // );
+      // document.getElementById("subtotal").textContent = numberWithCommas(
+      //   parseFloat(price) * newVal
+      // );
+
+      //   function subtract() {
+      //     var numInput = document.getElementById("numberInputProduct");
+      //     var currentVal = numInput.value;
+      //     var newVal = parseInt(currentVal) - 1;
+      //     if (newVal < 1) {
+      //       newVal = 1;
+      //     }
+      //     numInput.value = newVal;
+
+      //     var price = parseInt(
+      //       document.getElementById("price").textContent.replace(/\./g, "")
+      //     );
+      //     document.getElementById("subtotal").textContent = numberWithCommas(
+      //       parseFloat(price) * newVal
+      //     );
+      //   }
+    </script>
+  </body>
+</html>

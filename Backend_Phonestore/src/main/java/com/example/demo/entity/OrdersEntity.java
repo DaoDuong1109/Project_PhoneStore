@@ -6,30 +6,30 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "order", schema = "phone_store", catalog = "")
-public class OrderEntity {
+@Table(name = "orders", schema = "phone_store", catalog = "")
+public class OrdersEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "ID")
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic
-    @Column(name = "address")
+    @Column(name = "address", nullable = true, length = 266)
     private String address;
     @Basic
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = true, length = 20)
     private String phone;
     @Basic
-    @Column(name = "email")
+    @Column(name = "email", nullable = true, length = 266)
     private String email;
     @Basic
-    @Column(name = "created_date")
+    @Column(name = "created_date", nullable = true)
     private Timestamp createdDate;
     @Basic
-    @Column(name = "status")
+    @Column(name = "status", nullable = true)
     private Boolean status;
     @Basic
     @ManyToOne
-    @JoinColumn(name = "user_ID")
+    @JoinColumn(name = "user_ID",nullable = false)
     private UserEntity userEntity;
 
     public Integer getId() {
@@ -92,7 +92,7 @@ public class OrderEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderEntity that = (OrderEntity) o;
+        OrdersEntity that = (OrdersEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(address, that.address) && Objects.equals(phone, that.phone) && Objects.equals(email, that.email) && Objects.equals(createdDate, that.createdDate) && Objects.equals(status, that.status) && Objects.equals(userEntity, that.userEntity);
     }
 
