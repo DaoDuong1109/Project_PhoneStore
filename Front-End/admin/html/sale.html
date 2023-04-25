@@ -380,6 +380,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Ngày bắt đầu</th>
                     <th scope="col">Ngày kết thúc</th>
+                    <th scope="col">% giảm giá</th>
                     <th scope="col">Trạng thái</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -433,7 +434,6 @@
               `);
       }
       function logout() {
-      
         localStorage.removeItem("userAdmin");
         window.location.href = "/Template_FrontEnd/login.html";
       }
@@ -475,21 +475,47 @@
                   month2.toString().padStart(2, "0") +
                   "-" +
                   day2.toString().padStart(2, "0");
-
                 html +=
-                  `<tr><td>` +
+                  `
+                <tr>
+                    <td>` +
                   data.id +
-                  `</td><td>` +
+                  `</td>
+                    <td>` +
                   dateString +
-                  `</td><td>` +
+                  `</td>
+                    <td>` +
                   dateString2 +
-                  `</td><td>` +
+                  `</td>
+                    <td>` +
+                  data.discount +
+                  `</td>
+                    <td>` +
                   data.status +
-                  `</td><td><a type="button" href="./addSale.html?id=` +
+                  `</td>
+                    <td><a type="button" href="./addSale.html?id=` +
                   data.id +
-                  `" id="edit" class="btn btn-primary mr-2"><i class="far fa-edit text-white"></i></a><button type="button" class="btn btn-danger" id="delete" value="` +
-                  data.id +
-                  `"><i class="fas fa-trash-alt"></i></button></td></tr>`;
+                  `" id="edit" class="btn btn-primary mr-2"><i class="far fa-edit text-white"></i></a><button type="button" class="btn btn-danger" id="delete" value="`+
+                  data.id
+                  +`"><i class="fas fa-trash-alt"></i></button></td>
+                  </tr>
+                `;
+                // html +=
+                //   `<tr><td>` +
+                //   data.id +
+                //   `</td><td>` +
+                //   dateString +
+                //   `</td><td>` +
+                //   dateString2 +
+                //   `</td><td>` +
+                //   data.discount +
+                //   `</td><td>` +
+                //   data.status +
+                //   `</td><td><a type="button" href="./addSale.html?id=` +
+                //   data.id +
+                //   `" id="edit" class="btn btn-primary mr-2"><i class="far fa-edit text-white"></i></a><button type="button" class="btn btn-danger" id="delete" value="` +
+                //   data.id +
+                //   `"><i class="fas fa-trash-alt"></i></button></td></tr>`;
               });
               $("#content").html(html);
             },
@@ -532,20 +558,31 @@
                 "-" +
                 year2.toString().padStart(2, "0");
 
-              html +=
-                `<tr><td>` +
-                data.id +
-                `</td><td>` +
-                dateString +
-                `</td><td>` +
-                dateString2 +
-                `</td><td>` +
-                data.status +
-                `</td><td><a type="button" href="./addSale.html?id=` +
-                data.id +
-                `" id="edit" class="btn btn-primary mr-2"><i class="far fa-edit text-white"></i></a><button type="button" class="btn btn-danger" id="delete" value="` +
-                data.id +
-                `"><i class="fas fa-trash-alt"></i></button></td></tr>`;
+                html +=
+                  `
+                <tr>
+                    <td>` +
+                  data.id +
+                  `</td>
+                    <td>` +
+                  dateString +
+                  `</td>
+                    <td>` +
+                  dateString2 +
+                  `</td>
+                    <td>` +
+                  data.discount +
+                  `</td>
+                    <td>` +
+                  data.status +
+                  `</td>
+                    <td><a type="button" href="./addSale.html?id=` +
+                  data.id +
+                  `" id="edit" class="btn btn-primary mr-2"><i class="far fa-edit text-white"></i></a><button type="button" class="btn btn-danger" id="delete" value="`+
+                  data.id
+                  +`"><i class="fas fa-trash-alt"></i></button></td>
+                  </tr>
+                `;
             });
             $("#content").html(html);
           },

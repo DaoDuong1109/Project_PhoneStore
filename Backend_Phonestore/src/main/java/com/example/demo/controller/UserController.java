@@ -24,8 +24,8 @@ public class UserController {
     public UserEntity updateUserByEmail(@RequestParam String email, @RequestBody UserEntity user){
         return service.updateUserByEmail(email, user);
     }
-    @PutMapping("/updateUserById")
-    public UserEntity updateUserById(@RequestParam int id, @RequestBody UserEntity user){
+    @PutMapping("/updateUserById/{id}")
+    public UserEntity updateUserById(@PathVariable int id, @RequestBody UserEntity user){
         return service.updateUserById(id, user);
     }
     @DeleteMapping("/deleteUser/{id}")

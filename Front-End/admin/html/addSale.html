@@ -400,6 +400,16 @@
                     class="form-control col-3"
                     value=""
                   />
+                  <label for="discount">% giảm giá: </label>
+                  <input
+                    type="number"
+                    name="discount"
+                    id="discount"
+                    class="form-control col-3"
+                    min="0"
+                    
+                    value="0"
+                  />
                   <label>Trạng thái:</label>
                   <label class="switch">
                     <input type="checkbox" id="check" checked />
@@ -422,6 +432,7 @@
                   Xóa
                 </button>
               </form>
+              
             </div>
           </div>
         </main>
@@ -511,6 +522,8 @@
             
             document.getElementById("check").checked =
               result.status == true ? true : false;
+
+            document.getElementById("discount").value=result.discount;
           },
           error: function (xhr, status, error) {
             alert(
@@ -533,6 +546,7 @@
             fromDate: $("#from-date").val(),
             toDate: $("#to-date").val(),
             status: document.getElementById("check").checked ? true : false,
+            discount:$("#discount").val()
           };
 
           console.log(formData);
@@ -545,6 +559,7 @@
             encode: true,
             success: function (data) {
               alert("Data saved successfully!");
+              document.location.href="/admin/html/sale.html";
             },
             error: function () {
               alert("Error occurred while saving data.");
@@ -566,6 +581,7 @@
             fromDate: $("#from-date").val(),
             toDate: $("#to-date").val(),
             status: $("#check").checked ? true : false,
+            discount:$("#discount").val()
           };
 
           $.ajax({
@@ -577,6 +593,7 @@
             encode: true,
             success: function (data) {
               alert("Data saved successfully!");
+              document.location.href="/admin/html/sale.html";
             },
             error: function () {
               alert("Error occurred while saving data.");

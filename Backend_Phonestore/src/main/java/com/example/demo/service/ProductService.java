@@ -4,13 +4,15 @@ import com.example.demo.entity.*;
 import com.example.demo.model.dto.product.DetailProductDTO;
 import com.example.demo.model.dto.product.ProductDTO;
 import com.example.demo.model.dto.product.ProductTrendingDTO;
+import com.example.demo.model.dto.response.GetAllProduct;
+import com.example.demo.model.dto.response.GetAllProductResponse;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.SaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -30,7 +32,51 @@ public class ProductService {
 //        return ResponseEntity.ok(productPage);
 //
 //    }
-    public List<ProductEntity> getProducts(){return repository.findAll();}
+    public GetAllProductResponse getProducts(Integer pageNumber, Integer pageSize){
+        if (pageNumber == null || pageNumber == 0 ) {
+            pageNumber = 1;
+        }
+        if (pageSize==null|| pageSize==0) {
+            pageSize = 10;
+        }
+        Pageable pageable = PageRequest.of(pageNumber -1,pageSize);
+        Page<ProductEntity> productEntities = repository.findAll(pageable);
+        GetAllProductResponse getAllProductResponse = new GetAllProductResponse();
+        getAllProductResponse.setProductEntities(productEntities.getContent());
+        getAllProductResponse.setTotalPage(productEntities.getTotalPages());
+        return getAllProductResponse;
+    }
+    public GetAllProduct getAllProduct(Integer pageNumber, Integer pageSize){
+        if(pageNumber==null || pageNumber==0){
+            pageNumber=1;
+        }
+        if(pageSize==0 || pageSize==null){
+            pageSize=8;
+        }
+        Pageable pageable=PageRequest.of(pageNumber-1,pageSize);
+        Page<ProductDTO> productDTOPage=repository.findWithPagination(pageable);
+        GetAllProduct getAllProduct=new GetAllProduct();
+        getAllProduct.setProductDTOList(productDTOPage.getContent());
+        getAllProduct.setTotalPage(productDTOPage.getTotalPages());
+        return getAllProduct;
+    }
+//    public GetAllProduct getAllKeySearchProduct(Integer pageNumber, Integer pageSize, String keySearch){
+//        if(pageNumber==null || pageNumber==0){
+//            pageNumber=1;
+//        }
+//        if(pageSize==0 || pageSize==null){
+//            pageSize=8;
+//        }
+//        if(StringUtils.isEmpty(keySearch) ||keySearch.equals("") ){
+//            keySearch
+//        }
+//        Pageable pageable=PageRequest.of(pageNumber-1,pageSize);
+//        Page<ProductDTO> productDTOPage=repository.findWithPagination(pageable);
+//        GetAllProduct getAllProduct=new GetAllProduct();
+//        getAllProduct.setProductDTOList(productDTOPage.getContent());
+//        getAllProduct.setTotalPage(productDTOPage.getTotalPages());
+//        return getAllProduct;
+//    }
     public ProductEntity saveProduct(ProductEntity product){
         return repository.save(product);
     }
@@ -95,10 +141,10 @@ public class ProductService {
 //        }
     }
     public List<ProductDTO> FindProducts(){return repository.findProducts();}
-    public Page<ProductDTO> getProductsWithPagination(int offset, int pageSize){
-        Page<ProductDTO> productsPage = repository.findWithPagination(PageRequest.of(offset, pageSize));
-        return productsPage;
-    }
+//    public Page<ProductDTO> getProductsWithPagination(int offset, int pageSize){
+//        Page<ProductDTO> productsPage = repository.findWithPagination(PageRequest.of(offset, pageSize));
+//        return productsPage;
+//    }
 
 
 }

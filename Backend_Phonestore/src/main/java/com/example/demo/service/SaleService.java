@@ -48,6 +48,7 @@ public class SaleService {
             old.setFromDate(saleEntity.getFromDate());
             old.setToDate(saleEntity.getToDate());
             old.setStatus(saleEntity.getStatus());
+            old.setDiscount(saleEntity.getDiscount());
             return repository.save(old);
         }
         return null;

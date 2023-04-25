@@ -78,26 +78,27 @@
             <button class="nut_dropdown">
               <i class="fa-solid fa-user"></i>
             </button>
-            <div class="noidung_dropdown" id="noidung_dropdown">
-              
-            </div>
+            <div class="noidung_dropdown" id="noidung_dropdown"></div>
             <script>
-              let user={};
+              let user = {};
               let storage = localStorage.getItem("user");
               if (storage) {
-                 user= JSON.parse(storage);
-                 $("#noidung_dropdown").html(`
-                <a style="font-size:12px; font-weight:bold; cursor:pointer;">`+user.email+`</a>
+                user = JSON.parse(storage);
+                $("#noidung_dropdown").html(
+                  `
+                 <a href="/Template_FrontEnd/personal-order.html" style="font-size:12px; font-weight:bold; cursor:pointer;">` +
+                    user.email +
+                    `</a>
                 <a href="" onclick="logout()">Đăng xuất</a>
-                `);
-              }
-              else{
+                `
+                );
+              } else {
                 $("#noidung_dropdown").html(`
                 <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
-                `)
+                `);
               }
-              
-              function logout(){
+
+              function logout() {
                 localStorage.removeItem("user");
               }
             </script>
@@ -158,7 +159,7 @@
                   <div class="product-inner">
                     <h2 class="product-name"></h2>
                     <div class="product-inner-price">
-                      <ins id="price"></ins><ins>VNĐ</ins>
+                      <ins id="price"></ins><ins></ins>
                     </div>
                     <div class="amount-product">
                       <span style="display: flex"
@@ -270,12 +271,7 @@
                 var urlParams = new URLSearchParams(window.location.search);
                 var id = urlParams.get("id");
                 var colorId = urlParams.get("color");
-                document
-                  .getElementById("add_to_cart_button")
-                  .setAttribute(
-                    "onclick",
-                    "addToCart(" + id + "," + colorId + ","+1+")"
-                  );
+
                 //render detail
                 $.ajax({
                   type: "GET",
@@ -286,12 +282,26 @@
                     colorId,
                   dataType: "json",
                   success: function (result, status, xhr) {
+                    document
+                      .getElementById("add_to_cart_button")
+                      .setAttribute(
+                        "onclick",
+                        "addToCart(" + result.id + "," + result.colorId + "," + 1 +")"
+                      );
                     //product name
                     $(".product-name").html(
                       result.productName + ` ` + result.colorName
                     );
                     // price
-                    $("#price").html(numberWithCommas(result.price));
+                    $("#price").html(
+                      executePrice(
+                        result.fromDate,
+                        result.toDate,
+                        result.saleStatus,
+                        result.discount,
+                        result.price
+                      )
+                    );
                     // amount
                     $("#amount").html(result.amount);
                     // image
@@ -362,7 +372,64 @@
                     alert("Lỗi render product detail");
                   },
                 });
+                function executePrice(
+                  fromDate,
+                  toDate,
+                  saleStatus,
+                  discount,
+                  price
+                ) {
+                  //format from date
+                  var date2 = new Date(fromDate);
+                  var day2 = date2.getDate();
+                  var month2 = date2.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+                  var year2 = date2.getFullYear();
+                  var dateString2 =
+                    year2.toString().padStart(2, "0") +
+                    "-" +
+                    month2.toString().padStart(2, "0") +
+                    "-" +
+                    day2;
+                  //format from date
+                  var date3 = new Date(toDate);
+                  var day3 = date3.getDate();
+                  var month3 = date3.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+                  var year3 = date3.getFullYear();
+                  var dateString3 =
+                    year3.toString().padStart(2, "0") +
+                    "-" +
+                    month3.toString().padStart(2, "0") +
+                    "-" +
+                    day3;
+                  //format date now
+                  var now = new Date();
+                  var currentDate = now.toISOString();
+                  var date1 = new Date(currentDate);
+                  var day1 = date1.getDate();
+                  var month1 = date1.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+                  var year1 = date1.getFullYear();
+                  var dateString1 =
+                    year1.toString().padStart(2, "0") +
+                    "-" +
+                    month1.toString().padStart(2, "0") +
+                    "-" +
+                    day1;
+                  //compare date
+                  var nowDate = new Date(dateString1);
+                  var from = new Date(dateString2);
+                  var to = new Date(dateString3);
 
+                  if (nowDate >= from && nowDate <= to && saleStatus) {
+                    return (
+                      numberWithCommas(price - (price * discount) / 100) +
+                      `<u>đ</u>  <del style="color:grey;">` +
+                      numberWithCommas(price) +
+                      `<u>đ</u></del>`
+                    );
+                  } else {
+                    return numberWithCommas(price) + `<u>đ</u>`;
+                  }
+                }
                 //render image
 
                 $.ajax({
@@ -639,7 +706,7 @@
                             `,` +
                             item.colorId +
                             `,` +
-                            0 +
+                            1 +
                             `)" class="add-to-cart-link"
                                     ><i class="fa fa-shopping-cart"></i> Thêm Vào Giỏ</a
                                   >
@@ -663,8 +730,15 @@
 
                               <div class="product-carousel-price">
                                 <ins>` +
-                            numberWithCommas(item.price) +
-                            `</ins><ins>VNĐ
+                                  executePrice(
+                        item.fromDate,
+                        item.toDate,
+                        item.saleStatus,
+                        item.discount,
+                        item.price
+                      )
+                       +
+                            `</ins><ins>
                               </div>
                       </div>`
                         );

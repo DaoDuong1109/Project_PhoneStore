@@ -5,6 +5,7 @@ import com.example.demo.model.dto.product.DetailProductDTO;
 import com.example.demo.model.dto.product.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,14 +18,24 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
 //    public List<ProductEntity> findByName(String name);
 
     //findAllPagination
-    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, p.categoryEntity)  " +
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, " +
+            "p.categoryEntity,s.fromDate, s.toDate, s.discount, s.status)  " +
             "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
             "join SaleEntity s on p.saleEntity.id=s.id " +
             "join ColorEntity c on pc.colorId=c.id " +
             " where pc.amount>0 ")
-    Page<ProductDTO> findWithPagination(PageRequest of);
+    Page<ProductDTO> findWithPagination(Pageable pageable);
+    //findAllPagination
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, " +
+            "p.categoryEntity,s.fromDate, s.toDate, s.discount, s.status)  " +
+            "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
+            "join SaleEntity s on p.saleEntity.id=s.id " +
+            "join ColorEntity c on pc.colorId=c.id " +
+            " where pc.amount>0 and p.name like '%?1%'")
+    Page<ProductDTO> findWithKeySearch(String name,Pageable pageable);
     //findAll
-    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, p.categoryEntity)  " +
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price," +
+            " p.categoryEntity, s.fromDate, s.toDate, s.discount, s.status)  " +
             "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
             "join SaleEntity s on p.saleEntity.id=s.id " +
             "join ColorEntity c on pc.colorId=c.id " +
@@ -32,7 +43,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
     List<ProductDTO> findProducts();
 
     //find treding
-    @Query("SELECT NEW com.example.demo.model.dto.product.ProductTrendingDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, p.categoryEntity)  " +
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductTrendingDTO(p.ID, p.name, p.image,c.id, c.name, pc.price," +
+            " p.categoryEntity, s.fromDate, s.toDate, s.discount, s.status)  " +
             "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
             "join SaleEntity s on p.saleEntity.id=s.id " +
             "join ColorEntity c on pc.colorId=c.id " +
@@ -40,19 +52,23 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
     List<ProductTrendingDTO> findByTrending();
 
     //find by category
-    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO( p.id , p.name, p.image, c.id ,c.name,pc.price, p.categoryEntity) " +
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO( p.id , p.name, p.image, c.id ,c.name,pc.price," +
+            " p.categoryEntity, s.fromDate, s.toDate, s.discount, s.status) " +
             " FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId" +
-            " join ColorEntity c on pc.colorId=c.id" +
+            " join ColorEntity c on pc.colorId=c.id " +
+            " join SaleEntity s on p.saleEntity.id=s.id" +
             " where pc.amount>0 and p.categoryEntity.id=?1")
     List<ProductDTO> findByCategory(int categoryId);
 
     //find by product id and color id
     @Query("SELECT NEW com.example.demo.model.dto.product.DetailProductDTO(p.ID, p.name, p.screen, p.operatingSystem," +
             " p.rearCamera, p.frontCamera, p.cpu,\n" +
-            " p.ram, p.insideMemory, p.memoryCard, p.battery, p.image, pc.price, pc.amount, pc.colorId, c.name, p.categoryEntity)\n" +
-            " FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId\n" +
-            "                            join ColorEntity c on pc.colorId=c.id \n" +
-            "where pc.productId=?1 and pc.colorId=?2")
+            " p.ram, p.insideMemory, p.memoryCard, p.battery, p.image, pc.price, pc.amount, pc.colorId, c.name," +
+            " p.categoryEntity, s.fromDate, s.toDate, s.discount, s.status) " +
+            " FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
+            " join ColorEntity c on pc.colorId=c.id" +
+            " join SaleEntity s on p.saleEntity.id=s.id" +
+            " where pc.productId=?1 and pc.colorId=?2")
     DetailProductDTO findByProColId(int productId, int colorId);
 
     //find by category id

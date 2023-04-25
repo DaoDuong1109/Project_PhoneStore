@@ -5,6 +5,8 @@ import com.example.demo.model.dto.product.DetailProductDTO;
 import com.example.demo.model.dto.product.ProductDTO;
 import com.example.demo.model.dto.product.ProductTrendingDTO;
 import com.example.demo.model.dto.response.APIResponse;
+import com.example.demo.model.dto.response.GetAllProduct;
+import com.example.demo.model.dto.response.GetAllProductResponse;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,8 +28,8 @@ public class ProductController {
 //    }
 
     @GetMapping("/products")
-    public List<ProductEntity> getproduct(){
-        return service.getProducts();
+    public GetAllProductResponse getproduct( Integer pageNumber, Integer pageSize){
+        return service.getProducts(pageNumber, pageSize);
     }
     @PostMapping("/addProduct")
     public ProductEntity addProduct(@RequestBody ProductEntity product){
@@ -69,9 +71,7 @@ public class ProductController {
         return service.getProductDetail(id, color);
     }
     @GetMapping("/pagination")
-    public APIResponse<Page<ProductDTO>> findAllPagination(@RequestParam Optional<Integer> offset){
-        Page<ProductDTO> productDTOPage=service.getProductsWithPagination(offset.orElse(0), 8);
-        int total=service.FindProducts().size();
-        return new APIResponse<>(productDTOPage.getSize(), total ,productDTOPage);
+    public GetAllProduct findAllPagination(@RequestParam Optional<Integer> offset, Optional<Integer> pageSize){
+        return service.getAllProduct(offset.orElse(0),pageSize.orElse(0));
     }
 }

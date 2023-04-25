@@ -35,12 +35,13 @@
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="/Template_FrontEnd/js/shoppingCart.js"></script>
+    <script src="/Template_FrontEnd/js/personal-order.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/owl.carousel.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="css/index.css" />
     <link rel="stylesheet" href="css/responsive.css" />
+    <link rel="stylesheet" href="/Template_FrontEnd/css/personal-order.css">
   </head>
 
   <body>
@@ -94,6 +95,7 @@
                 );
               } else {
                 $("#noidung_dropdown").html(`
+                <a href="/Template_FrontEnd/personal-order.html" style="font-size:12px; font-weight:bold; cursor:pointer;">`+user.email+`</a>
                   <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
                   `);
               }
@@ -248,6 +250,7 @@
                             <th class="product-subtotal">
                               Trạng thái đơn hàng
                             </th>
+                            <th class="product-subtotal">Chi tiết</th>
                           </tr>
                         </thead>
                         <tbody id="cartBody">
@@ -261,6 +264,24 @@
                           </tr> -->
                         </tbody>
                       </table>
+
+                      <div id="popup">
+                        <div id="popup-content">
+                          <table class="table table-bordered">
+                            <thead>
+                              <tr >
+                                <th>Mã đơn</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Tổng tiền</th>
+                              </tr>
+                            </thead>
+                            <tbody id="contentTable"></tbody>
+                          </table>
+                          <button id="close-popup">Đóng</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -493,6 +514,7 @@
         $.get(url, function (data) {
           console.log(data);
           DisplayFunction(data);
+          
         });
         function DisplayFunction(data) {
           data.map((item) => {
@@ -501,7 +523,7 @@
                           <tr class="cart_item">
                               <td class="product-remove">
                               </td>
-                              <td class="product-name">` +
+                              <td class="product-name" id="orderId">` +
               item.orderId +
               `</td>
                               <td class="product-price">` +
@@ -513,12 +535,67 @@
                               <td class="product-subtotal">` +
               convertStatus(item.status) +
               `</td>
-                          </tr>
+              <td class="product-subtotal">
+                <button type="button" class="btn btn-info" id="open-popup">Xem chi tiết</button>
+                </td>
+                      </tr>
                       `;
           });
+          displayPopup();
         }
+        function displayPopup() {
+          //duyệt all các nút xem chi tiết
+          var selectButtonPopup = document.querySelectorAll("#open-popup");
+          // Lặp qua từng nút xem chi tiết và thêm sự kiện nhấp chuột vào mỗi nút
+          selectButtonPopup.forEach(function (button) {
+            button.addEventListener("click", function () {
+              const popup = document.getElementById("popup");
+              popup.style.display = "block";
+              // Lấy các phần tử liên quan đến nút được nhấp
+              var listItem = this.closest("tr");
+              var orderId = listItem.querySelector("#orderId").textContent;
+              console.log(orderId);
+              var url =
+                "http://localhost:9090/order/getDetailOrderId/" + orderId;
+              $.get(url, function (data) {
+                console.log(data);
+                var html = ``;
+                data.forEach((e) => {
+                  html +=
+                    `
+              <tr>
+                  <td>` +
+                    e.orderId +
+                    `</td>
+                  <td>` +
+                    e.productName +
+                    ` ` +
+                    e.colorName +
+                    `</td>
+                  <td>` +
+                    e.amount +
+                    `</td>
+                  <td>` +
+                    numberWithCommas(e.price) +
+                    `</td>
+                  <td>` +
+                    numberWithCommas(e.price * e.amount) +
+                    `</td>
+            </tr>
+              `;
+                });
+
+                $("#contentTable").html(html);
+              });
+            });
+          });
+        }
+        const closePopupButton = document.getElementById("close-popup");
+        closePopupButton.addEventListener("click", function () {
+          popup.style.display = "none";
+        });
         function convertStatus(data) {
-          if (data) {
+          if (data) { 
             return "Đã duyệt đơn";
           } else {
             return "Chờ duyệt đơn";
@@ -538,63 +615,14 @@
             year;
           return dateString;
         }
-        // cart.map((item) => {
-        //   cartBody.innerHTML +=
-        //     `
-        //     <tr class="cart_item">
-        //         <td class="product-remove">
-        //             <input type="text" hidden name="productIdItem" id="productIdItem" value="${item.data.id}">
-        //             <input type="text" hidden name="colorIdItem" id="colorIdItem" value="${item.data.colorId} ">
-        //             <input type="text" hidden name="amountItem" id="amountItem" value="${item.data.amount} ">
-
-        //         </td>
-
-        //         <td class="product-name">
-        //             <a href="single-product.html?id=` +
-        //     item.data.id +
-        //     `&color=` +
-        //     item.data.colorId +
-        //     `&category=` +
-        //     item.data.category.id +
-        //     `">${item.data.productName}</a>
-        //         </td>
-        //         <td class="product-name">
-        //             <span>${item.data.colorName}</span>
-        //         </td>
-
-        //         <td class="product-price">
-        //             <span class="amount" id="price">${numberWithCommas(
-        //               item.data.price
-        //             )}</span> VNĐ
-        //         </td>
-
-        //         <td class="product-quantity">
-        //             <div class="quantity buttons_added">
-
-        //                 <input type="number" readonly size="4" class="input-text qty text"
-        //                     style="text-align: center; " title="Qty" value="${
-        //                       item.quantity
-        //                     }" min="1"
-        //                     step="1" id="numberInputProduct">
-
-        //             </div>
-        //         </td>
-
-        //         <td class="product-subtotal">
-        //             <span class="amount" id="subtotal" >${numberWithCommas(
-        //               parseInt(item.data.price * item.quantity)
-        //             )}</span> VNĐ
-        //         </td>
-        // </tr>`;
-        // });
       }
 
       function showInfo() {
-        // let info = {};
-        // let storage = localStorage.getItem("user");
-        // if (storage) {
-        //   user = JSON.parse(storage);
-        // }
+        var user = {};
+        let storage = localStorage.getItem("user");
+        if (storage) {
+          user = JSON.parse(storage);
+        }
         console.log(user.fullname);
         document.getElementById("billing_fullname").value = user.fullname;
         document.getElementById("billing_email").value = user.email;
@@ -604,95 +632,36 @@
 
       $("#editInfo").submit(function (event) {
         event.preventDefault();
-        // var fullname=$("billing_fullname").val();
-        // var email=$("billing_email").val();
-        // var phone=$("billing_phone").val();
-        // var address=$("billing_address_detail").val();
-        // var password=user.password;
-       
+
         var userDetail = {
-         
           fullname: $("#billing_fullname").val(),
           email: $("#billing_email").val(),
           phone: $("#billing_phone").val(),
           address: $("#billing_address_detail").val(),
           password: user.password,
           roleEntity: {
-            id: user.roleEntity.id
+            id: user.roleEntity.id,
           },
         };
-        // var i = {
-        //   address: "băc ninh",
-        //   phone: "19001900",
-        //   email: "atstore@gmail.com",
-        //   createdDate: "2023-03-09T17:00:00.000+00:00",
-        //   status: true,
-        //   userEntity: {
-        //     id: 3,
-        //     roleEntity: {
-        //       id: 4,
-        //     },
-        //   },
-        // };
-        console.log(userDetail);
-        //create order
-        // $.ajax({
-        //   type: "POST",
-        //   url: "http://localhost:9090/order/createOrder",
-        //   data: JSON.stringify(order),
-        //   dataType: "json",
-        //   contentType: "application/json",
-        //   encode: true,
-        //   success: function (data) {
-        //     myCallbackFunction(data);
-        //   },
-        //   error: function () {
-        //     alert("Đặt hàng thất bại!!!");
-        //   },
-        // });
-        //get order id
-        // function myCallbackFunction(data) {
-        //   let cart = [];
-        //   let storage = localStorage.getItem("cart");
-        //   if (storage) {
-        //     cart = JSON.parse(storage);
-        //   }
 
-        //   var orderDetails = [];
-        //   for (let i = 0; i < cart.length; i++) {
-            //get sp trong local storage
-            // const item = cart[i];
-            //format to save into db
-            // let orderDetail = {
-            //   productId: item.data.id,
-            //   orderId: data.id,
-            //   price: item.data.price,
-            //   amount: item.quantity,
-            //   colorId: item.data.colorId,
-            // };
-            //list product formatted json
-        //     orderDetails.push(orderDetail);
-        //   }
-        //   console.log("order id :" + data.id);
-        //   console.log(cart);
-          //save into db
-        //   orderDetails.map((item) => {
-        //     postOrderDetail(item);
-        //   });
-        // }
-        // function postOrderDetail(data) {
-        //   $.ajax({
-        //     type: "POST",
-        //     url: "http://localhost:9090/orderDetail/createOrderDetail",
-        //     data: JSON.stringify(data),
-        //     dataType: "json",
-        //     contentType: "application/json",
-        //     encode: true,
-        //     success: function (data) {
-        //       console.log(data);
-        //     },
-        //   });
-        // }
+        // console.log(userDetail);
+        // console.log(user.id);
+
+        $.ajax({
+          type: "PUT",
+          url: "http://localhost:9090/user/updateUserById/" + user.id,
+          data: JSON.stringify(userDetail),
+          contentType: "application/json",
+          encode: true,
+          success: function (result) {
+            console.log("SUCCESS");
+            localStorage.setItem("user", JSON.stringify(result));
+            location.reload();
+          },
+          error: function (xhr, status, error) {
+            console.error(error);
+          },
+        });
       });
     </script>
   </body>

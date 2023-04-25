@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -18,4 +20,8 @@ public class ProductTrendingDTO {
     String colorName;
     Double price;
     CategoryEntity category;
+    Timestamp fromDate;
+    Timestamp toDate;
+    double discount;
+    boolean saleStatus;
 }

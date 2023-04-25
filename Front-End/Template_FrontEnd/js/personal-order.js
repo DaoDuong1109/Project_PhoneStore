@@ -1,28 +1,18 @@
 //cart=[
 //      {product:{id:1, name: 'sp1', colorId:1, colorName:'Đen', price: 232}, quantity}
 //]
-
-let cart=[];
+// $(document).ready(function() {
+let cart = [];
 var product = {};
 var total = 0;
 window.onload = function () {
-  
   loadTotalProduct();
   showCart();
   // localStorage.removeItem('cart');
   changePrice();
-  insert();
+
 };
-function insert() {
-  // Lấy tất cả subtotal
-  var subtotal = document.querySelectorAll("#subtotal");
-  var payment = 0;
-  subtotal.forEach(function (e) {
-    payment += parseInt(e.textContent.replace(/\,/g, ""));
-  });
-  document.getElementById("totalPayment").innerHTML = numberWithCommas(payment);
-  document.getElementById("totalBill").innerHTML = numberWithCommas(payment);
-}
+
 function changePrice() {
   // Lấy tất cả các nút "plus"
   var changePriceButtonPlus = document.querySelectorAll(".plus");
@@ -73,10 +63,10 @@ function changePrice() {
       }
       localStorage.setItem("cart", JSON.stringify(cart));
       loadTotalProduct();
-      //insert into total price
-      insert();
+      
     });
   });
+  
   // Lặp qua từng nút minus và thêm sự kiện nhấp chuột vào mỗi nút
   changePriceButtonMinus.forEach(function (button) {
     button.addEventListener("click", function () {
@@ -113,17 +103,15 @@ function changePrice() {
       }
       localStorage.setItem("cart", JSON.stringify(cart));
       loadTotalProduct();
-      insert();
+      
     });
   });
 }
 function addToCart(productId, colorId, quantity) {
-  
   let storage = localStorage.getItem("cart");
   if (storage) {
     cart = JSON.parse(storage);
   }
-
   var url =
     "http://localhost:9090/product/findDetailProduct?id=" +
     productId +
@@ -145,20 +133,26 @@ function addToCart(productId, colorId, quantity) {
     // if (item.quantity <= data.amount) {
         if (item) {
             console.log("sl: "+quantity);
-          if(quantity>1){
-              item.quantity += quantity;
-          }
-          else{
-              item.quantity += 1;
-          }
+    //       console.log("item");
+    //       console.log(item);
+    //     // if (quantity > 1) {
+    //     //     item.quantity=(item.quantity+quantity)>data.amount?data.amount:(item.quantity+quantity);
+    //     // }
+    //     // else{
+        if(quantity>1){
+            item.quantity += quantity;
+        }
+        else{
+            item.quantity += 1;
+        }
 
-          if(item.quantity>item.data.amount){
-              item.quantity=item.data.amount;
-          }
-          console.log(item);
+        if(item.quantity>item.data.amount){
+            item.quantity=item.data.amount;
+        }
+        console.log(item);
     //     // }
       } else {
-        quantity>1?cart.push({ data, quantity: quantity }):cart.push({ data, quantity: 1 });
+            cart.push({ data, quantity: 1 });
       }
     // }
     localStorage.setItem("cart", JSON.stringify(cart));
@@ -212,9 +206,9 @@ function showCart() {
                 </td>
             
                 <td class="product-price">
-                    <span class="amount" id="price">${numberWithCommas(executePrice(
-                      item.data.fromDate,item.data.toDate,item.data.saleStatus,item.data.discount,parseInt(item.data.price)
-                    ))}</span> VNĐ
+                    <span class="amount" id="price">${numberWithCommas(
+                      item.data.price
+                    )}</span> VNĐ
                 </td>
             
                 <td class="product-quantity">
@@ -234,9 +228,9 @@ function showCart() {
                 </td>
             
                 <td class="product-subtotal">
-                    <span class="amount" id="subtotal" >${numberWithCommas(executePrice(
-                      item.data.fromDate,item.data.toDate,item.data.saleStatus,item.data.discount,item.data.price) * item.quantity)
-                    }</span> VNĐ
+                    <span class="amount" id="subtotal" >${numberWithCommas(
+                      parseInt(item.data.price * item.quantity)
+                    )}</span> VNĐ
                 </td>
         </tr>`;
   });
@@ -277,7 +271,7 @@ function removeItem(productId, colorId) {
   localStorage.setItem("cart", JSON.stringify(cart));
   showCart();
   loadTotalProduct();
-  insert();
+ 
   changePrice();
 }
 // format price
@@ -286,60 +280,3 @@ function numberWithCommas(x) {
 }
 // checkout-form
 // })
-
-//execute price
-function executePrice(
-  fromDate,
-  toDate,
-  saleStatus,
-  discount,
-  price
-) {
-  
-  //format from date
-  var date2 = new Date(fromDate);
-  var day2 = date2.getDate();
-  var month2 = date2.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
-  var year2 = date2.getFullYear();
-  var dateString2 =
-    year2.toString().padStart(2, "0") +
-    "-" +
-    month2.toString().padStart(2, "0") +
-    "-" +
-    day2;
-  //format from date
-  var date3 = new Date(toDate);
-  var day3 = date3.getDate();
-  var month3 = date3.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
-  var year3 = date3.getFullYear();
-  var dateString3 =
-    year3.toString().padStart(2, "0") +
-    "-" +
-    month3.toString().padStart(2, "0") +
-    "-" +
-    day3;
-  //format date now
-  var now = new Date();
-  var currentDate = now.toISOString();
-  var date1 = new Date(currentDate);
-  var day1 = date1.getDate();
-  var month1 = date1.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
-  var year1 = date1.getFullYear();
-  var dateString1 =
-    year1.toString().padStart(2, "0") +
-    "-" +
-    month1.toString().padStart(2, "0") +
-    "-" +
-    day1;
-    //compare date
-    var nowDate =new Date(dateString1); 
-    var from =new Date(dateString2); 
-    var to =new Date(dateString3); 
-
-    if(nowDate>=from && nowDate<=to && saleStatus){
-      return price-(price*discount/100);
-    }
-    else{
-      return price;
-    }
-}

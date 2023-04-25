@@ -4,42 +4,237 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Document</title>
+    <style>
+      #popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+      }
+
+      #popup-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
+    <input type="text" id="search" placeholder="Tìm kiếm..." />
+    <ul id="list">
+      <li>Iphone X</li>
+      <li>iPhone 12</li>
+      <li>samsung s22</li>
+      <li>samsung note</li>
+      <li>iphone 14</li>
+    </ul>
+    <script>
+      const searchInput = document.getElementById("search");
+      const list = document.getElementById("list").getElementsByTagName("li");
+
+      searchInput.addEventListener("input", function () {
+        const searchValue = this.value.toLowerCase();
+        for (let i = 0; i < list.length; i++) {
+          const item = list[i].textContent.toLowerCase();
+          if (item.indexOf(searchValue) > -1) {
+            list[i].style.display = "";
+          } else {
+            list[i].style.display = "none";
+          }
+        }
+      });
+    </script>
+    <!-- <div class="container">
+      <div>
+        <p id="date"></p>
+      </div>
+      <button onclick="date()">click</button>
+    </div> -->
+    <!-- <script>
+      function date() {
+        //date now
+        var now = new Date();
+        //from date
+        var fromDate = "2023-02-10T00:00:00.000+00:00";
+        var currentDate = now.toISOString(); //2023-04-23T09:51:51.646Z
+        //format from date
+        var date2 = new Date(fromDate);
+        var day2 = date2.getDate();
+        var month2 = date2.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+        var year2 = date2.getFullYear();
+        var dateString2 =
+          year2.toString().padStart(2, "0") +
+          "-" +
+          month2.toString().padStart(2, "0") +
+          "-" +
+          day2;
+        var from = new Date(dateString2);
+
+        //format date now
+        var date1 = new Date(currentDate);
+        var day1 = date1.getDate();
+        var month1 = date1.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+        var year1 = date1.getFullYear();
+        var dateString1 =
+          year1.toString().padStart(2, "0") +
+          "-" +
+          month1.toString().padStart(2, "0") +
+          "-" +
+          day1;
+        var from = new Date(dateString2);
+        var now=new Date(dateString1);
+        if (from < now) {
+          document.getElementById("date").innerHTML="from is before now";
+        } else if (from > now) {
+          document.getElementById("date").innerHTML="from is after now";
+        } else {
+          document.getElementById("date").innerHTML="from and now are the same";
+        }
+        document.getElementById("date").append( dateString2 +"/"+dateString1);
+      }
+    </script> -->
+    <!-- popup -->
+
+    <!-- <table border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id="orderId">13</td>
+          <td>
+            <button id="open-popup">Open Popup</button>
+          </td>
+        </tr>
+        <tr>
+          <td id="orderId">14</td>
+          <td>
+            <button id="open-popup">Open Popup</button>
+          </td>
+        </tr>
+        <tr>
+          <td id="orderId">16</td>
+          <td>
+            <button id="open-popup">Open Popup</button>
+          </td>
+        </tr>
+        <tr>
+          <td id="orderId">17</td>
+          <td>
+            <button id="open-popup">Open Popup</button>
+          </td>
+        </tr>
+        <tr>
+          <td id="orderId">20</td>
+          <td>
+            <button id="open-popup">Open Popup</button>
+          </td>
+        </tr>
+        <tr>
+          <td id="orderId">21</td>
+          <td>
+            <button id="open-popup">Open Popup</button>
+          </td>
+        </tr>
+      </tbody>
+    </table> -->
+
+    <!-- <div id="popup">
+      <div id="popup-content">
+        <table border="1">
+          <thead>
+            <tr>
+              <td>Mã đơn</td>
+              <td>Tên sản phẩm</td>
+              <td>Số lượng</td>
+              <td>Đơn giá</td>
+              <td>Tổng tiền</td>
+            </tr>
+          </thead>
+          <tbody id="contentTable">
+            <tr>
+              <td>1</td>
+              <td>SP1</td>
+              <td>2</td>
+              <td>12321</td>
+              <td>12312312</td>
+            </tr>
+          </tbody>
+        </table>
+        <button id="close-popup">Đóng</button>
+      </div>
+    </div> -->
+    <!--end popup -->
+
+    <!-- <script>
+      function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+      }
+      var selectButtonPopup = document.querySelectorAll("#open-popup");
+      // Lặp qua từng nút plus và thêm sự kiện nhấp chuột vào mỗi nút
+      selectButtonPopup.forEach(function (button) {
+        button.addEventListener("click", function () {
+          const popup = document.getElementById("popup");
+          popup.style.display = "block";
+          // Lấy các phần tử liên quan đến nút được nhấp
+          var listItem = this.closest("tr");
+          var orderId = listItem.querySelector("#orderId").textContent;
+
+          var url = "http://localhost:9090/order/getDetailOrderId/" + orderId;
+          $.get(url, function (data) {
+            console.log(data);
+            var html = ``;
+            data.forEach((e) => {
+              html +=
+                `
+              <tr>
+                  <td>` +
+                e.orderId +
+                `</td>
+                  <td>` +
+                e.productName +
+                ` ` +
+                e.colorName +
+                `</td>
+                  <td>` +
+                e.amount +
+                `</td>
+                  <td>` +
+                numberWithCommas(e.price) +
+                `</td>
+                  <td>` +
+                numberWithCommas(e.price * e.amount) +
+                `</td>
+            </tr>
+              `;
+            });
+
+            $("#contentTable").html(html);
+          });
+        });
+      });
     
-    <div>
-      <select
-        class="form-select form-select-sm mb-3"
-        id="city"
-        aria-label=".form-select-sm"
-      >
-        <option value="" selected>Chọn tỉnh thành</option>
-      </select>
+    </script> -->
 
-      <select
-        class="form-select form-select-sm mb-3"
-        id="district"
-        aria-label=".form-select-sm"
-      >
-        <option value="" selected>Chọn quận huyện</option>
-      </select>
-
-      <select
-        class="form-select form-select-sm"
-        id="ward"
-        aria-label=".form-select-sm"
-      >
-        <option value="" selected>Chọn phường xã</option>
-      </select>
-    </div>
-
-    <div style="margin: 20% 0 0 40%" class="container">
+    <!-- <div style="margin: 20% 0 0 40%" class="container">
       <table border="1" style="margin-top: 30px">
         <tr>
-          <th class="product-remove">&nbsp;</th>
-          <!-- <th class="product-thumbnail" id="thumbnail-product">&nbsp;</th> -->
-          <th class="product-name">Sản phẩm</th>
+          <th class="product-remove">&nbsp;</th> -->
+    <!-- <th class="product-thumbnail" id="thumbnail-product">&nbsp;</th> -->
+    <!-- <th class="product-name">Sản phẩm</th>
           <th class="product-name">Màu sắc</th>
           <th class="product-price">Giá tiền</th>
           <th class="product-quantity">Số lượng</th>
@@ -148,60 +343,23 @@
       </select>
       <input class="billing_address_1" name="" type="hidden" value="" />
       <input class="billing_address_2" name="" type="hidden" value="" />
-    </div>
+    </div> -->
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script>
-      var citis = document.getElementById("city");
-      var districts = document.getElementById("district");
-      var wards = document.getElementById("ward");
-      var Parameter = {
-        url: "https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json",
-        method: "GET",
-        responseType: "application/json",
-      };
-      var promise = axios(Parameter);
-      promise.then(function (result) {
-        renderCity(result.data);
-      });
+      // const openPopupButton = document.getElementById("open-popup");
+      // const closePopupButton = document.getElementById("close-popup");
+      // const popup = document.getElementById("popup");
 
-      function renderCity(data) {
-        for (const x of data) {
-          citis.options[citis.options.length] = new Option(x.Name, x.Id);
-        }
-        citis.onchange = function () {
-          district.length = 1;
-          ward.length = 1;
-          if (this.value != "") {
-            const result = data.filter((n) => n.Id === this.value);
+      // openPopupButton.addEventListener("click", function () {
+      //   popup.style.display = "block";
+      // });
 
-            for (const k of result[0].Districts) {
-              district.options[district.options.length] = new Option(
-                k.Name,
-                k.Id
-              );
-            }
-          }
-        };
-        district.onchange = function () {
-          ward.length = 1;
-          const dataCity = data.filter((n) => n.Id === citis.value);
-          if (this.value != "") {
-            const dataWards = dataCity[0].Districts.filter(
-              (n) => n.Id === this.value
-            )[0].Wards;
-
-            for (const w of dataWards) {
-              wards.options[wards.options.length] = new Option(w.Name, w.Id);
-            }
-          }
-        };
-      }
+      // closePopupButton.addEventListener("click", function () {
+      //   popup.style.display = "none";
+      // });
     </script>
     <script>
-      function numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-      }
       // Lấy tất cả các nút "plus"
       var changePriceButtonPlus = document.querySelectorAll(".plus");
       // Lấy tất cả các nút "minus"

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.ColorEntity;
 import com.example.demo.entity.ProductColorEntity;
 import com.example.demo.model.dto.productColor.ProductColorDTO;
+import com.example.demo.model.dto.productColor.QuantityStatisticDTO;
 import com.example.demo.repository.ColorRepository;
 import com.example.demo.repository.ProductColorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +72,7 @@ public class ProductColorService {
             }
 
         }
-        //gan cac sp khong có trong ds mới sang
+
         //gan cac sp khong có trong ds mới sang
         List<ProductColorEntity> listNewProductColor=null;
         if(!oldLists.isEmpty()) {
@@ -85,6 +86,9 @@ public class ProductColorService {
         }
          return oldLists;
     }
-
-
+    public List<ProductColorEntity> updateAll(List<ProductColorEntity> newLists){
+        return repository.saveAll(newLists);
+    }
+    public List<ProductColorEntity> getAll(){return repository.findAll();}
+    public List<QuantityStatisticDTO> getStatistics(){return repository.getQuantityStatistic();}
 }

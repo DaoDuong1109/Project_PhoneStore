@@ -96,12 +96,13 @@
               if (storage) {
                  user= JSON.parse(storage);
                  $("#noidung_dropdown").html(`
-                <a style="font-size:12px; font-weight:bold; cursor:pointer;">`+user.email+`</a>
+                 <a href="/Template_FrontEnd/personal-order.html" style="font-size:12px; font-weight:bold; cursor:pointer;">`+user.email+`</a>
                 <a href="" onclick="logout()">Đăng xuất</a>
                 `);
               }
               else{
                 $("#noidung_dropdown").html(`
+                
                 <a href="/Template_FrontEnd/login.html">Đăng nhập</a>
                 `)
               }
@@ -150,7 +151,8 @@
       </div>
       <div class="col-md-2" style="padding-right: 0">
         <div class="category-title">Nhãn Hàng</div>
-        <select id="search-brand">
+        <select id="search-brand" onchange="">
+          <option value="0" selected>--Chọn--</option>
           <!-- <option value="1">iPhone</option>
           <option value="2">Samsung</option>
           <option value="3">Oppo</option> -->
@@ -397,12 +399,11 @@
         var urlParams = new URLSearchParams(window.location.search);
         var offset = "";
         offset=urlParams.get("page");
-        var recordCount=0;
-        var recordTotal=0;
+        var search=urlParams.get("search");
         //check exists offset
         var URL="";
         if(offset!=null){
-          URL= "http://localhost:9090/product/pagination?offset="+ parseInt(offset-1);
+          URL= "http://localhost:9090/product/pagination?offset="+offset;
         }
         else{
           URL="http://localhost:9090/product/pagination";
@@ -412,20 +413,16 @@
                 url: URL,
                 dataType: "json",
                 success: function (result) {
-                  recordCount=result.recordCount;
-                  recordTotal=result.recordTotal;
-                  var total=parseInt(recordTotal/recordCount);
-                  var du=recordTotal%recordCount;
-                  total+=du>0?1:0;
+                  
 
-                  for(var i=1;i<=total;i++){
+                  for(var i=1;i<=result.totalPage;i++){
                     $(".pagination").append(`
                     <li><a href="./shop.html?page=`+i+`">`+i+`</a></li>
                     `);
                   }
-                  result.response.content.forEach(e => {
+                  result.productDTOList.forEach(e => {
                     $(".listProduct").append(`
-                    <div class="col-md-3 col-sm-6">
+                    <div class="col-md-3 col-sm-6" style="height:443.5px;margin-bottom:35px">
 
                         <div class="single-shop-product">
                           <div class="product-upper">
@@ -436,20 +433,19 @@
                               `&color=`+e.colorId+
                               `&category=`+e.category.id+`">`+e.productName+` `+e.colorName+`</a></h2>
                           <div class="product-carousel-price">
-                            <ins>`+numberWithCommas(e.price)+`</ins><ins>VNĐ</ins>
+                            <ins>`+executePrice(e.fromDate,e.toDate,e.saleStatus, e.discount, e.price)+`</ins>
                           </div>
 
                           <div class="product-option-shop">
                             <a class="add_to_cart_button" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow"
-                            onclick="addToCart(`+e.id+`,`+ e.colorId+`,`+0+ `)">Thêm vào giỏ</a>
+                            onclick="addToCart(`+e.id+`,`+ e.colorId+`,`+1 +`)">Thêm vào giỏ</a>
                           </div>
                         </div>
 
                         </div>
                     `);
                   });
-                  console.log(total);
-                  console.log(result.response.content);
+                  
                 },
                 error: function (xhr, status, error) {
               alert(
@@ -457,7 +453,63 @@
               );
             }
           });
+          //execute discount
+          function executePrice(
+                    fromDate,
+                    toDate,
+                    saleStatus,
+                    discount,
+                    price
+                  ) {
+                    
+                    //format from date
+                    var date2 = new Date(fromDate);
+                    var day2 = date2.getDate();
+                    var month2 = date2.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+                    var year2 = date2.getFullYear();
+                    var dateString2 =
+                      year2.toString().padStart(2, "0") +
+                      "-" +
+                      month2.toString().padStart(2, "0") +
+                      "-" +
+                      day2;
+                    //format from date
+                    var date3 = new Date(toDate);
+                    var day3 = date3.getDate();
+                    var month3 = date3.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+                    var year3 = date3.getFullYear();
+                    var dateString3 =
+                      year3.toString().padStart(2, "0") +
+                      "-" +
+                      month3.toString().padStart(2, "0") +
+                      "-" +
+                      day3;
+                    //format date now
+                    var now = new Date();
+                    var currentDate = now.toISOString();
+                    var date1 = new Date(currentDate);
+                    var day1 = date1.getDate();
+                    var month1 = date1.getMonth() + 1; // Lưu ý: tháng trong JavaScript bắt đầu từ 0, nên cần cộng thêm 1
+                    var year1 = date1.getFullYear();
+                    var dateString1 =
+                      year1.toString().padStart(2, "0") +
+                      "-" +
+                      month1.toString().padStart(2, "0") +
+                      "-" +
+                      day1;
+                      //compare date
+                      var nowDate =new Date(dateString1); 
+                      var from =new Date(dateString2); 
+                      var to =new Date(dateString3); 
 
+                      if(nowDate>=from && nowDate<=to && saleStatus){
+                        return numberWithCommas(price-(price*discount/100))+`<u>đ</u>  <del style="color:grey;">`+
+                          numberWithCommas(price)+`<u>đ</u></del>`;
+                      }
+                      else{
+                        return numberWithCommas(price)+`<u>đ</u>`;
+                      }
+                  }
           //render brand
           $.ajax({
                 type: "GET",
