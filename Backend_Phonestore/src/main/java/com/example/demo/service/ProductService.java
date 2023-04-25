@@ -46,7 +46,7 @@ public class ProductService {
         getAllProductResponse.setTotalPage(productEntities.getTotalPages());
         return getAllProductResponse;
     }
-    public GetAllProduct getAllProduct(Integer pageNumber, Integer pageSize){
+    public GetAllProduct getAllProduct(Integer pageNumber, Integer pageSize, String keyword, String brand){
         if(pageNumber==null || pageNumber==0){
             pageNumber=1;
         }
@@ -54,29 +54,36 @@ public class ProductService {
             pageSize=8;
         }
         Pageable pageable=PageRequest.of(pageNumber-1,pageSize);
-        Page<ProductDTO> productDTOPage=repository.findWithPagination(pageable);
+        Page<ProductDTO> productDTOPage;
+        if(keyword!=null){
+            productDTOPage=repository.findWithKeySearch(keyword,pageable);
+        } else if (brand!=null) {
+            productDTOPage=repository.findWithKeySearchCategory(brand,pageable);
+        } else{
+            productDTOPage=repository.findWithPagination(pageable);
+        }
         GetAllProduct getAllProduct=new GetAllProduct();
         getAllProduct.setProductDTOList(productDTOPage.getContent());
         getAllProduct.setTotalPage(productDTOPage.getTotalPages());
         return getAllProduct;
     }
-//    public GetAllProduct getAllKeySearchProduct(Integer pageNumber, Integer pageSize, String keySearch){
-//        if(pageNumber==null || pageNumber==0){
-//            pageNumber=1;
-//        }
-//        if(pageSize==0 || pageSize==null){
-//            pageSize=8;
-//        }
-//        if(StringUtils.isEmpty(keySearch) ||keySearch.equals("") ){
-//            keySearch
-//        }
-//        Pageable pageable=PageRequest.of(pageNumber-1,pageSize);
-//        Page<ProductDTO> productDTOPage=repository.findWithPagination(pageable);
-//        GetAllProduct getAllProduct=new GetAllProduct();
-//        getAllProduct.setProductDTOList(productDTOPage.getContent());
-//        getAllProduct.setTotalPage(productDTOPage.getTotalPages());
-//        return getAllProduct;
-//    }
+    public GetAllProduct getAllKeySearchProduct(Integer pageNumber, Integer pageSize, String keySearch){
+        if(pageNumber==null || pageNumber==0){
+            pageNumber=1;
+        }
+        if(pageSize==0 || pageSize==null){
+            pageSize=8;
+        }
+        if(StringUtils.isEmpty(keySearch) ||keySearch.equals("") ){
+            keySearch=null;
+        }
+        Pageable pageable=PageRequest.of(pageNumber-1,pageSize);
+        Page<ProductDTO> productDTOPage=repository.findWithKeySearch(keySearch,pageable);
+        GetAllProduct getAllProduct=new GetAllProduct();
+        getAllProduct.setProductDTOList(productDTOPage.getContent());
+        getAllProduct.setTotalPage(productDTOPage.getTotalPages());
+        return getAllProduct;
+    }
     public ProductEntity saveProduct(ProductEntity product){
         return repository.save(product);
     }

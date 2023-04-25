@@ -20,6 +20,10 @@ public class CommentController {
     public List<CommentEntity> findAll(){return service.getAll();}
     @GetMapping("/findById/{id}")
     public CommentEntity findById(@PathVariable int id){return service.getById(id);}
+    @PostMapping("/create")
+    public CommentEntity createComment(@RequestBody CommentEntity comment){
+        return service.addByUser(comment);
+    }
     @DeleteMapping("/deleteById/{id}")
     public String deleteComment(@PathVariable int id){
         return service.deleleById(id);

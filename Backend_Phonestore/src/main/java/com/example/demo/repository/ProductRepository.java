@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.example.demo.model.dto.product.ProductTrendingDTO;
 import java.util.List;
@@ -25,14 +26,22 @@ public interface ProductRepository extends JpaRepository<ProductEntity,Integer> 
             "join ColorEntity c on pc.colorId=c.id " +
             " where pc.amount>0 ")
     Page<ProductDTO> findWithPagination(Pageable pageable);
-    //findAllPagination
+    //findAllWithSearchProductName
     @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, " +
             "p.categoryEntity,s.fromDate, s.toDate, s.discount, s.status)  " +
             "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
             "join SaleEntity s on p.saleEntity.id=s.id " +
             "join ColorEntity c on pc.colorId=c.id " +
-            " where pc.amount>0 and p.name like '%?1%'")
-    Page<ProductDTO> findWithKeySearch(String name,Pageable pageable);
+            " where pc.amount>0 and p.name like %?1%")
+    Page<ProductDTO> findWithKeySearch(@Param(value = "keyword") String keyword, Pageable pageable);
+    //findAllWithSearchCategoryID
+    @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price, " +
+            "p.categoryEntity,s.fromDate, s.toDate, s.discount, s.status)  " +
+            "FROM ProductEntity p join ProductColorEntity pc on p.id=pc.productId " +
+            "join SaleEntity s on p.saleEntity.id=s.id " +
+            "join ColorEntity c on pc.colorId=c.id " +
+            " where pc.amount>0 and p.categoryEntity.id=?1")
+    Page<ProductDTO> findWithKeySearchCategory(@Param(value = "brand") String brand, Pageable pageable);
     //findAll
     @Query("SELECT NEW com.example.demo.model.dto.product.ProductDTO(p.ID, p.name, p.image,c.id, c.name, pc.price," +
             " p.categoryEntity, s.fromDate, s.toDate, s.discount, s.status)  " +

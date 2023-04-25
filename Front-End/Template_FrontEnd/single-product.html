@@ -286,7 +286,13 @@
                       .getElementById("add_to_cart_button")
                       .setAttribute(
                         "onclick",
-                        "addToCart(" + result.id + "," + result.colorId + "," + 1 +")"
+                        "addToCart(" +
+                          result.id +
+                          "," +
+                          result.colorId +
+                          "," +
+                          1 +
+                          ")"
                       );
                     //product name
                     $(".product-name").html(
@@ -302,6 +308,8 @@
                         result.price
                       )
                     );
+
+                    $("#title-review").append(result.productName);
                     // amount
                     $("#amount").html(result.amount);
                     // image
@@ -730,14 +738,13 @@
 
                               <div class="product-carousel-price">
                                 <ins>` +
-                                  executePrice(
-                        item.fromDate,
-                        item.toDate,
-                        item.saleStatus,
-                        item.discount,
-                        item.price
-                      )
-                       +
+                            executePrice(
+                              item.fromDate,
+                              item.toDate,
+                              item.saleStatus,
+                              item.discount,
+                              item.price
+                            ) +
                             `</ins><ins>
                               </div>
                       </div>`
@@ -753,10 +760,10 @@
 
               <div class="full-width-content">
                 <div class="heading">
-                  <h3>Bình luận về Điện thoại iPhone 14 Pro Trắng</h3>
+                  <h3 id="title-review">Đánh giá về điện thoại </h3>
                 </div>
-                <form action="">
-                  <div class="row">
+                <form action="" id="review">
+                  <!-- <div class="row">
                     <div class="col-md-4">
                       <input
                         type="text"
@@ -782,7 +789,7 @@
                         placeholder="Số điện thoại"
                       />
                     </div>
-                  </div>
+                  </div> -->
                   <div class="row">
                     <div class="col">
                       <div class="control">
@@ -814,32 +821,17 @@
                     </div>
                   </div>
                 </form>
-                <div class="reviewContent">
-                  <!-- <div class="item">
-                    <div class="avt">
-                      <img src="/img/user.png" />
-                  
-                    </div>
-                    <div class="infor">
-                      <p>
-                        <strong class="name">Khánh</strong>
-                      </p>
-                      <div class="content">
-                        Phần ưu đãi thanh toán qua TP Bank EVO 30% là như nào
-                        vậy ạ???
-                      </div>
-                    </div>
-                  </div> -->
-                  <script>
-                    //render comment by product id
-                    $.ajax({
-                      type: "GET",
-                      url: "http://localhost:9090/comment/findByProId/" + id,
-                      dataType: "json",
-                      success: function (result, status, xhr) {
-                        result.forEach((e) => {
-                          $(".reviewContent").append(
-                            `
+                <div class="reviewContent"></div>
+                <script>
+                  //render comment by product id
+                  $.ajax({
+                    type: "GET",
+                    url: "http://localhost:9090/comment/findByProId/" + id,
+                    dataType: "json",
+                    success: function (result, status, xhr) {
+                      result.forEach((e) => {
+                        $(".reviewContent").append(
+                          `
                           <div class="item">
                             <div class="avt">
                               <img src="/img/user.png" />
@@ -847,51 +839,73 @@
                             <div class="infor">
                               <p>
                                 <strong class="name">` +
-                              e.fullname +
-                              `</strong>
+                            e.fullname +
+                            `</strong>
                               </p>
                               <div class="content">
                                 ` +
-                              e.content +
-                              `
+                            e.content +
+                            `
                               </div>
                             </div>
                             </div>
                             `
-                          );
-                        });
-                      },
-                      error: function (xhr, status, error) {
-                        alert("Lỗi render comment");
-                      },
-                    });
+                        );
+                      });
+                    },
+                    error: function (xhr, status, error) {
+                      alert("Lỗi render comment");
+                    },
+                  });
 
-                    $("#btnSubReview").click(function (event) {
-                      event.preventDefault(); // Ngăn chặn việc gửi form theo cách thông thường
-                      // console.log($("#nameContent").val());
-                      // console.log($("#phoneContent").val());
-                      // console.log($("#emailContent").val());
-                      // console.log($("#reviewContent").val());
-                      var user = {
-                        fullname: $("#nameContent").val(),
-                        email: $("#emailContent").val(),
-                        phone: $("#phoneContent").val(),
-                        address: "",
-                        password: "",
-                        roleEntity: {
-                          id: 4,
+                  $("#review").submit(function (event) {
+                    event.preventDefault();
+                    if (storage) {
+                      user = JSON.parse(storage);
+                      var comment =
+                        document.getElementById("reviewContent").value;
+                      console.log(comment);
+                      var urlParams = new URLSearchParams(
+                        window.location.search
+                      );
+                      var productId = "";
+                      productId = urlParams.get("id");
+                      var now = new Date();
+                      var year = now.getFullYear();
+                      var month = now.getMonth() + 1; // Tháng bắt đầu từ 0
+                      var day = now.getDate();
+                      var hour = now.getHours();
+                      var minute = now.getMinutes();
+                      var second = now.getSeconds();
+                      var datetimeNow = year + "-0" + month + "-" + day;
+
+                      var comment = {
+                        detail: comment,
+                        createdDate: datetimeNow,
+                        productId: productId,
+                        userEntity: {
+                          id: user.id,
                         },
                       };
-                      var userJson = JSON.stringify(user);
-                      // console.log(user);
-                      console.log("---------user");
 
-                      sessionStorage.setItem("user", userJson);
-
-                      console.log(JSON.parse(sessionStorage.getItem("user")));
-                    });
-                  </script>
-                </div>
+                      $.ajax({
+                        type: "POST",
+                        url: "http://localhost:9090/comment/create",
+                        data: JSON.stringify(comment),
+                        dataType: "json",
+                        contentType: "application/json",
+                        encode: true,
+                        success: function (data) {
+                          //alert("Comment is saved successfully!");
+                          window.location.reload();
+                        }
+                      });
+                      console.log(comment);
+                    } else {
+                      alert("Đăng nhập để bình luận sản phẩm!!!");
+                    }
+                  });
+                </script>
               </div>
             </div>
           </div>

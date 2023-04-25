@@ -71,7 +71,11 @@ public class ProductController {
         return service.getProductDetail(id, color);
     }
     @GetMapping("/pagination")
-    public GetAllProduct findAllPagination(@RequestParam Optional<Integer> offset, Optional<Integer> pageSize){
-        return service.getAllProduct(offset.orElse(0),pageSize.orElse(0));
+    public GetAllProduct findAllPagination(@RequestParam("keyword") Optional<String> keyword,@RequestParam("brand") Optional<String> brand ,Optional<Integer> offset, Optional<Integer> pageSize){
+        return service.getAllProduct(offset.orElse(0),pageSize.orElse(0),keyword.orElse(null), brand.orElse(null));
     }
+//    @GetMapping("/keysearch")
+//    public GetAllProduct findAllKeySearch(@RequestParam Optional<String> search,Optional<Integer> offset, Optional<Integer> pageSize){
+//        return service.getAllKeySearchProduct(offset.orElse(0), pageSize.orElse(0), search.orElse(null));
+//    }
 }

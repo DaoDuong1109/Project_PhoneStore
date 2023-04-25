@@ -30,29 +30,38 @@
     </style>
   </head>
   <body>
-    <input type="text" id="search" placeholder="Tìm kiếm..." />
-    <ul id="list">
+    <form action="" id="input-search">
+      <input type="text" id="search" placeholder="Tìm kiếm..." />
+      <input type="submit" value="submit">
+    </form>
+    <p id="t">da:</p>
+    <!-- <ul id="list">
       <li>Iphone X</li>
       <li>iPhone 12</li>
       <li>samsung s22</li>
       <li>samsung note</li>
       <li>iphone 14</li>
-    </ul>
+    </ul> -->
     <script>
-      const searchInput = document.getElementById("search");
-      const list = document.getElementById("list").getElementsByTagName("li");
+       $("#input-search").submit(function (event) {
+         event.preventDefault();
+          var search= document.getElementById("search").value;
+          document.getElementById("t").append(search);
+        })
+      // const searchInput = document.getElementById("search");
+      // const list = document.getElementById("list").getElementsByTagName("li");
 
-      searchInput.addEventListener("input", function () {
-        const searchValue = this.value.toLowerCase();
-        for (let i = 0; i < list.length; i++) {
-          const item = list[i].textContent.toLowerCase();
-          if (item.indexOf(searchValue) > -1) {
-            list[i].style.display = "";
-          } else {
-            list[i].style.display = "none";
-          }
-        }
-      });
+      // searchInput.addEventListener("input", function () {
+      //   const searchValue = this.value.toLowerCase();
+      //   for (let i = 0; i < list.length; i++) {
+      //     const item = list[i].textContent.toLowerCase();
+      //     if (item.indexOf(searchValue) > -1) {
+      //       list[i].style.display = "";
+      //     } else {
+      //       list[i].style.display = "none";
+      //     }
+      //   }
+      // });
     </script>
     <!-- <div class="container">
       <div>

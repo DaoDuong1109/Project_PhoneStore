@@ -17,6 +17,9 @@ public class CommentService {
     public List<CommentProductDTO> getByProId(int id){return repository.findByProductId(id);}
     public List<CommentEntity> getAll(){return repository.findAll();}
     public CommentEntity getById(int id){return repository.findById(id).orElseThrow(() ->new ResponseStatusException(HttpStatus.NOT_FOUND,"Not Found Comment"));}
+    public CommentEntity addByUser(CommentEntity comment){
+        return repository.save(comment);
+    }
     public String deleleById(int id){
         repository.deleteById(id);
         return "Successful";
