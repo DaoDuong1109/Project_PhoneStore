@@ -4,6 +4,7 @@ import com.example.demo.entity.ProductEntity;
 import com.example.demo.model.dto.product.DetailProductDTO;
 import com.example.demo.model.dto.product.ProductDTO;
 import com.example.demo.model.dto.product.ProductTrendingDTO;
+import com.example.demo.model.dto.productColor.ProductColorDTO;
 import com.example.demo.model.dto.response.APIResponse;
 import com.example.demo.model.dto.response.GetAllProduct;
 import com.example.demo.model.dto.response.GetAllProductResponse;
@@ -28,9 +29,10 @@ public class ProductController {
 //    }
 
     @GetMapping("/products")
-    public GetAllProductResponse getproduct( Integer pageNumber, Integer pageSize){
-        return service.getProducts(pageNumber, pageSize);
+    public List<ProductEntity> getproduct(){
+        return service.getProducts();
     }
+
     @PostMapping("/addProduct")
     public ProductEntity addProduct(@RequestBody ProductEntity product){
         return service.saveProduct(product);

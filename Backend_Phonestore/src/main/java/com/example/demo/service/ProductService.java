@@ -32,19 +32,8 @@ public class ProductService {
 //        return ResponseEntity.ok(productPage);
 //
 //    }
-    public GetAllProductResponse getProducts(Integer pageNumber, Integer pageSize){
-        if (pageNumber == null || pageNumber == 0 ) {
-            pageNumber = 1;
-        }
-        if (pageSize==null|| pageSize==0) {
-            pageSize = 10;
-        }
-        Pageable pageable = PageRequest.of(pageNumber -1,pageSize);
-        Page<ProductEntity> productEntities = repository.findAll(pageable);
-        GetAllProductResponse getAllProductResponse = new GetAllProductResponse();
-        getAllProductResponse.setProductEntities(productEntities.getContent());
-        getAllProductResponse.setTotalPage(productEntities.getTotalPages());
-        return getAllProductResponse;
+    public List<ProductEntity> getProducts(){
+        return repository.findAll();
     }
     public GetAllProduct getAllProduct(Integer pageNumber, Integer pageSize, String keyword, String brand){
         if(pageNumber==null || pageNumber==0){

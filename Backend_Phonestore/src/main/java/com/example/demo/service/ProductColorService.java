@@ -19,20 +19,7 @@ public class ProductColorService {
     @Autowired
     private ColorRepository colorRepository;
     public List<ProductColorDTO> productColorFindByProId(int id){
-        List<ProductColorEntity> productColorEntityList=repository.findByProductId(id);
-        List<ProductColorDTO> productColorDTOS=new ArrayList<>();
-        for (ProductColorEntity item:productColorEntityList) {
-            ColorEntity color=colorRepository.findById(item.getColorId()).orElse(null);
-            ProductColorDTO productColorDTO= new ProductColorDTO().builder()
-                    .product_ID(item.getProductId())
-                    .color_ID(item.getColorId())
-                    .price(item.getPrice())
-                    .amount(item.getAmount())
-                    .colorName(color.getName())
-                    .build();
-            productColorDTOS.add(productColorDTO);
-        }
-        return productColorDTOS;
+        return repository.getProductColorAdmin(id);
     }
     public List<ProductColorEntity> create(List<ProductColorEntity> newLists){
         //tim danh sach da ton tai trong database theo productid

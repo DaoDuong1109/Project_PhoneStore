@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#form_login").validate({
+    $("#form_forgotPassword").validate({
         errorClass: "error-class",
         validClass: "valid-class",
         errorElement: "div",
@@ -21,36 +21,28 @@ $(document).ready(function () {
             email: {
                 required: true,
                 maxlength: 50,
-
-            },
-            password: {
-                required: true,
-                minlength: 8,
-                maxlength: 32,
-            },
-            captcha: {
-                required: true,
+                
             }
         },
         messages: {
             email: {
                 required: "Nhập Email",
                 maxlength: "Độ dài tối đa 50 ký tự",
-
-            },
-            password: {
-                required: "Nhập Password",
-                minlength: "Độ dài tối thiểu 8 ký tự",
-                maxlength: "Độ dài tối đa 32 ký tự",
-            },
-            captcha: {
-                required: "Enter Captcha",
+                
             }
         },
     });
 
-    $(document).click("#save", function () {
-        let result = $("#form_login").valid();
+     $("#form_forgotPassword").submit(function (event) {
+        event.preventDefault();
+        let result = $("#form_forgotPassword").valid();
+        if(result){
+            var email=$("#email").val();
+            console.log(email);
+        }else{
+
+        }
         console.log(result);
-    });
+
+    })
 });

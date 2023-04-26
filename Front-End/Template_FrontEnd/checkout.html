@@ -920,6 +920,8 @@
           });
           console.log("final");
           if (orderDetailSize == 0) {
+            alert("Đặt hàng thành công!!!");
+            localStorage.removeItem("cart");
             window.location.href = "/Template_FrontEnd/personal-order.html";
           }
         }

@@ -24,6 +24,12 @@ public interface ProductColorRepository extends JpaRepository<ProductColorEntity
             " join CategoryEntity c on p.categoryEntity.id=c.id " +
             " group by c.brand")
     List<QuantityStatisticDTO> getQuantityStatistic();
+
+    @Query("select new com.example.demo.model.dto.productColor.ProductColorDTO(pc.productId, c.id, c.name,pc.amount ,pc.price) " +
+            " from ProductColorEntity pc join ColorEntity c on pc.colorId=c.id" +
+            " where pc.productId=?1")
+    List<ProductColorDTO> getProductColorAdmin(int productId);
+
     //@Query("SELECT new com.example.demo.model.dto.orderDetail.OrderConfirmDTO(od.orderId, u.fullname, u.phone, " +
     //            "sum(od.amount*od.price), o.createdDate, o.status) " +
     //            " FROM OrdersEntity o join OrderDetailEntity od on o.id=od.orderId " +

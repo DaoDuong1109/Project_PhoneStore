@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProductColorDTO {
     private int product_ID;
+
     private int color_ID;
-    private Double price;
-    private int amount;
     private  String colorName;
+    private int amount;
+    private Double price;
 }

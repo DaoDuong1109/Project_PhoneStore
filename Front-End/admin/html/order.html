@@ -342,9 +342,16 @@
             <div class="card-header">
               <h2>Danh Sách Đơn Hàng</h2>
             </div>
-
+            <div id="filterOrder">
+              <label for="checkOrder">Lọc đơn hàng:</label>
+              <select name="checkOrder" id="checkOrder">
+                <option value="all" selected>Tất cả</option>
+                <option value="đã duyệt đơn">Đơn đã duyệt</option>
+                <option value="chờ duyệt đơn">Chờ xác nhận</option>
+              </select>
+            </div>
             <div class="card-body table-responsive">
-              <table class="table table-bordered">
+              <table class="table table-bordered" id="myTable">
                 <thead>
                   <tr>
                     <th scope="col">Mã Đơn</th>
@@ -374,7 +381,7 @@
                 <div id="popup-content">
                   <table class="table table-bordered">
                     <thead>
-                      <tr >
+                      <tr>
                         <th>Mã đơn</th>
                         <th>Tên sản phẩm</th>
                         <th>Số lượng</th>
@@ -444,7 +451,40 @@
       $(document).ready(function () {
         renderOrderConfirm();
         changeButtonConfirm();
+        filterOrder();
       });
+      function filterOrder() {
+        // Lấy bảng và các hàng của bảng
+        const table = document.getElementById("myTable");
+        const rows = table.getElementsByTagName("tr");
+
+        // Lấy select option
+        const filter = document.getElementById("checkOrder");
+
+        // Thêm sự kiện change cho select option
+        filter.addEventListener("change", function (e) {
+          // Lấy giá trị được chọn
+          const selectedValue = filter.value;
+          console.log(selectedValue);
+          // Lặp qua từng hàng của bảng
+          for (let i = 1; i < rows.length; i++) {
+            // Lấy giá trị của cột Fruit
+            const item = rows[i].getElementsByTagName("td")[5].textContent;
+
+            // Kiểm tra nếu giá trị của cột Fruit bằng giá trị được chọn hoặc giá trị được chọn là "All"
+            if (
+              item.toLowerCase() == selectedValue ||
+              selectedValue == "all"
+            ) {
+              // Hiển thị hàng đó
+              rows[i].style.display = "";
+            } else {
+              // Ẩn hàng đó
+              rows[i].style.display = "none";
+            }
+          }
+        });
+      }
       function formatDate(data) {
         //format date
         var date = new Date(data);
@@ -536,12 +576,13 @@
 
               var count = 0;
               for (const item of listOrderCustomer) {
+                //tim  san pham được đặt hàng
                 const mainProduct = listProductColor.find(
                   (product) =>
                     product.productId === item.productId &&
                     product.colorId === item.colorId
                 );
-
+                //check số lượng có trong kho và số lượng đặt
                 if (
                   mainProduct &&
                   mainProduct.amount >= item.amount &&
@@ -645,7 +686,7 @@
         });
       }
 
-      function displayPopup(){
+      function displayPopup() {
         //duyệt all các nút xem chi tiết
         var selectButtonPopup = document.querySelectorAll("#open-popup");
         // Lặp qua từng nút xem chi tiết và thêm sự kiện nhấp chuột vào mỗi nút

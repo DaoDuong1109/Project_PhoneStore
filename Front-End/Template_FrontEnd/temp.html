@@ -30,11 +30,11 @@
     </style>
   </head>
   <body>
-    <form action="" id="input-search">
+    <!-- <form action="" id="input-search">
       <input type="text" id="search" placeholder="Tìm kiếm..." />
       <input type="submit" value="submit">
     </form>
-    <p id="t">da:</p>
+    <p id="t">da:</p> -->
     <!-- <ul id="list">
       <li>Iphone X</li>
       <li>iPhone 12</li>
@@ -42,12 +42,98 @@
       <li>samsung note</li>
       <li>iphone 14</li>
     </ul> -->
+    <div style="margin: 15% 0 0 30%">
+      <select id="filter">
+        <option value="all">All</option>
+        <option value="apple">Apple</option>
+        <option value="banana">Banana</option>
+        <option value="orange">Orange</option>
+      </select>
+
+      <table id="myTable" border="1">
+        <tr>
+          <th>Fruit</th>
+          <th>Quantity</th>
+        </tr>
+        <tr>
+          <td>Apple</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td>Banana</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Orange</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td>Apple</td>
+          <td>3</td>
+        </tr>
+        <tr>
+          <td>Banana</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>Orange</td>
+          <td>6</td>
+        </tr>
+      </table>
+    </div>
     <script>
-       $("#input-search").submit(function (event) {
-         event.preventDefault();
-          var search= document.getElementById("search").value;
-          document.getElementById("t").append(search);
-        })
+      $(document).ready(function () {
+        // Lấy thời gian hiện tại
+        const now = new Date().getTime();
+        console.log(now);
+        // Lấy thời gian lưu trữ của mảng object user trong localStorage
+        const lastTime = localStorage.getItem("userArrayLastTime");
+
+        // Nếu thời gian lưu trữ không tồn tại hoặc đã qua 1 ngày kể từ lần cuối cùng
+        if (!lastTime || now - lastTime > 24 * 60 * 60 * 1000) {
+          // Đặt lại mảng object user trong localStorage bằng một mảng rỗng
+          localStorage.setItem("cart", JSON.stringify([]));
+
+          // Lưu lại thời gian hiện tại vào localStorage
+          localStorage.setItem("userArrayLastTime", now);
+        }
+
+        // Lấy bảng và các hàng của bảng
+        const table = document.getElementById("myTable");
+        const rows = table.getElementsByTagName("tr");
+  
+        // Lấy select option
+        const filter = document.getElementById("filter");
+  
+        // Thêm sự kiện change cho select option
+        filter.addEventListener("change", function (e) {
+          // Lấy giá trị được chọn
+          const selectedValue = filter.value;
+          console.log(selectedValue);
+          // Lặp qua từng hàng của bảng
+          for (let i = 1; i < rows.length; i++) {
+            // Lấy giá trị của cột Fruit
+            const fruit = rows[i].getElementsByTagName("td")[0].textContent;
+            
+            // Kiểm tra nếu giá trị của cột Fruit bằng giá trị được chọn hoặc giá trị được chọn là "All"
+            if (fruit.toLowerCase() == selectedValue || selectedValue == "all") {
+              // Hiển thị hàng đó
+              rows[i].style.display = "";
+
+            } else {
+              // Ẩn hàng đó
+              rows[i].style.display = "none";
+            }
+          }
+        });
+
+      });
+
+      //  $("#input-search").submit(function (event) {
+      //    event.preventDefault();
+      //     var search= document.getElementById("search").value;
+      //     document.getElementById("t").append(search);
+      //   })
       // const searchInput = document.getElementById("search");
       // const list = document.getElementById("list").getElementsByTagName("li");
 
