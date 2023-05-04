@@ -782,9 +782,15 @@
                 </td>
             
                 <td class="product-price">
-                    <span class="amount" id="price">${numberWithCommas(executePrice(
-                      item.data.fromDate,item.data.toDate,item.data.saleStatus,item.data.discount,parseInt(item.data.price)
-                    ))}</span> VNĐ
+                    <span class="amount" id="price">${numberWithCommas(
+                      executePrice(
+                        item.data.fromDate,
+                        item.data.toDate,
+                        item.data.saleStatus,
+                        item.data.discount,
+                        parseInt(item.data.price)
+                      )
+                    )}</span> VNĐ
                 </td>
             
                 <td class="product-quantity">
@@ -800,9 +806,15 @@
                 </td>
             
                 <td class="product-subtotal">
-                    <span class="amount" id="subtotal" >${numberWithCommas(executePrice(
-                      item.data.fromDate,item.data.toDate,item.data.saleStatus,item.data.discount,item.data.price) * item.quantity)
-                    }</span> VNĐ
+                    <span class="amount" id="subtotal" >${numberWithCommas(
+                      executePrice(
+                        item.data.fromDate,
+                        item.data.toDate,
+                        item.data.saleStatus,
+                        item.data.discount,
+                        item.data.price
+                      ) * item.quantity
+                    )}</span> VNĐ
                 </td>
         </tr>`;
         });
@@ -835,108 +847,120 @@
 
       $("#checkout").submit(function (event) {
         event.preventDefault();
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = now.getMonth() + 1; // Tháng bắt đầu từ 0
-        var day = now.getDate();
-        var hour = now.getHours();
-        var minute = now.getMinutes();
-        var second = now.getSeconds();
-        var datetimeNow = year + "-0" + month + "-" + day;
+        
+        if (localStorage.getItem("cart")) {
+          var now = new Date();
+          var year = now.getFullYear();
+          var month = now.getMonth() + 1; // Tháng bắt đầu từ 0
+          var day = now.getDate();
+          var hour = now.getHours();
+          var minute = now.getMinutes();
+          var second = now.getSeconds();
+          var datetimeNow = year + "-0" + month + "-" + day;
 
-        var order = {
-          address: document.getElementById("billing_address_detail").value,
-          phone: document.getElementById("billing_phone").value,
-          email: document.getElementById("billing_email").value,
-          createdDate: datetimeNow,
-          status: false,
-          userEntity: {
-            id: user.id,
-            roleEntity: {
-              id: user.roleEntity.id,
+          var order = {
+            address: document.getElementById("billing_address_detail").value,
+            phone: document.getElementById("billing_phone").value,
+            email: document.getElementById("billing_email").value,
+            createdDate: datetimeNow,
+            status: false,
+            userEntity: {
+              id: user.id,
+              roleEntity: {
+                id: user.roleEntity.id,
+              },
             },
-          },
-        };
-        // var i = {
-        //   address: "băc ninh",
-        //   phone: "19001900",
-        //   email: "atstore@gmail.com",
-        //   createdDate: "2023-03-09T17:00:00.000+00:00",
-        //   status: true,
-        //   userEntity: {
-        //     id: 3,
-        //     roleEntity: {
-        //       id: 4,
-        //     },
-        //   },
-        // };
-        console.log(order);
-        //create order
-        $.ajax({
-          type: "POST",
-          url: "http://localhost:9090/order/createOrder",
-          data: JSON.stringify(order),
-          dataType: "json",
-          contentType: "application/json",
-          encode: true,
-          success: function (data) {
-            myCallbackFunction(data);
-          },
-          error: function () {
-            alert("Đặt hàng thất bại!!!");
-          },
-        });
-        //get order id
-        function myCallbackFunction(data) {
-          let cart = [];
-          let storage = localStorage.getItem("cart");
-          if (storage) {
-            cart = JSON.parse(storage);
-          }
+          };
+          // var i = {
+          //   address: "băc ninh",
+          //   phone: "19001900",
+          //   email: "atstore@gmail.com",
+          //   createdDate: "2023-03-09T17:00:00.000+00:00",
+          //   status: true,
+          //   userEntity: {
+          //     id: 3,
+          //     roleEntity: {
+          //       id: 4,
+          //     },
+          //   },
+          // };
+          console.log(order);
+          //create order
 
-          var orderDetails = [];
-          for (let i = 0; i < cart.length; i++) {
-            //get sp trong local storage
-            const item = cart[i];
-            //format to save into db
-            let orderDetail = {
-              productId: item.data.id,
-              orderId: data.id,
-              price: executePrice(item.data.fromDate,item.data.toDate,item.data.saleStatus,item.data.discount,item.data.price),
-              amount: item.quantity,
-              colorId: item.data.colorId,
-            };
-            //list product formatted json
-            orderDetails.push(orderDetail);
-          }
-          console.log("order id :" + data.id);
-          console.log(cart);
-          //save into db
-          var orderDetailSize = orderDetails.length;
-          orderDetails.map((item) => {
-            orderDetailSize--;
-            postOrderDetail(item);
-            console.log(orderDetailSize);
-          });
-          console.log("final");
-          if (orderDetailSize == 0) {
-            alert("Đặt hàng thành công!!!");
-            localStorage.removeItem("cart");
-            window.location.href = "/Template_FrontEnd/personal-order.html";
-          }
-        }
-        function postOrderDetail(data) {
           $.ajax({
             type: "POST",
-            url: "http://localhost:9090/orderDetail/createOrderDetail",
-            data: JSON.stringify(data),
+            url: "http://localhost:9090/order/createOrder",
+            data: JSON.stringify(order),
             dataType: "json",
             contentType: "application/json",
             encode: true,
             success: function (data) {
-              console.log(data);
+              myCallbackFunction(data);
+            },
+            error: function () {
+              alert("Đặt hàng thất bại!!!");
             },
           });
+          //get order id
+          function myCallbackFunction(data) {
+            let cart = [];
+            let storage = localStorage.getItem("cart");
+            if (storage) {
+              cart = JSON.parse(storage);
+            }
+
+            var orderDetails = [];
+            for (let i = 0; i < cart.length; i++) {
+              //get sp trong local storage
+              const item = cart[i];
+              //format to save into db
+              let orderDetail = {
+                productId: item.data.id,
+                orderId: data.id,
+                price: executePrice(
+                  item.data.fromDate,
+                  item.data.toDate,
+                  item.data.saleStatus,
+                  item.data.discount,
+                  item.data.price
+                ),
+                amount: item.quantity,
+                colorId: item.data.colorId,
+              };
+              //list product formatted json
+              orderDetails.push(orderDetail);
+            }
+            console.log("order id :" + data.id);
+            console.log(cart);
+            //save into db
+            var orderDetailSize = orderDetails.length;
+            orderDetails.map((item) => {
+              orderDetailSize--;
+              postOrderDetail(item);
+              console.log(orderDetailSize);
+            });
+            console.log("final");
+            if (orderDetailSize == 0) {
+              alert("Đặt hàng thành công!!!");
+              localStorage.removeItem("cart");
+              window.location.href = "/Template_FrontEnd/personal-order.html";
+            }
+          }
+          function postOrderDetail(data) {
+            $.ajax({
+              type: "POST",
+              url: "http://localhost:9090/orderDetail/createOrderDetail",
+              data: JSON.stringify(data),
+              dataType: "json",
+              contentType: "application/json",
+              encode: true,
+              success: function (data) {
+                console.log(data);
+              },
+            });
+          }
+        } else {
+          alert("Giỏ hàng rỗng");
         }
         // localStorage.removeItem('cart');
       });

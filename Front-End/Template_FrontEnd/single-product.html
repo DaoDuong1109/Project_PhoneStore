@@ -760,7 +760,7 @@
 
               <div class="full-width-content">
                 <div class="heading">
-                  <h3 id="title-review">Đánh giá về điện thoại </h3>
+                  <h3 id="title-review">Đánh giá về điện thoại</h3>
                 </div>
                 <form action="" id="review">
                   <!-- <div class="row">
@@ -898,7 +898,10 @@
                         success: function (data) {
                           //alert("Comment is saved successfully!");
                           window.location.reload();
-                        }
+                        },
+                        error: function (xhr, status, error) {
+                          alert("Lỗi tạo comment");
+                        },
                       });
                       console.log(comment);
                     } else {

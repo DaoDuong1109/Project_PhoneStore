@@ -166,8 +166,8 @@
                   data-bs-parent="#sidenavAccordion"
                 >
                   <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="#">Thêm Ảnh</a>
-                    <a class="nav-link btnGallery" href="#"
+                    <a class="nav-link" href="./addGallery.html">Thêm Ảnh</a>
+                    <a class="nav-link btnGallery" href="./gallery.html"
                       >Danh Sách Ảnh Sản Phẩm</a
                     >
                   </nav>
@@ -228,9 +228,42 @@
                   data-bs-parent="#sidenavAccordion"
                 >
                   <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="#">Thêm Sản Phẩm</a>
-                    <a class="nav-link btnProduct" href="#"
+                    <a class="nav-link" href="./addProduct.html"
+                      >Thêm Sản Phẩm</a
+                    >
+                    <a class="nav-link btnProduct" href="./product.html"
                       >Danh Sách Sản Phẩm</a
+                    >
+                  </nav>
+                </div>
+              </div>
+              <div class="item">
+                <a
+                  class="nav-link collapsed"
+                  href="#"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseLayouts9"
+                  aria-expanded="false"
+                  aria-controls="collapseLayouts"
+                >
+                  <div class="sb-nav-link-icon">
+                    <i class="fas fa-columns"></i>
+                  </div>
+                  Quản Lý Giảm Giá
+                  <div class="sb-sidenav-collapse-arrow">
+                    <i class="fas fa-angle-down"></i>
+                  </div>
+                </a>
+                <div
+                  class="collapse"
+                  id="collapseLayouts9"
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#sidenavAccordion"
+                >
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <a class="nav-link" href="./addSale.html">Thêm Giảm Giá</a>
+                    <a class="nav-link btnSale" href="./sale.html"
+                      >Danh Sách Giảm Giá</a
                     >
                   </nav>
                 </div>
@@ -259,7 +292,7 @@
                   data-bs-parent="#sidenavAccordion"
                 >
                   <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link btnAccount" href="#"
+                    <a class="nav-link btnAccount" href="./account.html"
                       >Danh Sách Tài Khoản</a
                     >
                   </nav>
@@ -289,7 +322,7 @@
                   data-bs-parent="#sidenavAccordion"
                 >
                   <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link btnComment" href="#"
+                    <a class="nav-link btnComment" href="./comment.html"
                       >Danh Sách Bình Luân</a
                     >
                   </nav>
@@ -319,7 +352,7 @@
                   data-bs-parent="#sidenavAccordion"
                 >
                   <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="./addCategory.html">Thêm Slide</a>
+                    <a class="nav-link" href="./addSlide.html">Thêm Slide</a>
                     <a class="nav-link btnSlide" href="./slide.html"
                       >Danh Sách Slide</a
                     >
@@ -331,7 +364,7 @@
                   class="nav-link collapsed"
                   href="#"
                   data-bs-toggle="collapse"
-                  data-bs-target="#collapseLayouts7"
+                  data-bs-target="#collapseLayouts8"
                   aria-expanded="false"
                   aria-controls="collapseLayouts"
                 >
@@ -345,19 +378,21 @@
                 </a>
                 <div
                   class="collapse"
-                  id="collapseLayouts7"
+                  id="collapseLayouts8"
                   aria-labelledby="headingOne"
                   data-bs-parent="#sidenavAccordion"
                 >
                   <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link btnProduct" href="#">Duyệt Đơn Hàng</a>
+                    <a class="nav-link btnOrder" href="./order.html"
+                      >Duyệt Đơn Hàng</a
+                    >
                   </nav>
                 </div>
               </div>
             </div>
           </div>
           <div class="sb-sidenav-footer">
-            <div class="small">Logged in as:</div>
+            <div class="small">Logged in as:<p id="loginName" style="font-size: 13px; font-weight: bold;"></p> </div>
           </div>
         </nav>
       </div>
@@ -385,6 +420,7 @@
                     class="form-control col-3"
                     placeholder="Tên Màu"
                     value=""
+                    required
                   />
                 </div>
                 <button
