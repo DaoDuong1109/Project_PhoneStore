@@ -23,7 +23,10 @@ public class UserService {
     public UserEntity getById(int id){
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found"));
     }
-    public UserEntity addUser(UserEntity user){return repository.save(user);}
+    public UserEntity addUser(UserEntity user){
+
+        return repository.save(user);
+    }
     public UserEntity updateUserByEmail(String email, UserEntity user){
          UserEntity old=repository.findByEmail(email);
         if(old!=null){
@@ -66,4 +69,5 @@ public class UserService {
             return null;
         }
     }
+
 }

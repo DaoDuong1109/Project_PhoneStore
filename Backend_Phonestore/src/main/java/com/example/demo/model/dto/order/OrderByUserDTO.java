@@ -15,5 +15,5 @@ public class OrderByUserDTO {
     int orderId;
     Timestamp createdDate;
     Double total;
-    Boolean status;
+    Integer status;
 }

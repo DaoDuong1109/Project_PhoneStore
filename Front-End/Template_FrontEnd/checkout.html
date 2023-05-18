@@ -847,7 +847,7 @@
 
       $("#checkout").submit(function (event) {
         event.preventDefault();
-        
+
         if (localStorage.getItem("cart")) {
           var now = new Date();
           var year = now.getFullYear();
@@ -856,14 +856,18 @@
           var hour = now.getHours();
           var minute = now.getMinutes();
           var second = now.getSeconds();
-          var datetimeNow = year + "-0" + month + "-" + day;
+
+          var monthString = month < 10 ? "-0" + month : "-" + month;
+          var dayString = day < 10 ? "-0" + day : "-" + day;
+
+          var datetimeNow = year + monthString + dayString;
 
           var order = {
             address: document.getElementById("billing_address_detail").value,
             phone: document.getElementById("billing_phone").value,
             email: document.getElementById("billing_email").value,
             createdDate: datetimeNow,
-            status: false,
+            status: 0,
             userEntity: {
               id: user.id,
               roleEntity: {

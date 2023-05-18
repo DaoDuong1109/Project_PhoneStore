@@ -597,10 +597,12 @@
           popup.style.display = "none";
         });
         function convertStatus(data) {
-          if (data) { 
+          if (data==1) { 
             return "Đã duyệt đơn";
-          } else {
+          } else if(data==0) {
             return "Chờ duyệt đơn";
+          }else if(data==2){
+            return "Đơn đã bị hủy";
           }
         }
         function convertDate(data) {

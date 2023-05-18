@@ -15,7 +15,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetailEntity, 
             " FROM OrdersEntity o join OrderDetailEntity od on o.id=od.orderId " +
             " join UserEntity  u on o.userEntity.id=u.id " +
             " group by od.orderId" +
-            " order by od.orderId asc")
+            " order by o.createdDate desc ")
     List<OrderConfirmDTO> getOrderConfirm();
 
     @Query("Select od " +

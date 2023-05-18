@@ -363,7 +363,10 @@
             </div>
           </div>
           <div class="sb-sidenav-footer">
-            <div class="small">Logged in as:<p id="loginName" style="font-size: 13px; font-weight: bold;"></p> </div>
+            <div class="small">
+              Logged in as:
+              <p id="loginName" style="font-size: 13px; font-weight: bold"></p>
+            </div>
           </div>
         </nav>
       </div>
@@ -379,6 +382,7 @@
                 <option value="all" selected>Tất cả</option>
                 <option value="đã duyệt đơn">Đơn đã duyệt</option>
                 <option value="chờ duyệt đơn">Chờ xác nhận</option>
+                <option value="đơn đã bị hủy">Đơn đã bị hủy</option>
               </select>
             </div>
             <div class="card-body table-responsive">
@@ -481,7 +485,7 @@
     <script>
       $(document).ready(function () {
         renderOrderConfirm();
-        changeButtonConfirm();
+
         filterOrder();
       });
       function filterOrder() {
@@ -503,10 +507,7 @@
             const item = rows[i].getElementsByTagName("td")[5].textContent;
 
             // Kiểm tra nếu giá trị của cột Fruit bằng giá trị được chọn hoặc giá trị được chọn là "All"
-            if (
-              item.toLowerCase() == selectedValue ||
-              selectedValue == "all"
-            ) {
+            if (item.toLowerCase() == selectedValue || selectedValue == "all") {
               // Hiển thị hàng đó
               rows[i].style.display = "";
             } else {
@@ -535,21 +536,27 @@
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
       }
       function convertStatus(data) {
-        if (data) {
+        if (data == 1) {
           return "Đã duyệt đơn";
-        } else {
+        } else if (data == 0) {
           return "Chờ duyệt đơn";
+        } else if (data == 2) {
+          return "Đơn đã bị hủy";
         }
       }
       function changeButtonConfirm() {
         var changeStatusOrder = document.querySelectorAll(".confirm");
 
         changeStatusOrder.forEach(function (button) {
-          var status = statusWord == "Chờ duyệt đơn" ? false : true;
-          if (status) {
-            button.querySelector(".confirm").style.backgroundColor = "white";
-            button.querySelector(".confirm").style.color = "grey";
-            button.querySelector(".confirm").disabled = true;
+          var list = button.closest("tr");
+          var statusWord = list.querySelector("#status").textContent;
+          var status = statusWord == "Chờ duyệt đơn" ? 0 : 1;
+
+          if (status == 1) {
+            // list.querySelector("#confirm").style.backgroundColor = "white";
+            // list.querySelector("#confirm").style.color = "grey";
+            list.querySelector("#confirm").hidden = true;
+            list.querySelector("#delete").hidden = true;
           }
         });
       }
@@ -563,18 +570,20 @@
             var listItem = this.closest("tr");
             var orderId = listItem.querySelector("#orderId").textContent;
             var statusWord = listItem.querySelector("#status").textContent;
-            var status = statusWord == "Chờ duyệt đơn" ? false : true;
-            if (status) {
-              listItem.querySelector(".confirm").style.backgroundColor =
-                "white";
-              listItem.querySelector(".confirm").style.color = "grey";
-              listItem.querySelector(".confirm").disabled = true;
+            var status = statusWord == "Chờ duyệt đơn" ? 0 : 1;
+            if (status == 1) {
+              // listItem.querySelector("#confirm").style.backgroundColor =
+              //   "white";
+              // listItem.querySelector("#confirm").style.color = "grey";
+              listItem.querySelector("#confirm").hidden = true;
+              listItem.querySelector("#delete").hidden = true;
             }
             var order = {
-              status: true,
+              status: 1,
             };
             var check = false;
-            var urlOrder = "http://localhost:9090/orderDetail/findAllByOrderId/" + orderId;
+            var urlOrder =
+              "http://localhost:9090/orderDetail/findAllByOrderId/" + orderId;
 
             var urlProColor = "http://localhost:9090/productcolor/findAll";
 
@@ -595,15 +604,11 @@
                 console.log("Error:", textStatus, errorThrown);
               });
 
-            // $.get(urlOrder, function (data) {
-            //   listOrderCustomer = data;
-            //   changeQuantityProduct(listOrderCustomer);
-            // });
             function changeQuantityProduct(data1, data2) {
               var listOrderCustomer = data1[0];
               var listProductColor = data2[0];
-              console.log("--------------------------");
-              console.log(listOrderCustomer);
+              // console.log("--------------------------");
+              // console.log(listOrderCustomer);
 
               var count = 0;
               for (const item of listOrderCustomer) {
@@ -618,17 +623,17 @@
                 if (
                   mainProduct &&
                   mainProduct.amount >= item.amount &&
-                  !status
+                  status == 0
                 ) {
                   mainProduct.amount -= item.amount;
                   count++;
                 }
 
-                console.log("count: " + count);
+                // console.log("count: " + count);
               }
 
               if (count == listOrderCustomer.length) {
-                if (!status) {
+                if (status == 0) {
                   //update status
                   $.ajax({
                     type: "PUT",
@@ -672,7 +677,45 @@
             }
           });
         });
+        //hủy đơn
+        var cancelOrder = document.querySelectorAll(".delete");
+        cancelOrder.forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            // Lấy các phần tử liên quan đến nút được nhấp
+            var listItem = this.closest("tr");
+            var orderId = listItem.querySelector("#orderId").textContent;
+            var statusWord = listItem.querySelector("#status").textContent;
+            var status = statusWord == "Chờ duyệt đơn" ? 0 : 2;
+            var order = {
+              status: 2,
+            };
+            var urlOrder =
+              "http://localhost:9090/orderDetail/findAllByOrderId/" + orderId;
+              if (status == 0) {
+                  //update status
+                  $.ajax({
+                    type: "PUT",
+                    url:
+                      "http://localhost:9090/order/updateStatusById/" + orderId,
+                    data: JSON.stringify(order),
+                    contentType: "application/json",
+                    encode: true,
+                    success: function (result) {
+                      alert("Hủy đơn thành công ");
+                      console.log(result);
+                      location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                      console.error(error);
+                    },
+                  });
+                }
+
+          });
+        });
+        //end hủy đơn
       }
+
       function renderOrderConfirm() {
         //render order
         $.ajax({
@@ -705,14 +748,16 @@
                 convertStatus(data.status) +
                 `</td>
                         <td>
-                            <button type="button" class="btn btn-success mr-2 confirm">Xác nhận</button>
-                            <button type="button" class="btn btn-info" id="open-popup">Xem chi tiết</button>
+                            <button type="button" class="btn btn-success mr-2 confirm" id="confirm">Xác nhận</button>
+                            <button type="button" class="btn btn-info" id="open-popup">Chi tiết</button>
+                            <button type="button" class="btn btn-danger delete" id="delete">Hủy</button>
                         </td>
                     </tr>`;
             });
             $("#content").html(html);
             changeStatusOrders();
             displayPopup();
+            changeButtonConfirm();
           },
           error: function (xhr, status, error) {},
         });

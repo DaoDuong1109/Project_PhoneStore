@@ -16,5 +16,5 @@ public class OrderConfirmDTO {
     String phone;
     Double totalPayment;
     Timestamp createdDate;
-    Boolean status;
+    Integer status;
 }

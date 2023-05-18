@@ -17,7 +17,8 @@ public interface OrderRepository extends JpaRepository<OrdersEntity, Integer> {
             "sum(od.amount*od.price), o.status) " +
             " from OrdersEntity o join OrderDetailEntity od on o.id=od.orderId " +
             " where o.userEntity.id=?1 " +
-            " group by od.orderId")
+            " group by od.orderId" +
+            " order by o.createdDate desc ")
     List<OrderByUserDTO> getByUser(int id);
 
     @Query("SELECT new com.example.demo.model.dto.order.RevenueDTO(month(o.createdDate), year(o.createdDate), sum(od.price*od.amount)) " +

@@ -130,7 +130,7 @@
                 <div class="col-sm-6">
                   <div class="product-images">
                     <div class="product-main-img">
-                      <img src="" alt="" id="mainImage" />
+                      <img src="" alt="" id="mainImage" style="width:73%;"/>
                     </div>
                     <div>
                       <p><i>Ảnh tham khảo các màu</i></p>
@@ -212,7 +212,7 @@
                             >Chi tiết</a
                           >
                         </li>
-                        <li role="presentation">
+                        <!-- <li role="presentation">
                           <a
                             href="#profile"
                             aria-controls="profile"
@@ -220,7 +220,7 @@
                             data-toggle="tab"
                             >Đánh giá</a
                           >
-                        </li>
+                        </li> -->
                       </ul>
                       <div class="tab-content">
                         <div
@@ -233,7 +233,7 @@
                             <ul class="info"></ul>
                           </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade" id="profile">
+                        <!-- <div role="tabpanel" class="tab-pane fade" id="profile">
                           <h2>Đánh giá</h2>
                           <div class="submit-review">
                             <p>
@@ -256,7 +256,7 @@
                             </p>
                             <p><input type="submit" value="Gửi" /></p>
                           </div>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -447,7 +447,7 @@
                   success: function (result, status, xhr) {
                     result.forEach((item) => {
                       $(".product-gallery").append(
-                        `<img
+                        `<img 
                         src="/img/products/` +
                           item.image +
                           `"
@@ -864,7 +864,7 @@
                       user = JSON.parse(storage);
                       var comment =
                         document.getElementById("reviewContent").value;
-                      console.log(comment);
+                      // console.log(comment);
                       var urlParams = new URLSearchParams(
                         window.location.search
                       );
@@ -877,9 +877,13 @@
                       var hour = now.getHours();
                       var minute = now.getMinutes();
                       var second = now.getSeconds();
-                      var datetimeNow = year + "-0" + month + "-" + day;
 
-                      var comment = {
+                      var monthString=month<10 ? "-0"+month : "-"+month;
+                      var dayString=day<10 ? "-0"+day : "-"+day;
+
+                      var datetimeNow = year +  monthString  + dayString;
+
+                      var commentObject = {
                         detail: comment,
                         createdDate: datetimeNow,
                         productId: productId,
@@ -887,11 +891,11 @@
                           id: user.id,
                         },
                       };
-
+                      console.log(commentObject);
                       $.ajax({
                         type: "POST",
                         url: "http://localhost:9090/comment/create",
-                        data: JSON.stringify(comment),
+                        data: JSON.stringify(commentObject),
                         dataType: "json",
                         contentType: "application/json",
                         encode: true,
@@ -903,7 +907,7 @@
                           alert("Lỗi tạo comment");
                         },
                       });
-                      console.log(comment);
+                      
                     } else {
                       alert("Đăng nhập để bình luận sản phẩm!!!");
                     }

@@ -26,7 +26,7 @@ public class OrdersEntity {
     private Timestamp createdDate;
     @Basic
     @Column(name = "status", nullable = true)
-    private Boolean status;
+    private Integer status;
     @Basic
     @ManyToOne
     @JoinColumn(name = "user_ID",nullable = false)
@@ -72,11 +72,19 @@ public class OrdersEntity {
         this.createdDate = createdDate;
     }
 
-    public Boolean getStatus() {
+//    public Boolean getStatus() {
+//        return status;
+//    }
+//
+//    public void setStatus(Boolean status) {
+//        this.status = status;
+//    }
+
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

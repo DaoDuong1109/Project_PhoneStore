@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer> {
             " FROM UserEntity u " +
             " WHERE u.email=?1 and u.password=?2")
     Optional<UserEntity> findByEmailAndPass(String email, String pass);
+
+    UserEntity findByEmailIgnoreCase(String email);
 }

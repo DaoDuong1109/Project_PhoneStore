@@ -1,19 +1,30 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.UserEntity;
-import com.example.demo.model.dto.user.CheckInDTO;
+import com.example.demo.model.dto.request.EmailMessage;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.EmailSenderService;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService service;
+
+    private EmailSenderService mailer;
+
+
+    public UserController(EmailSenderService emailSenderService) {
+        this.mailer = emailSenderService;
+    }
+
     @GetMapping("/findAll")
     public List<UserEntity> findAll(){return service.getUsers();}
     @GetMapping("/findById/{id}")
@@ -39,5 +50,26 @@ public class UserController {
     @PostMapping("/createUser")
     public UserEntity create(@RequestBody UserEntity user){
         return service.addUser(user);
+    }
+    @PostMapping("/forgot-password")
+    public String forgot(@RequestParam(value = "email") String email) {
+
+//            UserEntity userEntity = userRepository.findByEmailIgnoreCase(email);
+//            String to =userEntity.getEmail();
+////            String emailSend = to.substring(0, 2);
+//
+//            double randomDouble = Math.random();
+//            randomDouble = randomDouble * 1000000 + 1;
+//            int randomInt = (int) randomDouble;
+//
+//            String subject = "Lấy lại mật khẩu";
+//            String body = "Mật khẩu của bạn là:" + randomInt;
+//            mailer.send(to, subject, body);
+//
+//            userEntity.setPassword(String.valueOf(randomInt));
+//            userRepository.save(userEntity);
+
+        return email;
+
     }
 }
